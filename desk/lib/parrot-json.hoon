@@ -53,7 +53,10 @@
     ::
       :-  %status
       ?@  sat.sat
-        (pairs ~[title+s/'TRANSMITTED' when+~])
+        ?-  sat.sat
+          %deleted   (pairs ~[title+s/'DELETED' when+~])
+          %transmit  (pairs ~[title+s/'TRANSMITTED' when+~])
+        ==
       ?-  -.sat.sat
         %received  (pairs ~[title+s/'RECEIVED' when+(sect +.sat.sat)])
         %rejected  (pairs ~[title+s/'REJECTED' when+(sect +.sat.sat)])

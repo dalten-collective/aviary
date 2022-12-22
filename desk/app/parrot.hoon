@@ -106,6 +106,7 @@
 ::
 ++  look
   |_  [aru=area fug=(unit flag)]
+  +*  look  .
   ++  chat  `card`[%pass /chat/ui %agent dok %watch /ui]
   ++  chats
     ^-  card
@@ -121,6 +122,28 @@
     =+  wir=`path`/[aer]/(scot %p p.flg)/[q.flg]
     =+  pat=(snoc wir %updates)
     [%pass fren+wir %agent [p.flg %parrot] %watch pat]
+  ++  leave
+    |%
+    ++  chats
+      ^-  card
+      =+  flg=`flag`(need fug)
+      =+  aer=?>(!=(%$ aru) aru)
+      =+  pat=/[aer]/chat/(scot %p p.flg)/[q.flg]
+      [%pass pat %agent dok %leave ~]
+    ++  birds
+      |=  l=(list flag)
+      ^-  (list card)
+      =+  aer=?>(!=(%$ aru) aru)
+      %-  zing  %+  turn  l
+      |=  f=flag
+      =;  car=card
+        ^-  (list card)
+        ?.  =(our.bol p.f)  [car ~]
+        =+  lev=~(leave look aer `f)
+        [car chats:lev ~]
+      =+  pat=`path`/fren/[aer]/(scot %p p.f)/[q.f]
+      [%pass pat %agent [p.f %parrot] %leave ~]
+    --
   --
 ::  +scry: scries we may want
 ::
@@ -177,6 +200,7 @@
   ::
   ++  rcvd
     |=  [h=flag i=invite]
+    ?>  !(~(has in blok) h)
     %-  show(pend (~(put by pend) h i))
     parrot-invite+!>(`invite:actions`[%sent h i])
   ::
@@ -217,7 +241,7 @@
     ?:  ?=(%& -.b)
       ::  if it's a `[%& *]`, invite some birds.
       =+  inv=[a note.p.b now.bol]
-      =+  cag=parrot-invite+!>(`invite:actions`[%sent host.fok inv])     ::  XX: Todo: handle /[area]/(scot %p p) for invite, bloks
+      =+  cag=parrot-invite+!>(`invite:actions`[%sent host.fok inv])
       =/  sen=(map @p [inv=invite sat=status])
         ?~(hav=(~(get by sent) a) ~ u.hav)
       =;  [lac=(list card) s=_sent]
@@ -228,19 +252,20 @@
       |=  [p=@p [l=(list card) s=_sent]]
       :-  :_  l
           ^-  card
-          :+  %pass  /send/[a]/(scot %p p)
+          :+  %pass  /sent/[a]/(scot %p p)
           [%agent [p %parrot] %poke cag]
       ?.  (~(has by sen) p)
-        (~(put ju s) a p inv %transmit)                       ::  XX: Todo: handle [%received, %affirmed]
+        (~(put ju s) a p inv %transmit)                                         ::  XX: Todo: handle [%received, %affirmed]
       %+  ~(put by s)  a
       (~(put by (~(del by sen) p)) p inv %transmit)
-    ::  if its a `[%| @p]`, kick the bird
+    ::  if its a `[%| @p]`, yank the invite
     ~_  'AVIARY: parrot error, invite some bird first.'
     =+  hav=(~(got by sent) a)
     ?>  (~(has by hav) p.b)
     =+  cag=parrot-invite+!>(`invite:actions`[%took host.fok ~])
-    %-  emit(sent (~(put by sent) a (~(del by hav) p.b)))
-    [%pass /[a]/(scot %p p.b) %agent [p.b %parrot] %poke cag]
+    =+  dit=(show parrot-status+!>(`status:actions`[a p.b %deleted]))
+    %-  emit.dit(sent (~(put by sent) a (~(del by hav) p.b)))
+    [%pass /took/[a]/(scot %p p.b) %agent [p.b %parrot] %poke cag]
   ::
   ++  drop
     |=  [a=area ~]
@@ -257,13 +282,21 @@
     ::
     ?.  =(p.host.fok src.bol)
       ::  if it's the host, clean flok
-      %-  show(flok (~(del by flok) a))
+      =+  fok=(~(got by flok) a)
+      =+  lev=~(leave look a ~)
+      =/  dit=_dat
+        %-  emil
+        (birds:lev [host.fok ~(tap in team.fok)])
+      %-  show.dit(flok (~(del by flok) a))
       parrot-leaves+!>(`leaves:actions`[host.fok %& [%drop a ~]])
     ::
     ::  if it's a bird, clean team
     =+  dem=(~(got by team.fok) src.bol)
+    =+  lev=~(leave look a ~)
+    =/  dit=_dat
+      (emil (birds:lev `(list flag)`[src.bol dem]~))
     %.  parrot-leaves+!>(`leaves:actions`[[src.bol dem] %| [%drop a ~]])
-    %=    show
+    %=    show.dit
         flok
       %+  ~(put by flok)  a
       [host.fok (~(del in team.fok) src.bol dem)]
@@ -280,7 +313,7 @@
         ::  if we're the source, tell host, clean pend; or
         =+  hav=(~(got by pend) h)
         %-  emit:dot(pend (~(del by pend) h))
-        [%pass /(scot %p p.h)/[q.h] %agent [p.h %parrot] %poke cag]        ::  XX: Todo: handle failures on /? kill the group? how do you know which?
+        [%pass /(scot %p p.h)/[q.h] %agent [p.h %parrot] %poke cag]             ::  XX: Todo: handle failures on /? kill the group? how do you know which?
       ::  if we're the host, clean sent.
       ?>  =(our.bol p.h)
       =/  aer=area
@@ -303,12 +336,14 @@
       =+  hav=(~(got by pend) h)
       =+  cag=parrot-action+!>(`actions`[%join h j])
       =+  dit=(show cag)
-      %.  :-  [%pass / %agent [p.h %parrot] %poke cag]
-          ::  also, watch the host
-          `(list card)`[~(birds look area.hav `h) ~]
-      %=  emil.dit
-        pend  (~(del by pend) h)
-        flok  (~(put by flok) area.hav [h (silt [(need j)]~)])
+          ::  also, watch the host and chat
+      %-  %=  emil.dit
+            pend  (~(del by pend) h)
+            flok  (~(put by flok) area.hav [h (silt [(need j)]~)])
+          ==
+      :~  ~(birds look area.hav `h)
+          ~(chats look area.hav j)                                           ::  XX: Todo: pipe chats
+          [%pass /join/[area.hav] %agent [p.h %parrot] %poke cag]
       ==
     ::  if it's foreign, check if we're the host
     =/  aer=area
@@ -317,21 +352,23 @@
       %-  ~(rep by flok)
       |=([[a=area ho=flag t=*] o=(unit area)] ?:(=(h ho) `a o))
     =+  fok=(~(got by flok) aer)
+    =+  dit=(emit ~(chats look aer j))
+    =+  act=parrot-action+!>(`actions`[%join h j])
+    %.  act
     ?.  =(our.bol p.h)
       ::  if we're a bird, just put em in the team; or
-      %.  parrot-action+!>(`actions`[%join h j])
-      %=    show
+      %.  act
+      %=    show.dit
           flok
         (~(put by flok) aer fok(team (~(put in team.fok) (need j))))
       ==
     ::  if we're the host, tell the birds.
     =+  sen=(~(get ju sent) aer)
     =+  dem=(~(got by sen) src.bol)
-    =+  act=parrot-action+!>(`actions`[%join h j])
     ?>  =(src.bol -:(need j))
     =-  (dupe:- aer h act)
     %.  act
-    %=    show
+    %=    show.dit
         sent
       %-  ~(put ju (~(del ju sent) aer src.bol dem))
       [aer src.bol dem(sat [%affirmed now.bol])]
@@ -360,7 +397,18 @@
       ?~(p.sig same (slog 'parrot-fail-watch-chat' u.p.sig))
     ==
   ::
-      [%send aer=@ who=@ ~]
+      [%join aer=@]
+    ?.  ?=(%poke-ack -.sig)
+      ~|(aviary-panic-parrot-dude/[pol sig] !!)
+    ?~  p.sig  dat
+    =+  fok=(~(got by flok) aer.pol)
+    =+  lev=~(leave look aer.pol ~)
+    =/  dit=_dat
+      (emil (birds:lev [host.fok ~(tap by team.fok)]))
+    %-  show.dit(flok (~(del by flok) aer.pol))
+    parrot-action+!>(`actions`[%drop aer.pol ~])
+  ::
+      [%sent aer=@ who=@ ~]
     ::  this is an invite getting responded to
     =+  who=(slav %p who.pol)
     ?.  ?=(%poke-ack -.sig)
@@ -370,6 +418,13 @@
     =+  sat=?~(p.sig [%received now.bol] [%rejected now.bol])
     %.  parrot-status+!>(`status:actions`[aer.pol who sat])
     show(sent (~(put ju sent) aer.pol who dem(sat sat)))
+  ::
+      [%took aer=@ who=@ ~]
+    =+  who=(slav %p who.pol)
+    ?.  ?=(%poke-ack -.sig)
+      ~|(aviary-panic-parrot-dude/[pol sig] !!)
+    %.  dat
+    ?~(p.sig same (slog 'aviary-panic-took-failed' ~))
   ::
       [%fren aer=@ who=@ wat=@ %updates ~]
     =+  who=(slav %p who.pol)

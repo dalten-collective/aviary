@@ -13,7 +13,7 @@
 :: ::
 ::
 +$  status
-  $@   %transmit
+  $@   ?(%transmit %deleted)
   $%  [%received @da]
       [%rejected @da]
       [%affirmed @da]
