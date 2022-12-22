@@ -1,9 +1,9 @@
-:~  title+'mine'
-    info+'fixme'
-    color+0xff.4400
+:~  title+'aviary'
+    info+'a flock of birds'
+    color+0x23.2b2b
     image+'https://freedom-club.sfo2.digitaloceanspaces.com/props/quartus/long-logo/ab_Quartus-05_only.png'
     version+[0 0 1]
     website+'https://dalten.org/'
     license+'REKT'
-    site+/apps/mine
+    site+/apps/parrot
 ==
