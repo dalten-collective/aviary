@@ -1,3 +1,4 @@
+/-  cha=chat
 |%
 ::
 +$  area  term
@@ -5,12 +6,12 @@
 ::
 +$  blok  (set flag)                                    :: prevent invites
 +$  pend  (map flag invite)                             :: a map of invite (invites from some hosts)
-+$  sent  (jug area [who=@p inv=invite sat=status])                 :: a jug of offers (offers is a map)
++$  sent  (jug area [who=@p inv=invite sat=status])     :: a jug of offers (offers is a map)
 +$  flok  (map area [host=flag team=(set flag)])        :: a map of flocks 
++$  echo  (set squawks:actions)
 ::
-:: +$  squawks
-::   $%  
-:: ::
+::
+::  $status: invite statuses
 ::
 +$  status
   $@   ?(%transmit %deleted)
@@ -19,11 +20,15 @@
       [%affirmed @da]
   ==
 ::
+::  $invite: an invitation to a flok of birds
+::
 +$  invite
   $:  area=term
       note=cord
       when=@da
   ==
+::
+::  +actions: actions and errata
 ::
 ++  actions
   =<  actions
@@ -59,5 +64,8 @@
         send
         [%form =area chat=flag]
     ==
+  ::  $squawks: passing around chat writs thru parrot.
+  ::
+  +$  squawks  diff:writs:cha
   --
 --

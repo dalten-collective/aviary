@@ -6,7 +6,7 @@
 +$  versioned-state  $%(state-0)
 ::
 +$  state-0
-  [%0 =blok =pend =sent =flok]
+  [%0 =blok =pend =sent =flok =echo]
 ::  boilerplate
 ::
 +$  card  card:agent:gall
@@ -69,10 +69,11 @@
     `this
   ::
   ++  on-watch
-  |=  =path
+  |=  pat=path
   ~>  %bout.[0 '%parrot +on-watch']
   ^-  (quip card _this)
-  `this
+  =^  cards  state  abet:(peer:eng pat)
+  [cards this]
   ::
   ++  on-fail
     ~>  %bout.[0 '%parrot +on-fail']
@@ -102,18 +103,35 @@
   ^+  dat
   =-  (emit [%give %fact [-]~ cag])
   `path`/[aer]/(scot %p p.flg)/[q.flg]/updates
+::  +scry: scries we may want
+::
+++  scry
+  |%
+  ++  chats  .^((set flag) %gx (welp cah /chat/noun))
+  --
+::  +init: handle on-init
+::
+++  init
+  ^+  dat
+  dat
+::  +load: handle on-load
+::
+++  load
+  |=  vaz=vase
+  ^+  dat
+  ?>  ?=([%0 *] q.vaz)
+  dat(state !<(state-0 vaz))                            ::  XX: TODO: roll all of your flok and check for missing subs
 ::  +look: watch cards we may want
 ::
 ++  look
   |_  [aru=area fug=(unit flag)]
   +*  look  .
-  ++  chat  `card`[%pass /chat/ui %agent dok %watch /ui]
   ++  chats
     ^-  card
     =+  flg=`flag`(need fug)
     =+  aer=?>(!=(%$ aru) aru)
     =+  pat=`path`/chat/(scot %p p.flg)/[q.flg]
-    [%pass aer^pat %agent dok %watch (snoc pat %ui)]
+    [%pass aer^pat %agent dok %watch (welp pat /ui/writs)]
   ::
   ++  birds
     ^-  card
@@ -122,6 +140,7 @@
     =+  wir=`path`/[aer]/(scot %p p.flg)/[q.flg]
     =+  pat=(snoc wir %updates)
     [%pass fren+wir %agent [p.flg %parrot] %watch pat]
+  ::
   ++  leave
     |%
     ++  chats
@@ -145,26 +164,25 @@
       [%pass pat %agent [p.f %parrot] %leave ~]
     --
   --
-::  +scry: scries we may want
+::  +peer: handles on-watch
 ::
-++  scry
-  |%
-  ++  chats  .^((set flag) %gx (welp cah /chat/noun))
-  --
-::  +init: handle on-init
-::
-++  init
-  ^+  dat
-  (emit chat:look)
-::  +load: handle on-load
-::
-++  load
-  |=  vaz=vase
-  ^+  dat
-  ?>  ?=([%0 *] q.vaz)
-  =.  state  !<(state-0 vaz)
-  ?~  hav=(~(get by wex.bol) [/chat/ui our.bol %chat])
-  (emit chat:look)  ?:(acked.u.hav dat (emit chat:look))
+++  peer
+  |=  pol=(pole knot)
+  ?+    pol  ~|(aviary-panic-parrot-watch/pol !!)
+      [%web-ui ~]
+    ?>  =(our.bol src.bol)
+    dat
+  ::
+      [aer=@ who=@ wat=@ %updates ~]
+    ~&  >  'right-path'
+    =+  who=(scot %p who.pol)
+    =+  fok=(~(got by flok) aer.pol)
+    ?.  =(our.bol p.host.fok)  dat
+    %-  emil
+    %+  turn  ~(tap in team.fok)
+    |=  f=flag
+    [%give %fact ~ parrot-action+!>(`actions`[%join host.fok `f])]
+  ==
 ::  +poke: handle on-poke, some of on-dude
 ::
 ++  poke
@@ -228,7 +246,9 @@
     ?>  %-  ~(all by flok)
         |=  [h=flag t=(set flag)]
         &(!=(h c) !(~(has in t) c))
-    %-  show(flok (~(put by flok) a [c ~]))
+    =/  dit=_dat
+      (emit ~(chats look a `c))
+    %-  show.dit(flok (~(put by flok) a [c ~]))
     parrot-action+!>(`actions`[%form a c])
   ::
   ++  send
@@ -239,6 +259,8 @@
             =(our.bol -.host.fok)
         ==
     ?:  ?=(%& -.b)
+      ~_  'AVIARY: parrot error, already part of team.'
+      ?<  (~(any in team.fok) |=(f=flag (~(has in them.p.b) p.f)))
       ::  if it's a `[%& *]`, invite some birds.
       =+  inv=[a note.p.b now.bol]
       =+  cag=parrot-invite+!>(`invite:actions`[%sent host.fok inv])
@@ -354,7 +376,6 @@
     =+  fok=(~(got by flok) aer)
     =+  dit=(emit ~(chats look aer j))
     =+  act=parrot-action+!>(`actions`[%join h j])
-    %.  act
     ?.  =(our.bol p.h)
       ::  if we're a bird, just put em in the team; or
       %.  act
@@ -363,9 +384,11 @@
         (~(put by flok) aer fok(team (~(put in team.fok) (need j))))
       ==
     ::  if we're the host, tell the birds.
+    ~&  >  'right-path'
     =+  sen=(~(get ju sent) aer)
     =+  dem=(~(got by sen) src.bol)
     ?>  =(src.bol -:(need j))
+    =.  dit  (emit ~(birds look aer j))
     =-  (dupe:- aer h act)
     %.  act
     %=    show.dit
@@ -383,21 +406,40 @@
 ++  dude
   |=  [pol=(pole knot) sig=sign:agent:gall]
   ?+    pol  ~|(aviary-panic-parrot-dude-wire/pol !!)
-      [%chat %ui ~]
-    ?+    -.sig  ~|(aviary-panic-parrot-dude/[pol sig] !!)
-      %kick  (emit chat:look)
-    ::
-        %fact
-      =^  cards  state
-        ch-abet:(ch-dude:chor cage.sig)
-      (emil cards)
+      [%squawk @ ~]
+    ?.  ?=(%poke-ack -.sig)
+      ~|(aviary-panic-parrot-dude/[pol sig] !!)
+    %.  dat
+    ?~(p.sig same (slog 'aviary-panic-parrot-squawk-failed' ~))
+  ::
+      [%fren aer=@ who=@ wat=@ ~]
+    =+  who=(slav %p who.pol)
+    ?+  -.sig  ~|(aviary-panic-parrot-dude/[pol sig] !!)
+      %kick  (emit ~(birds look aer.pol ~ who wat.pol))
     ::
         %watch-ack
       %.  dat
-      ?~(p.sig same (slog 'parrot-fail-watch-chat' u.p.sig))
+      ?~(p.sig same (slog 'aviary-panic-parrot-fren-failed' ~))
+    ::
+        %fact
+      ?+  -.cage.sig  ~|(aviary-panic-parrot-dude/[pol sig] !!)
+        %parrot-action   (poke cage.sig)
+          %parrot-squawks
+        =+  saq=!<(squawks:actions q.cage.sig)
+        =^  cards  state
+          ch-abet:(ch-sqak:(ch-abed:chor aer.pol who wat.pol) saq)
+        (emil cards)
+      ==
     ==
   ::
-      [%join aer=@]
+      [%took aer=@ who=@ ~]
+    =+  who=(slav %p who.pol)
+    ?.  ?=(%poke-ack -.sig)
+      ~|(aviary-panic-parrot-dude/[pol sig] !!)
+    %.  dat
+    ?~(p.sig same (slog 'aviary-panic-parrot-took-failed' ~))
+  ::
+      [%join aer=@ ~]
     ?.  ?=(%poke-ack -.sig)
       ~|(aviary-panic-parrot-dude/[pol sig] !!)
     ?~  p.sig  dat
@@ -417,39 +459,89 @@
     =+  dem=(~(got by sen) who)
     =+  sat=?~(p.sig [%received now.bol] [%rejected now.bol])
     %.  parrot-status+!>(`status:actions`[aer.pol who sat])
-    show(sent (~(put ju sent) aer.pol who dem(sat sat)))
+    %=    show
+        sent
+      %+  ~(put by sent)  aer.pol
+      (~(put by (~(del by sen) who)) who dem(sat sat))
+    ==
   ::
-      [%took aer=@ who=@ ~]
+      [aer=@ %chat who=@ wat=@ ~]                       ::  XX: updates from chat
     =+  who=(slav %p who.pol)
-    ?.  ?=(%poke-ack -.sig)
-      ~|(aviary-panic-parrot-dude/[pol sig] !!)
-    %.  dat
-    ?~(p.sig same (slog 'aviary-panic-took-failed' ~))
-  ::
-      [%fren aer=@ who=@ wat=@ %updates ~]
-    =+  who=(slav %p who.pol)
-    ?+  -.sig  ~|(aviary-panic-parrot-dude/[pol sig] !!)
-      %kick  (emit ~(birds look aer.pol ~ who wat.pol))
+    =+  lev=~(leave look aer.pol ~)
+    ?~  fok=(~(get by flok) aer.pol)
+      (emil (birds:lev [who wat.pol]~))
+    ?+    -.sig  ~|(aviary-panic-parrot-dude/[pol sig] !!)
+      %kick  (emit ~(chats look aer.pol ~ who wat.pol))
+    ::
+        %watch-ack
+      %.  dat
+      ?~  p.sig  same
+      (slog 'aviary-panic-parrot-watch-failed' u.p.sig)
+    ::
+        %fact
+      =^  cards  state
+        ch-abet:(ch-dude:(ch-abed:chor aer.pol [who wat.pol]) cage.sig)
+      (emil cards)
     ==
   ==
 ::  |chor: chat engine
 ::
 ++  chor
-  |_  $:  =flag
+  |_  $:  =area
+          were=flag
+          host=flag
+          from=flag
+          bork=_|
           caz=(list card)
       ==
   +*  ch-core  .
+      ch-chat  [our.bol %chat]
   ++  ch-emit  |=(c=card ch-core(caz [c caz]))
   ++  ch-emil  |=(lc=(list card) ch-core(caz (welp lc caz)))
   ++  ch-abet  ^-((quip card _state) [(flop caz) state])
+  ::  +ch-sqak: handle incoming squawks
+  ::
+  ++  ch-sqak
+    |=  s=squawks:actions
+    %-  ch-emit(echo (~(put in echo) s))
+    =-  [%pass /squawk/(scot %da now.bol) %agent ch-chat -]
+    [%poke chat-action-0+!>(`action:cha`[were q.p.s %writs s])]
+  ++  ch-dupe
+    |=  =diff:writs:cha
+    %-  ch-emit
+    :^  %give  %fact
+      [/[area]/(scot %p p.were)/[q.were]/updates]~
+    parrot-squawks+!>(`squawks:actions`diff)
   ++  ch-dude
     |=  [mar=mark vaz=vase]
+    ?:  ?=(%& bork)
+      ((slog 'aviary-panic-parrot-bork' ~) ch-core)
     ?+    mar  ~|(aviary-panic-parrot-chat-dude-mark/mar !!)
-      %chat-action-0      ~&  >>>  [mar !<(action:cha vaz)]  ch-core
-      %chat-action-1      ~&  >>>  [mar !<(action:cha vaz)]  ch-core
-      %chat-brief-update  ~&  >>>  [mar !<(update:briefs:cha vaz)]  ch-core
-      %chat-briefs        ~&  >>>  [mar !<(briefs:cha vaz)]  ch-core
-      %chat-leave         ~&  >>>  [mar !<(flag:g:cha vaz)]  ch-core
+        %writ-diff
+      =+  diff=!<(diff:writs:cha vaz)
+      ?:  (~(has in echo) diff)
+        ch-core(echo (~(del in echo) diff))
+      ?-  -.q.diff
+        %add       (ch-dupe diff)
+        %del       (ch-dupe diff)
+        %add-feel  (ch-dupe diff)
+        %del-feel  (ch-dupe diff)
+      ==
+    ==
+  ++  ch-abed
+    |=  [a=^area f=flag]
+    ?~  fok=(~(get by flok) a)
+      =+  lev=~(leave look a `f)
+      %.  chats:lev
+      ch-emit(bork %&, area a, from f)
+    %=  ch-core
+      area  a
+      from  f
+      host  host.u.fok
+    ::
+        were
+      ?:  =(our.bol -.host.u.fok)  host.u.fok
+      [our.bol (~(got by team.u.fok) our.bol)]
     ==
   --
 --

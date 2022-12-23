@@ -1,6 +1,6 @@
 /-  p=parrot
 /+  pj=parrot-json
-|_  pact=action:p
+|_  pact=actions:p
 ++  grad  %noun
 ++  grow
   |%
@@ -9,7 +9,7 @@
   --
 ++  grab
   |%
-  ++  noun  action:p
+  ++  noun  actions:p
   ++  json  action:dejs:pj
   --
 --
