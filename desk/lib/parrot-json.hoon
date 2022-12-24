@@ -12,6 +12,19 @@
   ++  vite
     |=  [a=area:p n=cord w=@da]
     (pairs ~[area+s/a note+s/n when+(sect w)])
+  ++  sate
+    |=  sat=status:p
+    ^-  json
+    ?@  sat
+      ?-  sat
+        %deleted   (pairs ~[title+s/'DELETED' when+~])
+        %transmit  (pairs ~[title+s/'TRANSMITTED' when+~])
+      ==
+    ?-  -.sat
+      %received  (pairs ~[title+s/'RECEIVED' when+(sect +.sat)])
+      %rejected  (pairs ~[title+s/'REJECTED' when+(sect +.sat)])
+      %affirmed  (pairs ~[title+s/'AFFIRMED' when+(sect +.sat)])
+    ==
   ++  pack
     |_  [f=cord j=json]
     ++  fact
@@ -50,19 +63,21 @@
     %-  pairs
     :~  area+s/area.sat
         who+(ship who.sat)
-    ::
-      :-  %status
-      ?@  sat.sat
-        ?-  sat.sat
-          %deleted   (pairs ~[title+s/'DELETED' when+~])
-          %transmit  (pairs ~[title+s/'TRANSMITTED' when+~])
-        ==
-      ?-  -.sat.sat
-        %received  (pairs ~[title+s/'RECEIVED' when+(sect +.sat.sat)])
-        %rejected  (pairs ~[title+s/'REJECTED' when+(sect +.sat.sat)])
-        %affirmed  (pairs ~[title+s/'AFFIRMED' when+(sect +.sat.sat)])
-      ==
+        status+(sate sat.sat)
     ==
+    ::
+      :: :-  %status
+      :: ?@  sat.sat
+      ::   ?-  sat.sat
+      ::     %deleted   (pairs ~[title+s/'DELETED' when+~])
+      ::     %transmit  (pairs ~[title+s/'TRANSMITTED' when+~])
+      ::   ==
+      :: ?-  -.sat.sat
+      ::   %received  (pairs ~[title+s/'RECEIVED' when+(sect +.sat.sat)])
+      ::   %rejected  (pairs ~[title+s/'REJECTED' when+(sect +.sat.sat)])
+      ::   %affirmed  (pairs ~[title+s/'AFFIRMED' when+(sect +.sat.sat)])
+      :: ==
+    :: ==
   ++  action
     |=  act=actions:p
     ^-  json
@@ -105,6 +120,46 @@
       %-  pairs
       ?~  u  ~[area act+s/'DECLINED' host+(flag f) chat+~]
       ~[area act+s/'ACCEPTED' host+(flag f) chat+(flag u.u)]
+    --
+  ++  state
+    |%
+    ++  blok
+      |=(b=blok:p (frond blocked-hosts+a/(turn ~(tap in b) flag)))
+    ++  aval
+      |=(a=(set flag:p) (frond available-chats+a/(turn ~(tap in a) flag)))
+    ++  pend
+      |=  p=pend:p
+      %-  frond
+      :-  %pending-invites
+      :-  %a  %+  turn  ~(tap by p)
+      |=  [f=flag:^p i=invite:^p]
+      (pairs ~[host+(flag f) invitation+(vite i)])
+    ++  sent
+      |=  s=sent:p
+      %-  frond
+      :-  %sent-invites
+      :-  %a  %+  turn  ~(tap by s)
+      |=  [a=area:p s=(set [@p invite:p status:p])]
+      %-  pairs
+      :~  area+s/a
+      ::
+        :-  %invites
+        :-  %a  %+  turn  ~(tap in s)
+        |=  [w=@p i=invite:p s=status:p]
+        %-  pairs
+        ~[to+(ship w) invitation+(vite i) status+(sate s)]
+      ==
+    ++  flok
+      |=  f=flok:p
+      %-  frond
+      :-  %existing-flocks
+      :-  %a  %+  turn  ~(tap by f)
+      |=  [a=area:p h=flag:p t=(set flag:p)]
+      %-  pairs
+      :~  area+s/a
+          host+(flag h)
+          team+a/(turn ~(tap in t) flag)
+      ==
     --
   --
 ++  dejs

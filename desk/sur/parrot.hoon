@@ -54,7 +54,6 @@
   ::
   +$  actions
     $%  [%kick ~]
-        [%test ~]
       ::
         [%blok =flag]
         [%free =flag]
