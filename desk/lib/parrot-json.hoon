@@ -17,13 +17,13 @@
     ^-  json
     ?@  sat
       ?-  sat
-        %deleted   (pairs ~[title+s/'DELETED' when+~])
-        %transmit  (pairs ~[title+s/'TRANSMITTED' when+~])
+        %deleted   (pairs ~[status+s/'DELETED' when+~])
+        %transmit  (pairs ~[status+s/'TRANSMITTED' when+~])
       ==
     ?-  -.sat
-      %received  (pairs ~[title+s/'RECEIVED' when+(sect +.sat)])
-      %rejected  (pairs ~[title+s/'REJECTED' when+(sect +.sat)])
-      %affirmed  (pairs ~[title+s/'AFFIRMED' when+(sect +.sat)])
+      %received  (pairs ~[status+s/'RECEIVED' when+(sect +.sat)])
+      %rejected  (pairs ~[status+s/'REJECTED' when+(sect +.sat)])
+      %affirmed  (pairs ~[status+s/'AFFIRMED' when+(sect +.sat)])
     ==
   ++  pack
     |_  [f=cord j=json]
@@ -65,26 +65,12 @@
         who+(ship who.sat)
         status+(sate sat.sat)
     ==
-    ::
-      :: :-  %status
-      :: ?@  sat.sat
-      ::   ?-  sat.sat
-      ::     %deleted   (pairs ~[title+s/'DELETED' when+~])
-      ::     %transmit  (pairs ~[title+s/'TRANSMITTED' when+~])
-      ::   ==
-      :: ?-  -.sat.sat
-      ::   %received  (pairs ~[title+s/'RECEIVED' when+(sect +.sat.sat)])
-      ::   %rejected  (pairs ~[title+s/'REJECTED' when+(sect +.sat.sat)])
-      ::   %affirmed  (pairs ~[title+s/'AFFIRMED' when+(sect +.sat.sat)])
-      :: ==
-    :: ==
   ++  action
     |=  act=actions:p
     ^-  json
     ?:  ?=(?(%kick %test %blok %free %join) -.act)
       ?-    -.act
         %kick  ~(fact pack 'KICK' ~)
-        %test  ~(fact pack 'KICK' ~)
         %blok  ~(fact pack 'BLOCK-LIST' (blok:act-json +.act))
         %free  ~(fact pack 'BLOCK-LIST' (free:act-json +.act))
         %join  ~(fact pack 'INVITE-REPLIED-BIRD' (join:act-json +.act))
@@ -114,7 +100,7 @@
     ++  blok  |=(b=flag:p (pairs ~[host+(flag b) act+s/'BLOCKED']))
     ++  free  |=(f=flag:p (pairs ~[host+(flag f) act+s/'ALLOWED']))
     ::
-    ++  form  |=(c=flag:p (pairs ~[area chat+(flag c)]))
+    ++  form  |=(c=flag:p (pairs ~[area host+(flag c) team+~]))
     ++  join
       |=  [f=flag:p u=(unit flag:p)]
       %-  pairs
@@ -124,20 +110,26 @@
   ++  state
     |%
     ++  blok
-      |=(b=blok:p (frond blocked-hosts+a/(turn ~(tap in b) flag)))
+      |=  b=blok:p
+      %~  scry  pack
+      :-  'BLOCKED-HOSTS'
+      a/(turn ~(tap in b) flag)
     ++  aval
-      |=(a=(set flag:p) (frond available-chats+a/(turn ~(tap in a) flag)))
+      |=  a=(set flag:p)
+      %~  scry  pack
+      :-  'AVAILABLE-CHATS'
+      a/(turn ~(tap in a) flag)
     ++  pend
       |=  p=pend:p
-      %-  frond
-      :-  %pending-invites
+      %~  scry  pack
+      :-  'PENDING-INVITES'
       :-  %a  %+  turn  ~(tap by p)
       |=  [f=flag:^p i=invite:^p]
       (pairs ~[host+(flag f) invitation+(vite i)])
     ++  sent
       |=  s=sent:p
-      %-  frond
-      :-  %sent-invites
+      %~  scry  pack
+      :-  'SENT-INVITES'
       :-  %a  %+  turn  ~(tap by s)
       |=  [a=area:p s=(set [@p invite:p status:p])]
       %-  pairs
@@ -151,8 +143,8 @@
       ==
     ++  flok
       |=  f=flok:p
-      %-  frond
-      :-  %existing-flocks
+      %~  scry  pack
+      :-  'EXISTING-FLOCKS'
       :-  %a  %+  turn  ~(tap by f)
       |=  [a=area:p h=flag:p t=(set flag:p)]
       %-  pairs
@@ -186,7 +178,6 @@
     ^-  $-(json actions:p)
     %-  of
     :~  kick+(cu |=(* ~) same)
-        test+(cu |=(* ~) same)
         blok+(ot [flag+flag]~)
         free+(ot [flag+flag]~)
         join+(ot ~[host+flag join+flug])

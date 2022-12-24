@@ -121,19 +121,20 @@
   |=  vaz=vase
   ^+  dat
   ?>  ?=([%0 *] q.vaz)
-  dat(state !<(state-0 vaz))                            ::  XX: roll all of your flok and check for missing subs
+  ::  XX: check for missing subs?
+  dat(state !<(state-0 vaz))
 ::  +peek: handles on-peek
 ::
 ++  peek
   |=  pol=(pole knot)
   ^-  (unit (unit cage))
   ?+    pol  !!
-    [%blok ~]  ``parrot-state-blok+!>(`_blok`blok)
-    [%pend ~]  ``parrot-state-pend+!>(`_pend`pend)
-    [%sent ~]  ``parrot-state-sent+!>(`_sent`sent)
-    [%flok ~]  ``parrot-state-flok+!>(`_flok`flok)
+    [%blok ~]  ``parrot-state-blok+!>(`_blok`blok)      ::  get blocked hosts
+    [%pend ~]  ``parrot-state-pend+!>(`_pend`pend)      ::  get pending invites
+    [%sent ~]  ``parrot-state-sent+!>(`_sent`sent)      ::  get sent invitations
+    [%flok ~]  ``parrot-state-flok+!>(`_flok`flok)      ::  get current flocks
   ::
-      [%aval ~]
+      [%aval ~]                                         ::  get available hosts
     =;  used=(set flag)
       ``parrot-state-aval+!>(`(set flag)`(~(dif in chats:scry) used))
     %-  ~(rep by flok)
@@ -153,6 +154,13 @@
         (show parrot-state-pend+!>(`_pend`pend))
         (show parrot-state-sent+!>(`_sent`sent))
         (show parrot-state-flok+!>(`_flok`flok))
+        =;  used=(set flag)
+          %-  show
+          parrot-state-aval+!>(`(set flag)`(~(dif in chats:scry) used))
+        %-  ~(rep by flok)
+        |=  [[@ h=flag t=(set flag)] o=(set flag)]
+        ?:  =(our.bol p.h)  (~(put in o) h)
+        ?~(h=(~(get by t) our.bol) o (~(put in o) our.bol u.h))
     ==
   ::
       [aer=@ who=@ wat=@ %updates ~]
@@ -178,6 +186,7 @@
     ?~(p.sig same (slog 'aviary-panic-parrot-squawk-failed' ~))
   ::
       [%fren aer=@ who=@ wat=@ ~]
+    ::  other birds
     =+  who=(slav %p who.pol)
     ?+  -.sig  ~|(aviary-panic-parrot-dude/[pol sig] !!)
       %kick  (emit ~(birds look aer.pol ~ who wat.pol))
@@ -198,6 +207,7 @@
     ==
   ::
       [%took aer=@ who=@ ~]
+    ::  take invite
     =+  who=(slav %p who.pol)
     ?.  ?=(%poke-ack -.sig)
       ~|(aviary-panic-parrot-dude/[pol sig] !!)
@@ -205,6 +215,7 @@
     ?~(p.sig same (slog 'aviary-panic-parrot-took-failed' ~))
   ::
       [%join aer=@ ~]
+    ::  join response
     ?.  ?=(%poke-ack -.sig)
       ~|(aviary-panic-parrot-dude/[pol sig] !!)
     ?~  p.sig  dat
@@ -216,7 +227,7 @@
     parrot-action+!>(`actions`[%drop aer.pol ~])
   ::
       [%sent aer=@ who=@ ~]
-    ::  this is an invite getting responded to
+    ::  send invite
     =+  who=(slav %p who.pol)
     ?.  ?=(%poke-ack -.sig)
       ~|(aviary-panic-parrot-dude/[pol sig] !!)
@@ -231,6 +242,7 @@
     ==
   ::
       [aer=@ %chat who=@ wat=@ ~]
+    ::  chats /ui/writs path
     =+  who=(slav %p who.pol)
     =+  lev=~(leave look aer.pol ~)
     ?~  fok=(~(get by flok) aer.pol)
