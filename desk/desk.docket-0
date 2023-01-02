@@ -1,9 +1,10 @@
 :~  title+'aviary'
     info+'a flock of birds'
-    color+0x23.2b2b
-    image+'https://freedom-club.sfo2.digitaloceanspaces.com/props/quartus/long-logo/ab_Quartus-05_only.png'
+    color+0xff.ffff
+    image+'https://freedom-club.sfo2.digitaloceanspaces.com/aviary-logo.png'
     version+[0 0 1]
     website+'https://dalten.org/'
     license+'REKT'
-    site+/apps/parrot
+    glob-http+['https://bootstrap.urbit.org/glob-0vm65f9.defur.eqhgj.62ls6.9v9lf.glob' 0vm65f9.defur.eqhgj.62ls6.9v9lf]
+    base+'aviary'
 ==

@@ -442,6 +442,7 @@
       ~_  'AVIARY: parrot error, already part of team.'
       ?<  (~(any in team.fok) |=(f=flag (~(has in them.p.b) p.f)))
       ::  if it's a `[%& *]`, invite some birds.
+      ::
       =+  inv=[a note.p.b now.bol]
       =+  cag=parrot-invite+!>(`invite:actions`[%sent host.fok inv])
       =/  sen=(map @p [inv=invite sat=status])
@@ -461,6 +462,7 @@
       %+  ~(put by s)  a
       (~(put by (~(del by sen) p)) p inv %transmit)
     ::  if its a `[%| @p]`, yank the invite
+    ::
     ~_  'AVIARY: parrot error, invite some bird first.'
     =+  hav=(~(got by sent) a)
     ?>  (~(has by hav) p.b)
@@ -475,8 +477,10 @@
     =+  lev=~(leave look a ~)
     ~_  'AVIARY: parrot error, maybe you already left.'
     ::  if we're the actor, then...
+    ::
     ?:  =(our.bol src.bol)
       ::  show and tell, and clean; or
+      ::
       =/  us=flag
         ?:  =(our.bol p.host.fok)  host.fok
         [our.bol (~(got by team.fok) our.bol)]
@@ -486,12 +490,15 @@
       %-  show:(emil (birds:lev [host.fok ~(tap in team.fok)]))
       parrot-leaves+!>(`leaves:actions`[host.fok %& [%drop a ~]])
     ::  else, if they're the host, then...
+    ::
     ?:  =(p.host.fok src.bol)
       ::  clean the flok, leave everyone; or
+      ::
       =-  (emil:- (birds:lev [host.fok ~(tap in team.fok)]))
       %-  show(flok (~(del by flok) a))
       parrot-leaves+!>(`leaves:actions`[host.fok %& [%drop a ~]])
     ::  else, just leave the bird.
+    ::
     =+  them=[src.bol (~(got by team.fok) src.bol)]
     =-  (emil:- (birds:lev [them]~))
     %.  parrot-leaves+!>(`leaves:actions`[them %| [%drop a ~]])
@@ -502,13 +509,17 @@
     ^+  dat
     =+  cag=parrot-action+!>(`actions`[%join h j])
     ::  if we're the actor, then...
+    ::
     ?:  =(our.bol src.bol)
       ::  if we're declining, then...
+      ::
       ?~  j
         ::  clean up and notify; or
+        ::
         %-  emit:(show(pend (~(del by pend) h)) cag)
         [%pass / %agent [p.h %parrot] %poke cag]
       ::  else, notify, prepare and subscribe.
+      ::
       =+  hav=(~(got by pend) h)
       =-  (show:- cag)
       %-  %=  emil
@@ -520,6 +531,7 @@
           [%pass /join/[area.hav] %agent [p.h %parrot] %poke cag]
       ==
     ::  else, detect area; and
+    ::
     =/  aer=area
       %-  need
       ^-  (unit area)
@@ -527,8 +539,10 @@
       |=([[a=area ho=flag *] o=(unit area)] ?.(=(h ho) o `a))
     =+  fok=(~(got by flok) aer)
     ::  if we're a bird, then...
+    ::
     ?.  =(our.bol p.h)
       ::  add the new team member and subscribe; or
+      ::
       =-  (emit:- ~(birds look aer j))
       %.  cag
       %=    show
@@ -539,8 +553,10 @@
     =+  sen=(~(get ju sent) aer)
     =+  dem=(~(got by sen) src.bol)
     ::  if they're declining, then...
+    ::
     ?~  j
       ::  update their status; or
+      ::
       %.  parrot-denies+!>(`denies:actions`[src.bol aer now.bol])
       %=    show
           sent
@@ -548,6 +564,7 @@
         ~(put ju (~(del ju sent) aer src.bol dem))
       ==
     ::  else, tell the birds and subscribe.
+    ::
     ?>  =(src.bol -:(need j))
     =-  (dupe:(emit:- ~(birds look aer j)) aer h cag)
     %.  cag
