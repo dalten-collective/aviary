@@ -261,11 +261,11 @@
   ?+    pol  ~|(aviary-panic-osprey-watch/pol !!)
       [%web-ui ~]
     ?>  =(our.bol src.bol)
-    =~  (show parrot-state-aval+!>(['CHATS' chats:scry]))
-        (show parrot-state-ship+!>(dms:scry))
-        (show parrot-state-aval+!>(['DIARIES' diaries:scry]))
+    =~  (show parrot-state-ship+!>(dms:scry))
+        (show parrot-state-aval+!>(['CHATS' chats:scry]))
         (show parrot-state-aval+!>(['HEAPS' heaps:scry]))
         (show parrot-state-aval+!>(['GROUPS' groups:scry]))
+        (show parrot-state-aval+!>(['DIARIES' diaries:scry]))
         (show parrot-state-schedule+!>(`_schedule`schedule))
     ==
   ==

@@ -57,28 +57,28 @@
     |=  act=actions:o
     ?-    -.act
         ?(%mine %heap %diary %chat %group)
-      (pack 'FACT' 'ARCHIVE-START' (frond what+(archive act)))
+      (pack 'FACT' 'ARCHIVE-START' (frond archiving+(archive act)))
     ::
         %boot
       %^  pack  'FACT'
         'BOOTING'
-      (pairs rank+s/rank.act where+(flag group.act) ~)
+      (pairs rank+s/rank.act group+(flag group.act) ~)
     ::
         %doom
       %^  pack  'FACT'
         'DOOMING'
       %-  pairs
-      ~[seconds+(numb (div age.act ~s1)) where+(flag group.act)]
+      ~[seconds+(numb (div age.act ~s1)) group+(flag group.act)]
     ::
         %repeat
       ?~  oft.act
         %^  pack  'FACT'
           'ARCHIVE-SCHEDULE-CANCEL'
-        (pairs what+(archive arc.act) frequency+~ ~)
+        (pairs archiving+(archive arc.act) frequency+~ ~)
       %^  pack  'FACT'
         'ARCHIVE-SCHEDULE-SET'
       %-  pairs
-      :~  what+(archive arc.act)
+      :~  archiving+(archive arc.act)
           frequency+(numb (div u.oft.act ~s1))
       ==
     ==
@@ -88,7 +88,7 @@
     ?-    -.upd
         %bootbot
       %^  pack  'FACT'
-        'BOOTBOT-COMPLETE'
+        'BOOTBOT-RESULTS'
       %-  pairs
       :~  killed+s/rank.upd
           group+(flag gop.upd)
@@ -180,6 +180,30 @@
         diary+flag
         group+flag
         chat+chat
+    ::
+      :-  %doom
+      %-  ot
+      :~  limit+ni
+          age+(cu |=(i=@ud `@dr`(mul ~s1 i)) ni)
+          group+flag
+      ==
+    ::
+      :-  %boot
+      %-  ot
+      :~  rank+(cu |=(t=@tas ;;(rank:title t)) so)
+          group+flag
+      ==
+    ::
+      :-  %repeat
+      %-  ot
+      :~
+        :-  %archive
+        (cu |=(a=actions:o ;;(archive:actions:o a)) actions)
+      ::
+        :-  %frequency
+        %-  cu  :_  ni:dejs-soft:format
+        |=(i=(unit @ud) ?~(i ~ ``@dr`(mul ~s1 u.i)))
+      ==
     ==
   --
 --
