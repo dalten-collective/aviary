@@ -164,20 +164,5 @@
       =-  `[%pass /channel/create %agent [our.bol %diary] %poke -]
       diary-create+!>(`create:dia`[gro nam nam 'quartus wuz here' ~ ~])
     ==
-  :: ++  dm
-  ::   |=  jams=(list jams)
-
-  :: ++  club
-  ::   |=  jams=(list jams)
-
-  :: ++  chat
-  ::   |=  jams=(list jams)
-    
-  :: ++  heap
-  ::   |=  jams=(list jams)
-
-  :: ++  diary
-  ::   |=  jams=(list jams)
-
   --
 --
