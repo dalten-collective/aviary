@@ -50,10 +50,10 @@
     [cards this]
   ::
   ++  on-peek
-    |=  =path
+    |=  pat=path
     ~>  %bout.[0 '%parrot +on-peek']
     ^-  (unit (unit cage))
-    [~ ~]
+    (peek:eng pat)
   ::
   ++  on-agent
     |=  [wir=wire sig=sign:agent:gall]
@@ -129,12 +129,12 @@
   |=  pol=(pole knot)
   ^-  (unit (unit cage))
   ?+    pol  !!
-    [%blok ~]  ``parrot-state-blok+!>(`_blok`blok)      ::  get blocked hosts
-    [%pend ~]  ``parrot-state-pend+!>(`_pend`pend)      ::  get pending invites
-    [%sent ~]  ``parrot-state-sent+!>(`_sent`sent)      ::  get sent invitations
-    [%flok ~]  ``parrot-state-flok+!>(`_flok`flok)      ::  get current flocks
+    [%x %blok ~]  ``parrot-state-blok+!>(`_blok`blok)      ::  get blocked hosts
+    [%x %pend ~]  ``parrot-state-pend+!>(`_pend`pend)      ::  get pending invites
+    [%x %sent ~]  ``parrot-state-sent+!>(`_sent`sent)      ::  get sent invitations
+    [%x %flok ~]  ``parrot-state-flok+!>(`_flok`flok)      ::  get current flocks
   ::
-      [%aval ~]                                         ::  get available hosts
+      [%x %aval ~]                                         ::  get available hosts
     =;  used=(set flag)
       ``parrot-state-aval+!>(`(set flag)`(~(dif in chats:scry) used))
     %-  ~(rep by flok)

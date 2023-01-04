@@ -106,7 +106,7 @@
     =/  msg=(list @t)
       ?.  =(?(%dm %club) type)  ~['REQUEST SUBMITTED']
       ~['REQUEST SUBMITTED' 'OVERRIDING NAME FOR DM/CLUB']
-    %-  hp-emit(pay `[400+~ `(hp-page msg)])
+    %-  hp-emit(pay `[200+~ `(hp-page msg)])
     =+  pat=/restore/(scot %ud (jam type grop olde chan (lent jams)))
     =-  [%pass pat %arvo %k %fard -]
     :+  %aviary  %osprey-restore
