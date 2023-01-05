@@ -441,6 +441,11 @@
     ?:  ?=(%& -.b)
       ~_  'AVIARY: parrot error, already part of team.'
       ?<  (~(any in team.fok) |=(f=flag (~(has in them.p.b) p.f)))
+      =/  hav=(set ship)
+        %-  sy
+        %+  murn  ~(tap in (~(gut by sent) a ~))
+        |=  [w=@p i=invite s=status]
+        ?@(s `w ?:(?=([%rejected @] s) ~ `w))
       ::  if it's a `[%& *]`, invite some birds.
       ::
       =+  inv=[a note.p.b now.bol]
@@ -451,7 +456,7 @@
         =.  sent  s
         %.  lac
         emil:(show parrot-action+!>(`actions`[%send a b]))
-      %-  ~(rep in `(set @p)`them.p.b)
+      %-  ~(rep in `(set @p)`(~(dif in them.p.b) hav))
       |=  [p=@p [l=(list card) s=_sent]]
       :-  :_  l
           ^-  card
