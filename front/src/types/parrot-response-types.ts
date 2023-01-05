@@ -18,19 +18,6 @@ export interface BlockedHosts {
   fact: Array<T.Flag>
 }
 
-export interface PendingInvites {
-  face: 'PENDING-INVITES';
-  type: 'SCRY';
-  fact: Array<{
-    host: T.Flag;
-    invitation: {
-      area: P.Area;
-      note: string;
-      when: T.When;
-    }
-  }>
-}
-
 export interface SentInvites {
   face: 'SENT-INVITES';
   type: 'SCRY';
@@ -59,23 +46,35 @@ export interface SendInviteFact {
   };
 }
 
+export interface InviteReceivedFact {
+  face: 'INVITE-RECEIVED-BIRD';
+  type: 'FACT';
+  fact: P.Invitation;
+}
+
+export interface PendingInvitesResponse {
+  face: 'PENDING-INVITES';
+  type: 'SCRY';
+  fact: Array<{
+    host: T.Flag;
+    invitation: P.Invitation
+  }>
+}
+
 export type ParrotResponse =
   BlockedHosts |
-  PendingInvites |
   SentInvites |
   ExistingFlocks |
   AvailableChats |
   FlockCeaseFact |
   FlockStartFact |
-  SendInviteFact
+  SendInviteFact |
+  InviteReceivedFact |
+  PendingInvitesResponse
 
 export const IsBlockedHostsResponse = (r: ParrotResponse):
   r is BlockedHosts => {
   return (r.face === 'BLOCKED-HOSTS')
-}
-export const IsPendingInvitesResponse = (r: ParrotResponse):
-  r is PendingInvites => {
-  return (r.face === 'PENDING-INVITES')
 }
 export const IsSentInvitesResponse = (r: ParrotResponse):
   r is SentInvites => {
@@ -100,4 +99,12 @@ export const IsFlockCeaseFact = (r: ParrotResponse):
 export const IsSendInviteFact = (r: ParrotResponse):
   r is SendInviteFact => {
   return (r.face === 'INVITE-SEND-INVITES')
+}
+export const IsInviteReceivedFact = (r: ParrotResponse):
+  r is InviteReceivedFact => {
+  return (r.face === 'INVITE-RECEIVED-BIRD')
+}
+export const IsPendingInvitesResponse = (r: ParrotResponse):
+  r is PendingInvitesResponse => {
+  return (r.face === 'PENDING-INVITES')
 }

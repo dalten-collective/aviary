@@ -36,6 +36,11 @@ export type Mutations<S = State> = {
     state: S,
     invites: P.Invite
   ): void;
+
+  [MutationTypes.PENDING_INVITES_SET](
+    state: S,
+    invites: Array<P.Invitation>
+  ): void;
 };
 
 export const mutations: MutationTree<State> & Mutations = {
@@ -86,5 +91,12 @@ export const mutations: MutationTree<State> & Mutations = {
     //   - if exists, update note
     //   - if not, add an invitation
     // state.sentInvites = state.sentInvites.concat(invite)
+  },
+
+  [MutationTypes.PENDING_INVITES_SET](
+    state: State,
+    invites: Array<P.Invitation>
+  ) {
+    state.pendingInvites = invites
   },
 };

@@ -63,7 +63,55 @@
         </div>
       </div>
 
-      <div class="col-span-2"> <!-- right -->
+      <div class="flex flex-col col-span-2"> <!-- right -->
+        <div class="mb-4">
+          <header>
+            incoming invites
+          </header>
+          <div>
+            <ul>
+              <li v-for="areaInvite in pendingInvites" :key="areaInvite.host">
+                <div class="p-2 my-4 border rounded-md">
+                  <header class="mb-2">
+                    chat: {{ areaInvite.host }}
+                  </header>
+
+                  <div>
+                    <div class="flex flex-col p-2 mb-2 border rounded-sm">
+                      <div class="flex flex-row justify-between">
+                        <div>
+                          area: {{ areaInvite.invitation.area }}
+                        </div>
+                        <div>
+                          on {{ areaInvite.invitation.when }}
+                        </div>
+                      </div>
+
+                      <div>
+                        note: "{{ areaInvite.invitation.note }}"
+                      </div>
+
+                      <div class="justify-end flex-flex row">
+                        <div class="text-right">
+                          <select v-model="joiningGroup">
+                            <option v-for="f in availableChats" :key="f">
+                              {{ f }}
+                            </option>
+                          </select>
+                          <button @click="joinFlock(areaInvite.host)">join</button>
+                          <button @click="ignoreInvite(areaInvite.host)">ignore</button>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
         <div class="mb-4">
           <header>
             sent invites
@@ -91,6 +139,12 @@
                         note: "{{ invite.invitation.note }}"
                       </div>
 
+                      <div class="justify-end flex-flex row">
+                        <div class="text-right">
+                          <button @click="rescindInvite(areaInvite.area, invite.to)">rescind</button>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
 
@@ -112,6 +166,7 @@ import { useStore } from '@/store/store'
 import { ActionTypes } from '@/store/action-types';
 import { GetterTypes } from '@/store/getter-types';
 
+import * as T from '@/types'
 import * as P from '@/types/parrot-types'
 
 const store = useStore()
@@ -130,11 +185,11 @@ const areaName = ref('')
 const selectedFlag = ref('')
 const inviteShip = ref('')
 const inviteNote = ref('')
+const joiningGroup = ref('')
 
-const computedThings = computed(() => store.state.exampleThings)
-const fromGetters = computed(() => {
-  return store.getters[GetterTypes.EXAMPLE_WITH_ARG]('arg here');
-})
+// const fromGetters = computed(() => {
+//   return store.getters[GetterTypes.EXAMPLE_WITH_ARG]('arg here');
+// })
 
 const availableChats = computed<Array<P.Chat>>(() => {
   return store.state.availableChats
@@ -144,6 +199,9 @@ const flocks = computed<Array<P.Chat>>(() => {
 })
 const sentInvites = computed<Array<P.AreaInvite>>(() => {
   return store.state.sentInvites
+})
+const pendingInvites = computed<Array<P.Invitation>>(() => {
+  return store.state.pendingInvites
 })
 
 const startAirlock = (deskname: string) => {
@@ -184,6 +242,40 @@ const sendInvite = (area: P.Area) => {
     ships: [inviteShip.value] // TODO:  array
   }).then(() => {
     store.dispatch(ActionTypes.SCRY_SENT_INVITES)
+  })
+}
+
+const rescindInvite = (area: P.Area, ship: T.Ship) => {
+  console.log('rescinding ', area, ship)
+
+  store.dispatch(ActionTypes.INVITE_RESCIND, {
+    area,
+    ship
+  }).then(() => {
+    store.dispatch(ActionTypes.SCRY_SENT_INVITES)
+  })
+}
+
+const joinFlock = (host: T.Flag) => {
+  if (joiningGroup.value === '') {
+    console.log('didnt choose a group')
+    return
+  }
+  store.dispatch(ActionTypes.FLOCK_JOIN, {
+    host,
+    join: joiningGroup.value
+  }).then(() => {
+    store.dispatch(ActionTypes.SCRY_PENDING_INVITES)
+    store.dispatch(ActionTypes.SCRY_FLOKS)
+  })
+}
+
+const ignoreInvite = (host: T.Flag) => {
+  store.dispatch(ActionTypes.FLOCK_JOIN, {
+    host,
+    join: null
+  }).then(() => {
+    store.dispatch(ActionTypes.SCRY_PENDING_INVITES)
   })
 }
 
