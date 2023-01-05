@@ -18,7 +18,8 @@
                 </div>
                 <div class="flex flex-row">
                   <button @click="dropFlock(flock)">Drop</button>
-                  <div class="px-2 py-1 ml-2 border rounded-md">
+
+                  <div class="px-2 py-1 ml-2 border rounded-md" v-if="hostsFlock(flock)">
                     <label for="inviteShip">
                       <input id="inviteShip" placeholder="~sampel-palnet" v-model="inviteShip" />
                     </label>
@@ -27,6 +28,7 @@
                     </label>
                     <button @click="sendInvite(flock.area)">Invite</button>
                   </div>
+
                 </div>
               </li>
             </ul>
@@ -132,6 +134,7 @@
                         </div>
                         <div>
                           on {{ invite.invitation.when }}
+                          status: {{ invite.status }}
                         </div>
                       </div>
 
@@ -165,6 +168,7 @@ import { onMounted, onUnmounted, computed, ref } from 'vue';
 import { useStore } from '@/store/store'
 import { ActionTypes } from '@/store/action-types';
 import { GetterTypes } from '@/store/getter-types';
+import { sigShip } from '@/helpers'
 
 import * as T from '@/types'
 import * as P from '@/types/parrot-types'
@@ -203,6 +207,15 @@ const sentInvites = computed<Array<P.AreaInvite>>(() => {
 const pendingInvites = computed<Array<P.Invitation>>(() => {
   return store.state.pendingInvites
 })
+
+const hostsFlock = (flock: P.Flock): boolean => {
+  const us = sigShip(window.ship)
+  const flockHost = flock.host.split('/')[0]
+  if (us === sigShip(flockHost)) {
+    return true
+  }
+  return false
+}
 
 const startAirlock = (deskname: string) => {
   console.log('airlock')
