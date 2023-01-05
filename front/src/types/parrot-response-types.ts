@@ -95,6 +95,15 @@ export interface InviteRejectedFact {
   }
 }
 
+export interface InviteRecindedFact {
+  type: "FACT";
+  face: "INVITE-RECEIVED-BIRD";
+  fact: {
+    host: T.Flag;
+    invite: "RESCINDED";
+  }
+}
+
 export type ParrotResponse =
   BlockedHosts |
   SentInvites |
@@ -106,7 +115,8 @@ export type ParrotResponse =
   InviteReceivedFact |
   PendingInvitesResponse |
   InviteAcceptedFact |
-  InviteRejectedFact
+  InviteRejectedFact |
+  InviteRecindedFact
 
 export const IsBlockedHostsResponse = (r: ParrotResponse):
   r is BlockedHosts => {
@@ -151,4 +161,8 @@ export const IsInviteAcceptedFact = (r: ParrotResponse):
 export const IsInviteRejectedFact = (r: ParrotResponse):
   r is InviteRejectedFact => {
   return (r.face === 'INVITE-REPLIED-HOST')
+}
+export const InInviteRecindedFact = (r: ParrotResponse):
+  r is InviteRecindedFact => {
+  return (r.face === 'INVITE-RECEIVED-BIRD')
 }

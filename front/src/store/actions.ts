@@ -147,6 +147,11 @@ export const actions: ActionTree<State, State> & Actions = {
           console.log('InviteRejectedFact ', data)
           dispatch(ActionTypes.SCRY_SENT_INVITES)
         }
+        if (PR.InInviteRecindedFact(data)) {
+          console.log('InviteRecindedFact ', data)
+          dispatch(ActionTypes.SCRY_SENT_INVITES)
+          dispatch(ActionTypes.SCRY_PENDING_INVITES)
+        }
       },
 
       (subscriptionNumber: number) => {
