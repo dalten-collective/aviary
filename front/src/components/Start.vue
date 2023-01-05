@@ -234,7 +234,7 @@ const joiningGroup = ref('')
 const availableChats = computed<Array<P.Chat>>(() => {
   return store.state.availableChats
 })
-const flocks = computed<Array<P.Chat>>(() => {
+const flocks = computed<Array<P.Flock>>(() => {
   return store.state.flocks
 })
 const sentInvites = computed<Array<P.AreaInvite>>(() => {

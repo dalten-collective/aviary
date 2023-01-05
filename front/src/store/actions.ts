@@ -143,6 +143,10 @@ export const actions: ActionTree<State, State> & Actions = {
           dispatch(ActionTypes.SCRY_FLOKS)
           dispatch(ActionTypes.SCRY_SENT_INVITES)
         }
+        if (PR.IsInviteRejectedFact(data)) {
+          console.log('InviteRejectedFact ', data)
+          dispatch(ActionTypes.SCRY_SENT_INVITES)
+        }
       },
 
       (subscriptionNumber: number) => {
