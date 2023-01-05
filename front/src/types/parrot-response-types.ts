@@ -82,6 +82,19 @@ export interface InviteAcceptedFact {
   }
 }
 
+export interface InviteRejectedFact {
+  type: "FACT";
+  face: "INVITE-REPLIED-HOST";
+  fact: {
+    area: P.Area;
+    who: T.Ship;
+    status: {
+      status: "REJECTED";
+      when: number;
+    }
+  }
+}
+
 export type ParrotResponse =
   BlockedHosts |
   SentInvites |
@@ -92,7 +105,8 @@ export type ParrotResponse =
   SendInviteFact |
   InviteReceivedFact |
   PendingInvitesResponse |
-  InviteAcceptedFact
+  InviteAcceptedFact |
+  InviteRejectedFact
 
 export const IsBlockedHostsResponse = (r: ParrotResponse):
   r is BlockedHosts => {
@@ -133,4 +147,8 @@ export const IsPendingInvitesResponse = (r: ParrotResponse):
 export const IsInviteAcceptedFact = (r: ParrotResponse):
   r is InviteAcceptedFact => {
   return (r.face === 'INVITE-REPLIED-BIRD')
+}
+export const IsInviteRejectedFact = (r: ParrotResponse):
+  r is InviteRejectedFact => {
+  return (r.face === 'INVITE-REPLIED-HOST')
 }
