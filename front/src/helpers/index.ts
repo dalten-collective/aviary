@@ -18,3 +18,7 @@ export const nowToUd = (): string => {
 export const secondsToUd = (sects: number): string => {
   return decToUd(unixToDa(sects).toString())
 }
+
+export const secondsToDate = (sects: number): Date => {
+  return (new Date(sects * 1000))
+}

@@ -84,6 +84,10 @@ export interface Actions {
   [ActionTypes.SCRY_SENT_INVITES](
     { commit }: AugmentedActionContext,
   ): Promise<any>;
+
+  [ActionTypes.SCRY_PENDING_INVITES](
+    { commit }: AugmentedActionContext,
+  ): Promise<any>;
 }
 
 export const actions: ActionTree<State, State> & Actions = {
@@ -127,11 +131,17 @@ export const actions: ActionTree<State, State> & Actions = {
         }
         if (PR.IsInviteReceivedFact(data)) {
           console.log('InviteReceivedFact ', data)
-          // commit(MutationTypes.PENDING_INVITES_SET, data.fact)
+          dispatch(ActionTypes.SCRY_PENDING_INVITES)
         }
         if (PR.IsPendingInvitesResponse(data)) {
           console.log('PendingInvitesResponse ', data)
           commit(MutationTypes.PENDING_INVITES_SET, data.fact)
+        }
+        if (PR.IsInviteAcceptedFact(data)) {
+          console.log('InviteAcceptedFact ', data)
+          // TODO: add some messages somewhere?
+          dispatch(ActionTypes.SCRY_FLOKS)
+          dispatch(ActionTypes.SCRY_SENT_INVITES)
         }
       },
 
@@ -217,6 +227,14 @@ export const actions: ActionTree<State, State> & Actions = {
      return parrotAPI.scrySent().then((r: PR.SentInvites) => {
        console.log('scry ', r)
        ctx.commit(MutationTypes.SENT_INVITES_SET, r.fact)
+     })
+   },
+
+   [ActionTypes.SCRY_PENDING_INVITES](ctx) {
+     console.log('dispatching scry pending action...')
+     return parrotAPI.scryPend().then((r: PR.PendingInvitesResponse) => {
+       console.log('scry ', r)
+       ctx.commit(MutationTypes.PENDING_INVITES_SET, r.fact)
      })
    },
 

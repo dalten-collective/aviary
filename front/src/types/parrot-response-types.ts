@@ -61,6 +61,27 @@ export interface PendingInvitesResponse {
   }>
 }
 
+export type InviteResponses = 'ACCEPTED'
+
+// not needed
+// export interface InviteAction {
+//   area: P.Area;
+//   act: InviteResponses;
+//   host: T.Flag;
+//   chat: T.Flag;
+// }
+
+export interface InviteAcceptedFact {
+  type: "FACT",
+  face: "INVITE-REPLIED-BIRD",
+  fact: {
+    area: P.Area;
+    act: InviteResponses;
+    host: T.Flag;
+    chat: T.Flag;
+  }
+}
+
 export type ParrotResponse =
   BlockedHosts |
   SentInvites |
@@ -70,7 +91,8 @@ export type ParrotResponse =
   FlockStartFact |
   SendInviteFact |
   InviteReceivedFact |
-  PendingInvitesResponse
+  PendingInvitesResponse |
+  InviteAcceptedFact
 
 export const IsBlockedHostsResponse = (r: ParrotResponse):
   r is BlockedHosts => {
@@ -107,4 +129,8 @@ export const IsInviteReceivedFact = (r: ParrotResponse):
 export const IsPendingInvitesResponse = (r: ParrotResponse):
   r is PendingInvitesResponse => {
   return (r.face === 'PENDING-INVITES')
+}
+export const IsInviteAcceptedFact = (r: ParrotResponse):
+  r is InviteAcceptedFact => {
+  return (r.face === 'INVITE-REPLIED-BIRD')
 }

@@ -5,7 +5,7 @@ export const state = {
   availableChats: [] as Array<P.Chat>,
   flocks: [] as Array<P.Flock>,
   sentInvites: [] as Array<P.AreaInvite>,
-  pendingInvites: [] as Array<P.Invitation>,
+  pendingInvites: [] as Array<{ host: T.Flag; invitation: P.Invitation }>,
 }
 
 export type State = typeof state
