@@ -126,3 +126,10 @@ export function scrySent(): Promise<any> {
     path: '/sent'
   })
 }
+
+export function scryPend(): Promise<any> {
+  return urbitAPI.scry({
+    app: 'parrot',
+    path: '/pend'
+  })
+}

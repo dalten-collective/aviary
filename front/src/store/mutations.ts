@@ -95,7 +95,7 @@ export const mutations: MutationTree<State> & Mutations = {
 
   [MutationTypes.PENDING_INVITES_SET](
     state: State,
-    invites: Array<P.Invitation>
+    invites: Array<{ host: T.Flag; invitation: P.Invitation }>
   ) {
     state.pendingInvites = invites
   },
