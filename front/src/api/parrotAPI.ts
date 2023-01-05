@@ -35,6 +35,24 @@ export function drop(args: {
     })
 }
 
+export function join(args: {
+  host: T.Flag,
+  join: null | T.Flag
+}): Promise<any> {
+  // Note: a null 'join' is an invitation ignore
+
+  const json = {
+    join: args
+  }
+
+  return urbitAPI
+    .poke({
+      app: 'parrot',
+      mark: PARROT_ACTION_MARK,
+      json
+    })
+}
+
 export function send(args: {
   area: P.Area;
   note: string;
@@ -49,6 +67,34 @@ export function send(args: {
         note,
         them: ships
       },
+    }
+  }
+
+  return urbitAPI
+    .poke({
+      app: 'parrot',
+      mark: PARROT_ACTION_MARK,
+      json
+    })
+}
+
+export function rescind(args: {
+  area: P.Area;
+  ship: T.Ship;
+}): Promise<any> {
+  console.log('pokning')
+  const { area, ship } = args
+//   {
+//   "send": {
+//     "area": "video-games",
+//     "buds": "~zod"
+//   }
+// }
+
+  const json = {
+    send: {
+      area,
+      buds: ship
     }
   }
 

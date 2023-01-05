@@ -48,12 +48,28 @@ export interface Actions {
     }
   ): Promise<any>;
 
+  [ActionTypes.FLOCK_JOIN](
+    { commit }: AugmentedActionContext,
+    args: {
+      host: T.Flag;
+      join: null | T.Flag;
+    }
+  ): Promise<any>;
+
   [ActionTypes.INVITE_SEND](
     { commit }: AugmentedActionContext,
     args: {
       area: P.Area;
       note: string;
       ships: Array<T.Ship>;
+    }
+  ): Promise<any>;
+
+  [ActionTypes.INVITE_RESCIND](
+    { commit }: AugmentedActionContext,
+    args: {
+      area: P.Area;
+      ship: T.Ship;
     }
   ): Promise<any>;
 
@@ -85,9 +101,6 @@ export const actions: ActionTree<State, State> & Actions = {
           console.log('BlockedHosts ', data)
           // dispatch(ActionTypes.EXAMPLE, data.test.thing as string);
         }
-        if (PR.IsPendingInvitesResponse(data)) {
-          console.log('PendingInvites ', data)
-        }
         if (PR.IsSentInvitesResponse(data)) {
           console.log('SentInvites ', data)
           commit(MutationTypes.SENT_INVITES_SET, data.fact)
@@ -111,6 +124,14 @@ export const actions: ActionTree<State, State> & Actions = {
         if (PR.IsSendInviteFact(data)) {
           console.log('SendInvites ', data)
           commit(MutationTypes.SENT_INVITES_ADD, data.fact)
+        }
+        if (PR.IsInviteReceivedFact(data)) {
+          console.log('InviteReceivedFact ', data)
+          // commit(MutationTypes.PENDING_INVITES_SET, data.fact)
+        }
+        if (PR.IsPendingInvitesResponse(data)) {
+          console.log('PendingInvitesResponse ', data)
+          commit(MutationTypes.PENDING_INVITES_SET, data.fact)
         }
       },
 
@@ -141,6 +162,17 @@ export const actions: ActionTree<State, State> & Actions = {
      return parrotAPI.drop(args)
    },
 
+   [ActionTypes.FLOCK_JOIN](
+     ctx,
+     args: {
+       host: T.Flag;
+       join: null | T.Flag;
+     }
+   ) {
+     console.log('dispatching FLOCK_JOIN action...', args)
+     return parrotAPI.join(args)
+   },
+
    [ActionTypes.INVITE_SEND](
      ctx,
      args: {
@@ -151,6 +183,17 @@ export const actions: ActionTree<State, State> & Actions = {
    ) {
      console.log('dispatching INVITE_SEND action...')
      return parrotAPI.send(args)
+   },
+
+   [ActionTypes.INVITE_RESCIND](
+     ctx,
+     args: {
+       area: P.Area;
+       ship: T.Ship;
+     }
+   ) {
+     console.log('dispatching INVITE_RESCIND action...')
+     return parrotAPI.rescind(args)
    },
 
    [ActionTypes.SCRY_AVAIL_CHATS](ctx) {
