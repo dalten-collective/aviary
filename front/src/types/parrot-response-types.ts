@@ -1,29 +1,17 @@
 import * as T from '@/types'
 import * as P from '@/types/parrot-types'
 
-export type InviteStatuses =
-  "RECEIVED" |
-  "TRANSMITTED" |
-  "RECEIVED" |
-  "REJECTED" |
-  "AFFIRMED"
 
-export interface Invitation {
-  area: T.Area;
-  note: string;
-  status: {
-    status: InviteStatuses;
-    when: T.When | null;
-  }
+export interface ExistingFlocks {
+  face: 'EXISTING-FLOCKS';
+  type: 'SCRY';
+  fact: Array<P.Flock>;
 }
-
-export interface ReceivedInvitation extends Invitation {
-  status: {
-    status: "RECEIVED";
-    when: T.When | null;
-  }
+export interface AvailableChats {
+  face: 'AVAILABLE-CHATS';
+  type: 'SCRY';
+  fact: Array<P.Chat>
 }
-
 export interface BlockedHosts {
   face: 'BLOCKED-HOSTS';
   type: 'SCRY';
@@ -36,7 +24,7 @@ export interface PendingInvites {
   fact: Array<{
     host: T.Flag;
     invitation: {
-      area: T.Area;
+      area: P.Area;
       note: string;
       when: T.When;
     }
@@ -46,25 +34,29 @@ export interface PendingInvites {
 export interface SentInvites {
   face: 'SENT-INVITES';
   type: 'SCRY';
-  fact: Array<{
-    area: T.Area;
-    invites: Array<{
-      to: T.Ship;
-      invitation: ReceivedInvitation;
-    }>
-  }>
+  fact: Array<P.AreaInvite>;
 }
 
-export interface ExistingFlocks {
-  face: 'EXISTING-FLOCKS';
-  type: 'SCRY';
-  fact: Array<P.Flock>;
+export interface FlockStartFact {
+  face: 'FLOCK-FLOCK-START';
+  type: 'FACT';
+  fact: P.Flock;
 }
 
-export interface AvailableChats {
-  face: 'AVAILABLE-CHATS';
-  type: 'SCRY';
-  fact: Array<P.Chat>
+export interface FlockCeaseFact {
+  face: 'FLOCK-FLOCK-CEASE';
+  type: 'FACT';
+  fact: P.Area;
+}
+
+export interface SendInviteFact {
+  face: 'INVITE-SEND-INVITES';
+  type: 'FACT';
+  fact: {
+    area: P.Area;
+    buds: Array<T.Ship>;
+    note: string;
+  };
 }
 
 export type ParrotResponse =
@@ -72,7 +64,10 @@ export type ParrotResponse =
   PendingInvites |
   SentInvites |
   ExistingFlocks |
-  AvailableChats
+  AvailableChats |
+  FlockCeaseFact |
+  FlockStartFact |
+  SendInviteFact
 
 export const IsBlockedHostsResponse = (r: ParrotResponse):
   r is BlockedHosts => {
@@ -93,4 +88,16 @@ export const IsExistingFlocksResponse = (r: ParrotResponse):
 export const IsAvailableChatsResponse = (r: ParrotResponse):
   r is AvailableChats => {
   return (r.face === 'AVAILABLE-CHATS')
+}
+export const IsFlockStartFact = (r: ParrotResponse):
+  r is FlockStartFact => {
+  return (r.face === 'FLOCK-FLOCK-START')
+}
+export const IsFlockCeaseFact = (r: ParrotResponse):
+  r is FlockCeaseFact => {
+  return (r.face === 'FLOCK-FLOCK-CEASE')
+}
+export const IsSendInviteFact = (r: ParrotResponse):
+  r is SendInviteFact => {
+  return (r.face === 'INVITE-SEND-INVITES')
 }
