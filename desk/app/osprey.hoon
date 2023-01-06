@@ -262,11 +262,11 @@
   ?+    pol  ~|(aviary-panic-osprey-watch/pol !!)
       [%web-ui ~]
     ?>  =(our.bol src.bol)
-    =~  (show osprey-state-ship+!>(dms:scry))
-        (show osprey-state-aval+!>(['CHATS' chats:scry]))
-        (show osprey-state-aval+!>(['HEAPS' heaps:scry]))
-        (show osprey-state-aval+!>(['GROUPS' groups:scry]))
-        (show osprey-state-aval+!>(['DIARIES' diaries:scry]))
+    =~  (show osprey-state-ship+!>(`(set ship)`dms:scry))
+        (show osprey-state-aval+!>(`[@t (set flag)]`['CHATS' chats:scry]))
+        (show osprey-state-aval+!>(`[@t (set flag)]`['HEAPS' heaps:scry]))
+        (show osprey-state-aval+!>(`[@t (set flag)]`['GROUPS' groups:scry]))
+        (show osprey-state-aval+!>(`[@t (set flag)]`['DIARIES' diaries:scry]))
         (show osprey-state-schedule+!>(`_schedule`schedule))
     ==
   ==
@@ -275,12 +275,12 @@
 ++  peek
   |=  pol=(pole knot)
   ?+    pol  !!
-    [%x %dms ~]       ``osprey-state-ship+!>(dms:scry)
-    [%x %chats ~]     ``osprey-state-aval+!>(['CHATS' chats:scry])
-    [%x %heaps ~]     ``osprey-state-aval+!>(['HEAPS' heaps:scry])
-    [%x %groups ~]    ``osprey-state-aval+!>(['GROUPS' groups:scry])
+    [%x %dms ~]       ``osprey-state-ship+!>(`(set ship)`dms:scry)
+    [%x %chats ~]     ``osprey-state-aval+!>(`[@t (set flag)]`['CHATS' chats:scry])
+    [%x %heaps ~]     ``osprey-state-aval+!>(`[@t (set flag)]`['HEAPS' heaps:scry])
+    [%x %groups ~]    ``osprey-state-aval+!>(`[@t (set flag)]`['GROUPS' groups:scry])
+    [%x %diaries ~]   ``osprey-state-aval+!>(`[@t (set flag)]`['DIARIES' diaries:scry])
     [%x %schedule ~]  ``osprey-state-schedule+!>(`_schedule`schedule)
-    [%x %diaries ~]   ``osprey-state-aval+!>(['DIARIES' diaries:scry])
   ==
 ::  +scry: scries we may want
 ++  scry

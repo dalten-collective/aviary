@@ -9,6 +9,6 @@
   --
 ++  grab
   |%
-  ++  noun  [@t (set flag:o)]
+  ++  noun  $:(@t (set flag:o))
   --
 --
