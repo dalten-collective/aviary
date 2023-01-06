@@ -7,9 +7,8 @@
 ::
 +$  state-0
   $:  %0
-      schedule=(map archive:actions [prior=@da every=@dr])
+      sched=schedule
   ==
-::
 ::
 ::  boilerplate
 ::
@@ -68,10 +67,10 @@
     [cards this]
   ::
   ++  on-peek
-    |=  =path
+    |=  pat=path
     ~>  %bout.[0 '%osprey +on-peek']
     ^-  (unit (unit cage))
-    [~ ~]
+    (peek:eng pat)
   ::
   ++  on-agent
     |=  [wir=wire sig=sign:agent:gall]
@@ -87,10 +86,11 @@
     [cards this]
   ::
   ++  on-watch
-    |=  =path
+    |=  pat=path
     ~>  %bout.[0 '%osprey +on-watch']
     ^-  (quip card _this)
-    `this
+    =^  cards  state  abet:(peer:eng pat)
+    [cards this]
   ::
   ++  on-fail
     ~>  %bout.[0 '%osprey +on-fail']
@@ -170,16 +170,16 @@
       ~_  'AVIARY: osprey error, identical backup set.'
       ?~  oft.act
         %.  [mar vaz]
-        show(schedule (~(del by schedule) arc.act))
+        show(sched (~(del by sched) arc.act))
       ::
       :: =+  freq=?:((lth u.oft.act ~h12) ~h12 u.oft.act)  ::  XX: replace dbug component below
       =+  freq=?:((lth u.oft.act ~m1) ~m1 u.oft.act)
-      ?:  ?~(hav=(~(get by schedule) arc.act) %| =(freq every.u.hav))  !!
+      ?:  ?~(hav=(~(get by sched) arc.act) %| =(freq every.u.hav))  !!
       =/  pat=path
         /behn/(scot %ud (jam arc.act))/(scot %da now.bol)/(scot %dr freq)
       =/  dit=_dat
         %.  osprey-actions+!>(`actions`arc.act)
-        poke(schedule (~(put by schedule) arc.act now.bol freq))
+        poke(sched (~(put by sched) arc.act now.bol freq))
       %-  emit:(show:dit [mar vaz])
       [%pass pat %arvo %b %wait (add now.bol freq)]
     ==
@@ -241,15 +241,14 @@
     =+  act=;;(archive:actions (cue (slav %ud jam.pol)))
     =+  frq=(slav %dr freq.pol)
     =+  lst=(slav %da last.pol)
-    ~&  >  [[lst frq] (~(got by schedule) act)]
     ?>  ?&  ?=([%behn %wake *] sig)
-            =([lst frq] (~(got by schedule) act))
+            =([lst frq] (~(got by sched) act))
         ==
     ?^  error.sig
       %-  (slog 'aviary-panic-timer-fail' u.error.sig)
       %.  osprey-actions+!>(`actions`[%repeat act ~])
-      show(schedule (~(del by schedule) act))
-    =.  schedule  (~(put by schedule) act [now.bol frq])
+      show(sched (~(del by sched) act))
+    =.  sched  (~(put by sched) act [now.bol frq])
     %-  emit:(poke osprey-actions+!>(`actions`act))
     [%pass pol(last (scot %da now.bol)) %arvo %b %wait (add now.bol frq)]
   ==
@@ -261,12 +260,12 @@
   ?+    pol  ~|(aviary-panic-osprey-watch/pol !!)
       [%web-ui ~]
     ?>  =(our.bol src.bol)
-    =~  (show parrot-state-ship+!>(dms:scry))
-        (show parrot-state-aval+!>(['CHATS' chats:scry]))
-        (show parrot-state-aval+!>(['HEAPS' heaps:scry]))
-        (show parrot-state-aval+!>(['GROUPS' groups:scry]))
-        (show parrot-state-aval+!>(['DIARIES' diaries:scry]))
-        (show parrot-state-schedule+!>(`_schedule`schedule))
+    =~  (show osprey-state-ship+!>(`(set ship)`dms:scry))
+        (show osprey-state-aval+!>(`[@t (set flag)]`['CHATS' chats:scry]))
+        (show osprey-state-aval+!>(`[@t (set flag)]`['HEAPS' heaps:scry]))
+        (show osprey-state-aval+!>(`[@t (set flag)]`['GROUPS' groups:scry]))
+        (show osprey-state-aval+!>(`[@t (set flag)]`['DIARIES' diaries:scry]))
+        (show osprey-state-schedule+!>(`schedule`sched))
     ==
   ==
 ::  +peek: handle on-peek
@@ -274,12 +273,12 @@
 ++  peek
   |=  pol=(pole knot)
   ?+    pol  !!
-    [%dms ~]       ``parrot-state-ship+!>(dms:scry)
-    [%chats ~]     ``parrot-state-aval+!>(['CHATS' chats:scry])
-    [%heaps ~]     ``parrot-state-aval+!>(['HEAPS' heaps:scry])
-    [%groups ~]    ``parrot-state-aval+!>(['GROUPS' groups:scry])
-    [%schedule ~]  ``parrot-state-schedule+!>(`_schedule`schedule)
-    [%diaries ~]   ``parrot-state-aval+!>(['DIARIES' diaries:scry])
+    [%x %dms ~]       ``osprey-state-ship+!>(`(set ship)`dms:scry)
+    [%x %chats ~]     ``osprey-state-aval+!>(`[@t (set flag)]`['CHATS' chats:scry])
+    [%x %heaps ~]     ``osprey-state-aval+!>(`[@t (set flag)]`['HEAPS' heaps:scry])
+    [%x %groups ~]    ``osprey-state-aval+!>(`[@t (set flag)]`['GROUPS' groups:scry])
+    [%x %diaries ~]   ``osprey-state-aval+!>(`[@t (set flag)]`['DIARIES' diaries:scry])
+    [%x %schedule ~]  ``osprey-state-schedule+!>(`schedule`sched)
   ==
 ::  +scry: scries we may want
 ++  scry
