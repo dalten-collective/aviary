@@ -1,16 +1,17 @@
 import { ActionTree, ActionContext, DispatchOptions } from "vuex";
-import { ospreyState as State } from "./osprey-state";
+import { OspreyState as State } from "./osprey-state";
 import { OspreyGetters as Getters } from "./osprey-getters";
 import { OspreyMutations as Mutations } from "./osprey-mutations";
 import { OspreyActionTypes as ActionTypes } from "./osprey-action-types";
 import { OspreyMutationTypes as MutationTypes } from "./osprey-mutation-types";
 
 import * as T from '@/types'
-import * as P from '@/types/parrot-types'
-import * as PR from '@/types/parrot-response-types'
+import * as O from '@/types/osprey-types'
+import * as OR from '@/types/osprey-response-types'
 
 import airlock from "@/api";
 // import * as parrotAPI from "@/api/parrotAPI";
+import * as ospreyAPI from "@/api/ospreyAPI";
 
 type AugmentedActionContext = {
   commit<K extends keyof Mutations>(
@@ -36,7 +37,7 @@ export interface Actions {
 
 export const actions: ActionTree<State, State> & Actions = {
   [ActionTypes.AIRLOCK_OPEN]({ commit, dispatch }, deskName: string) {
-
+    console.log('airlocking')
     airlock.openAirlockTo(
       deskName,
 
@@ -67,4 +68,13 @@ export const actions: ActionTree<State, State> & Actions = {
    //   console.log('dispatching FLOCK_FORM action...')
    //   return parrotAPI.form(args)
    // },
+
+   [ActionTypes.SCRY_SCHEDULE](
+     ctx,
+   ) {
+     console.log('dispatching SCRY_SCHEDULE action...')
+     return ospreyAPI.scrySchedule().then((r: OR.StateSchedule) => {
+       ctx.commit(MutationTypes.STATE_SCHEDULE_SET, r.fact)
+     })
+   },
 };

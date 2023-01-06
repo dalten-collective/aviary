@@ -1,8 +1,8 @@
 import * as T from "@/types";
-// import * as O from "@/types/osprey-types";
+import * as O from "@/types/osprey-types";
 
 export const ospreyState = {
-  chats: [] as Array<T.Flag>,
+  schedule: [] as Array<O.Schedule>,
 }
 
 export type OspreyState = typeof ospreyState

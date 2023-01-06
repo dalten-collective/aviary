@@ -1,3 +1,3 @@
 export enum OspreyMutationTypes {
-  CHATS_SET = 'CHATS_SET',
+  STATE_SCHEDULE_SET = 'STATE_SCHEDULE_SET',
 }
