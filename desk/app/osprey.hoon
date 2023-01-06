@@ -68,10 +68,10 @@
     [cards this]
   ::
   ++  on-peek
-    |=  =path
+    |=  pat=path
     ~>  %bout.[0 '%osprey +on-peek']
     ^-  (unit (unit cage))
-    [~ ~]
+    (peek:eng pat)
   ::
   ++  on-agent
     |=  [wir=wire sig=sign:agent:gall]
@@ -274,12 +274,12 @@
 ++  peek
   |=  pol=(pole knot)
   ?+    pol  !!
-    [%dms ~]       ``osprey-state-ship+!>(dms:scry)
-    [%chats ~]     ``osprey-state-aval+!>(['CHATS' chats:scry])
-    [%heaps ~]     ``osprey-state-aval+!>(['HEAPS' heaps:scry])
-    [%groups ~]    ``osprey-state-aval+!>(['GROUPS' groups:scry])
-    [%schedule ~]  ``osprey-state-schedule+!>(`_schedule`schedule)
-    [%diaries ~]   ``osprey-state-aval+!>(['DIARIES' diaries:scry])
+    [%x %dms ~]       ``osprey-state-ship+!>(dms:scry)
+    [%x %chats ~]     ``osprey-state-aval+!>(['CHATS' chats:scry])
+    [%x %heaps ~]     ``osprey-state-aval+!>(['HEAPS' heaps:scry])
+    [%x %groups ~]    ``osprey-state-aval+!>(['GROUPS' groups:scry])
+    [%x %schedule ~]  ``osprey-state-schedule+!>(`_schedule`schedule)
+    [%x %diaries ~]   ``osprey-state-aval+!>(['DIARIES' diaries:scry])
   ==
 ::  +scry: scries we may want
 ++  scry
