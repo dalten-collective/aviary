@@ -241,7 +241,6 @@
     =+  act=;;(archive:actions (cue (slav %ud jam.pol)))
     =+  frq=(slav %dr freq.pol)
     =+  lst=(slav %da last.pol)
-    ~&  >  [[lst frq] (~(got by sched) act)]
     ?>  ?&  ?=([%behn %wake *] sig)
             =([lst frq] (~(got by sched) act))
         ==
