@@ -202,6 +202,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref } from 'vue';
 import { useStore } from '@/store/store'
+import { useOspreyStore } from '@/store/osprey-store'
 import { ActionTypes } from '@/store/action-types';
 import { GetterTypes } from '@/store/getter-types';
 import { sigShip, secondsToDate } from '@/helpers'
@@ -210,6 +211,7 @@ import * as T from '@/types'
 import * as P from '@/types/parrot-types'
 
 const store = useStore()
+const ospreyStore = useOspreyStore()
 
 onMounted(() => {
   startAirlock('parrot')
