@@ -147,10 +147,14 @@ export const actions: ActionTree<State, State> & Actions = {
           console.log('InviteRejectedFact ', data)
           dispatch(ActionTypes.SCRY_SENT_INVITES)
         }
-        if (PR.InInviteRecindedFact(data)) {
+        if (PR.IsInviteRecindedFact(data)) {
           console.log('InviteRecindedFact ', data)
           dispatch(ActionTypes.SCRY_SENT_INVITES)
           dispatch(ActionTypes.SCRY_PENDING_INVITES)
+        }
+        if (PR.IsBirdLeftFact(data)) {
+          console.log('BirdLeftFact ', data)
+          dispatch(ActionTypes.SCRY_FLOKS)
         }
       },
 

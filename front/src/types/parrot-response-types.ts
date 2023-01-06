@@ -104,6 +104,15 @@ export interface InviteRecindedFact {
   }
 }
 
+export interface BirdLeftFact {
+  type: "FACT";
+  face: "FLOCK-TEAM-REMOVE";
+  fact: {
+    area: string;
+    what: T.Flag;
+  }
+}
+
 export type ParrotResponse =
   BlockedHosts |
   SentInvites |
@@ -116,7 +125,8 @@ export type ParrotResponse =
   PendingInvitesResponse |
   InviteAcceptedFact |
   InviteRejectedFact |
-  InviteRecindedFact
+  InviteRecindedFact |
+  BirdLeftFact
 
 export const IsBlockedHostsResponse = (r: ParrotResponse):
   r is BlockedHosts => {
@@ -162,7 +172,11 @@ export const IsInviteRejectedFact = (r: ParrotResponse):
   r is InviteRejectedFact => {
   return (r.face === 'INVITE-REPLIED-HOST')
 }
-export const InInviteRecindedFact = (r: ParrotResponse):
+export const IsInviteRecindedFact = (r: ParrotResponse):
   r is InviteRecindedFact => {
   return (r.face === 'INVITE-RECEIVED-BIRD')
+}
+export const IsBirdLeftFact = (r: ParrotResponse):
+  r is BirdLeftFact => {
+  return (r.face === 'FLOCK-TEAM-REMOVE')
 }
