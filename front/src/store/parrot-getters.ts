@@ -1,9 +1,9 @@
 import { GetterTree } from 'vuex'
-import { GetterTypes } from './getter-types'
-import { State } from './state'
+import { ParrotGetterTypes as GetterTypes } from './parrot-getter-types'
+import { ParrotState as State } from './parrot-state'
 import * as T from '@/types'
 
-export type Getters = {
+export type ParrotGetters = {
   [GetterTypes.EXAMPLE_WITH_ARG](state: State): (arg: string) => string | null
   // Add more here.
 }

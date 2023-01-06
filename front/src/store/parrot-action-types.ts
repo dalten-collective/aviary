@@ -1,4 +1,4 @@
-export enum ActionTypes {
+export enum ParrotActionTypes {
   AIRLOCK_OPEN = 'AIRLOCK_OPEN',
   FLOCK_FORM = 'FLOCK_FORM',
   FLOCK_DROP = 'FLOCK_DROP',

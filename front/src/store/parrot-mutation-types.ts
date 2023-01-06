@@ -1,4 +1,4 @@
-export enum MutationTypes {
+export enum ParrotMutationTypes {
   AVAILABLE_CHATS_SET = 'AVAILABLE_CHATS_SET',
 
   EXISTING_FLOCKS_SET = 'EXISTING_FLOCKS_SET',

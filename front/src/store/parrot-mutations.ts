@@ -1,12 +1,12 @@
 import { MutationTree } from "vuex";
-import { MutationTypes } from "./mutation-types";
-import { State } from "./state";
+import { ParrotMutationTypes as MutationTypes } from "./parrot-mutation-types";
+import { ParrotState as State } from "./parrot-state";
 import * as T from "@/types";
 import * as P from "@/types/parrot-types";
 
 import { sigShip } from "@/helpers"
 
-export type Mutations<S = State> = {
+export type ParrotMutations<S = State> = {
   [MutationTypes.AVAILABLE_CHATS_SET](
     state: S,
     chats: Array<P.Chat>
@@ -43,7 +43,7 @@ export type Mutations<S = State> = {
   ): void;
 };
 
-export const mutations: MutationTree<State> & Mutations = {
+export const mutations: MutationTree<State> & ParrotMutations = {
   [MutationTypes.AVAILABLE_CHATS_SET](
     state: State,
     chats: Array<P.Chat>

@@ -4,10 +4,10 @@ import {
   CommitOptions,
   DispatchOptions,
 } from 'vuex'
-import { State, state } from './state'
-import { Getters, getters } from './getters'
-import { Mutations, mutations } from './mutations'
-import { Actions, actions } from './actions'
+import { ParrotState as State, parrotState as state} from './parrot-state'
+import { ParrotGetters as Getters, getters } from './parrot-getters'
+import { ParrotMutations as Mutations, mutations } from './parrot-mutations'
+import { ParrotActions as Actions, actions } from './parrot-actions'
 
 export const store = createStore({
   state,

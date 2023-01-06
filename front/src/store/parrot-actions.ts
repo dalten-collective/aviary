@@ -1,9 +1,9 @@
 import { ActionTree, ActionContext, DispatchOptions } from "vuex";
-import { State } from "./state";
-import { Getters } from "./getters";
-import { Mutations } from "./mutations";
-import { ActionTypes } from "./action-types";
-import { MutationTypes } from "./mutation-types";
+import { ParrotState as State } from "./parrot-state";
+import { ParrotGetters as Getters } from "./parrot-getters";
+import { ParrotMutations as Mutations } from "./parrot-mutations";
+import { ParrotActionTypes as ActionTypes } from "./parrot-action-types";
+import { ParrotMutationTypes as MutationTypes } from "./parrot-mutation-types";
 
 import * as T from '@/types'
 import * as P from '@/types/parrot-types'
@@ -20,14 +20,14 @@ type AugmentedActionContext = {
   getters: {
     [K in keyof Getters]: ReturnType<Getters[K]>;
   };
-  dispatch<K extends keyof Actions>(
+  dispatch<K extends keyof ParrotActions>(
     key: K,
-    payload?: Parameters<Actions[K]>[1],
+    payload?: Parameters<ParrotActions[K]>[1],
     options?: DispatchOptions
-  ): ReturnType<Actions[K]>;
+  ): ReturnType<ParrotActions[K]>;
 } & Omit<ActionContext<State, State>, "commit">;
 
-export interface Actions {
+export interface ParrotActions {
   [ActionTypes.AIRLOCK_OPEN](
     { commit }: AugmentedActionContext,
     deskName: string
@@ -90,7 +90,7 @@ export interface Actions {
   ): Promise<any>;
 }
 
-export const actions: ActionTree<State, State> & Actions = {
+export const actions: ActionTree<State, State> & ParrotActions = {
   [ActionTypes.AIRLOCK_OPEN]({ commit, dispatch }, deskName: string) {
 
     airlock.openAirlockTo(

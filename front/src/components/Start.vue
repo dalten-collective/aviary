@@ -201,21 +201,19 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, computed, ref } from 'vue';
-import { useStore } from '@/store/store'
-import { useOspreyStore } from '@/store/osprey-store'
-import { ActionTypes } from '@/store/action-types';
+import { useStore } from '@/store/parrot-store'
+import { ParrotActionTypes as ActionTypes } from '@/store/parrot-action-types';
 import { GetterTypes } from '@/store/getter-types';
 import { sigShip, secondsToDate } from '@/helpers'
 
 import * as T from '@/types'
 import * as P from '@/types/parrot-types'
 
-const store = useStore()
-const ospreyStore = useOspreyStore()
+const parrotStore = useStore()
 
 onMounted(() => {
   startAirlock('parrot')
-  store.dispatch(ActionTypes.SCRY_SENT_INVITES)
+  parrotStore.dispatch(ActionTypes.SCRY_SENT_INVITES)
 })
 
 onUnmounted(() => {
@@ -234,16 +232,16 @@ const joiningGroup = ref('')
 // })
 
 const availableChats = computed<Array<P.Chat>>(() => {
-  return store.state.availableChats
+  return parrotStore.state.availableChats
 })
 const flocks = computed<Array<P.Flock>>(() => {
-  return store.state.flocks
+  return parrotStore.state.flocks
 })
 const sentInvites = computed<Array<P.AreaInvite>>(() => {
-  return store.state.sentInvites
+  return parrotStore.state.sentInvites
 })
 const pendingInvites = computed<Array<P.Invitation>>(() => {
-  return store.state.pendingInvites
+  return parrotStore.state.pendingInvites
 })
 
 const hostsFlock = (flock: P.Flock): boolean => {
@@ -257,7 +255,7 @@ const hostsFlock = (flock: P.Flock): boolean => {
 
 const startAirlock = (deskname: string) => {
   console.log('airlock')
-  store.dispatch(ActionTypes.AIRLOCK_OPEN, deskname)
+  parrotStore.dispatch(ActionTypes.AIRLOCK_OPEN, deskname)
 }
 
 const closeAirlock = () => {
@@ -266,22 +264,22 @@ const closeAirlock = () => {
 
 const formFlock = () => {
   console.log('flocking ', 'ref: ', areaName.value, ' flag: ', selectedFlag.value)
-  store.dispatch(ActionTypes.FLOCK_FORM, {
+  parrotStore.dispatch(ActionTypes.FLOCK_FORM, {
     area: areaName.value,
     chat: selectedFlag.value,
   }).then(() => {
-    store.dispatch(ActionTypes.SCRY_FLOKS)
-    store.dispatch(ActionTypes.SCRY_AVAIL_CHATS)
+    parrotStore.dispatch(ActionTypes.SCRY_FLOKS)
+    parrotStore.dispatch(ActionTypes.SCRY_AVAIL_CHATS)
   })
 }
 
 const dropFlock = (flock: P.Flock) => {
   console.log('dropping ', 'ref: ', flock.area)
   const area = flock.area
-  store.dispatch(ActionTypes.FLOCK_DROP, {
+  parrotStore.dispatch(ActionTypes.FLOCK_DROP, {
     area
   }).then(() => {
-    store.dispatch(ActionTypes.SCRY_AVAIL_CHATS)
+    parrotStore.dispatch(ActionTypes.SCRY_AVAIL_CHATS)
   })
 }
 
@@ -291,25 +289,25 @@ const sendInvite = (area: P.Area) => {
   // TODO: make this field take an array
   const ships = [inviteShip.value].map((s) => sigShip(s))
 
-  store.dispatch(ActionTypes.INVITE_SEND, {
+  parrotStore.dispatch(ActionTypes.INVITE_SEND, {
     area,
     note: inviteNote.value,
     ships,
   }).then(() => {
     inviteShip.value = ''
     inviteNote.value = ''
-    store.dispatch(ActionTypes.SCRY_SENT_INVITES)
+    parrotStore.dispatch(ActionTypes.SCRY_SENT_INVITES)
   })
 }
 
 const rescindInvite = (area: P.Area, ship: T.Ship) => {
   console.log('rescinding ', area, ship)
 
-  store.dispatch(ActionTypes.INVITE_RESCIND, {
+  parrotStore.dispatch(ActionTypes.INVITE_RESCIND, {
     area,
     ship
   }).then(() => {
-    store.dispatch(ActionTypes.SCRY_SENT_INVITES)
+    parrotStore.dispatch(ActionTypes.SCRY_SENT_INVITES)
   })
 }
 
@@ -318,21 +316,21 @@ const joinFlock = (host: T.Flag) => {
     console.log('didnt choose a group')
     return
   }
-  store.dispatch(ActionTypes.FLOCK_JOIN, {
+  parrotStore.dispatch(ActionTypes.FLOCK_JOIN, {
     host,
     join: joiningGroup.value
   }).then(() => {
-    store.dispatch(ActionTypes.SCRY_PENDING_INVITES)
-    store.dispatch(ActionTypes.SCRY_FLOKS)
+    parrotStore.dispatch(ActionTypes.SCRY_PENDING_INVITES)
+    parrotStore.dispatch(ActionTypes.SCRY_FLOKS)
   })
 }
 
 const ignoreInvite = (host: T.Flag) => {
-  store.dispatch(ActionTypes.FLOCK_JOIN, {
+  parrotStore.dispatch(ActionTypes.FLOCK_JOIN, {
     host,
     join: null
   }).then(() => {
-    store.dispatch(ActionTypes.SCRY_PENDING_INVITES)
+    parrotStore.dispatch(ActionTypes.SCRY_PENDING_INVITES)
   })
 }
 
