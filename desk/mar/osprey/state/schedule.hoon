@@ -1,6 +1,6 @@
 /-  o=osprey
 /+  oj=osprey-json
-|_  schd=(map archive:actions:o [@da @dr])
+|_  schd=schedule:o
 ++  grad  %noun
 ++  grow
   |%
@@ -9,6 +9,6 @@
   --
 ++  grab
   |%
-  ++  noun  (map archive:actions:o [@da @dr])
+  ++  noun  schedule:o
   --
 --
