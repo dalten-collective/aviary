@@ -1,8 +1,9 @@
 /-  cha=chat, dia=diary, hyp=heap
 /+  m=multipart
 |%
-+$  flag  (pair ship term)
-+$  frag  ?(flag @uv ship)
++$  flag      (pair ship term)
++$  frag      ?(flag @uv ship)
++$  schedule  (map archive:actions $:(prior=@da every=@dr))
 ::
 ++  actions
   =<  actions
