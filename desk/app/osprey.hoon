@@ -87,10 +87,11 @@
     [cards this]
   ::
   ++  on-watch
-    |=  =path
+    |=  pat=path
     ~>  %bout.[0 '%osprey +on-watch']
     ^-  (quip card _this)
-    `this
+    =^  cards  state  abet:(peer:eng pat)
+    [cards this]
   ::
   ++  on-fail
     ~>  %bout.[0 '%osprey +on-fail']
