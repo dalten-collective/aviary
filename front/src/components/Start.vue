@@ -18,8 +18,11 @@
             <ul v-else>
               <li v-for="flock in flocks" :key="flock.area" class="flex flex-col p-2 mb-2 border rounded-md">
                 <div>
-                  <div><h1>"{{ flock.area }}"</h1></div>
+                  <div><h1>"{{ flock.area }}" </h1></div>
                   <div>
+                    <div>
+                      <h2 class="text-lg">host: {{ flock.host }} <span class="ml-2" v-if="hostsFlock(flock)">(mine)</span></h2>
+                    </div>
                     <h2 class="text-lg">birds:</h2>
                     <div v-if="flock.team.length === 0">
                       no birds yet. invite some birds to your flock.

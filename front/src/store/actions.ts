@@ -124,6 +124,8 @@ export const actions: ActionTree<State, State> & Actions = {
         if (PR.IsFlockCeaseFact(data)) {
           console.log('FlockCeaseFact ', data)
           commit(MutationTypes.EXISTING_FLOCKS_REMOVE, data.fact)
+          dispatch(ActionTypes.SCRY_AVAIL_CHATS)
+          dispatch(ActionTypes.SCRY_FLOKS)
         }
         if (PR.IsSendInviteFact(data)) {
           console.log('SendInvites ', data)
