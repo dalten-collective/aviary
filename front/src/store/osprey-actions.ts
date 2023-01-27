@@ -42,11 +42,11 @@ export const actions: ActionTree<State, State> & Actions = {
       deskName,
 
       // Main all-responses-handler
-      (data: PR.ParrotResponse) => {
+      (data: OR.OspreyResponse) => {
         console.log('subscription response')
         console.table(data)
 
-        if (PR.IsBlockedHostsResponse(data)) {
+        if (OR.IsScheduleResponse(data)) {
           console.log('BlockedHosts ', data)
           // dispatch(ActionTypes.EXAMPLE, data.test.thing as string);
         }
