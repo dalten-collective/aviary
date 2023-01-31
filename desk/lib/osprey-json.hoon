@@ -97,7 +97,7 @@
         %take
       %^  pack  'FACT'
         'VIRTUAL-MAIL-RECEIVED'
-      (pairs group+(flag wat.act) ~)
+      (frond group+(flag wat.act))
     ::
         %boot
       %^  pack  'FACT'
@@ -162,12 +162,12 @@
     ::
         %refresh
       %^  pack  'FACT'
-        'VIRTUAL-COMPLETE-RESTORE'
+        'VIRTUAL-READ-MAIL-TO-GROUPS-COMPLETE'
       %-  pairs
       :~  new-group+(flag new.upd)
           new-graphs+a/(turn and.upd |=(flag:o (flag +<)))
           include-members+b/mem.wit.upd
-          include-admins+b/adm.wit.upd
+          include-administrators+b/adm.wit.upd
       ==
     ::
         %restore
@@ -238,6 +238,9 @@
         diary+flag
         group+flag
         chat+chat
+        mail+(ot ~[recipient+(su ship) group+flag])
+        open+(ot ~[host+(su ship) group+flag])
+        kill+(ot ~[host+(su ship) group+flag])
     ::
       :-  %doom
       %-  ot
@@ -261,6 +264,21 @@
         :-  %frequency
         %-  cu  :_  ni:dejs-soft:format
         |=(i=(unit @ud) ?~(i ~ ``@dr`(mul ~s1 u.i)))
+      ==
+    ::
+      :-  %read
+      %-  ot
+      :~  host+(su ship)
+          group+flag
+          new-group-name+so
+          roster+(ot ~[members+bo administrators+bo])
+        ::
+          :-  %include
+          %-  ar
+          %+  cu
+            |=  [h=@t w=flag n=@tas]
+            [;;(?(%chat %heap %note) h) w n]
+          (ot ~[type+so old-resource+flag new-resource-name+so])
       ==
     ==
   --

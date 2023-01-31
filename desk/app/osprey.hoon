@@ -129,6 +129,10 @@
 ++  poke
   |=  [mar=mark vaz=vase]
   ?+    mar  ~|(aviary-panic-osprey-poke/mar !!)
+      %osprey-updates  
+    ?>  =(our.bol src.bol)
+    (show mar vaz)
+  ::
       %handle-http-request
     =+  !<([id=@ta req=inbound-request:eyre] vaz)
     =/  hav=(set flag)
@@ -139,22 +143,6 @@
           hp-abet:hp-hndl
       ==
     ?>(=(id id.don) (emil (flop caz.don)))
-  ::
-      %osprey-updates  
-    ?>  =(our.bol src.bol)
-    (show mar vaz)
-  ::
-      %handle-http-request
-    ?>  =(our.bol src.bol)
-    =+  !<([id=@ta req=inbound-request:eyre] vaz)
-    =/  hav=(set flag)
-      (~(uni in (~(uni in chats:scry) diaries:scry)) heaps:scry)
-    =/  don=[caz=(list card) id=@ta]
-      =~  %.  [bol id req groups:scry hav]
-          hp-abed:handle-http-request:ohp
-          hp-abet:hp-hndl
-      ==
-    ?>(=(id id.don) (emil caz.don))
   ::
       %osprey-actions
     =+  act=!<(actions vaz)
