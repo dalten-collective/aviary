@@ -46,11 +46,11 @@
           pag=@ud
       ==
   +*  ark  .
+      mon  |$([a] ((on @da a) lte))
       doc  /(scot %p our.bol)/chat/(scot %da now.bol)
+      doh  /(scot %p our.bol)/heap/(scot %da now.bol)
       dod  /(scot %p our.bol)/diary/(scot %da now.bol)
       dog  /(scot %p our.bol)/groups/(scot %da now.bol)
-      doh  /(scot %p our.bol)/heap/(scot %da now.bol)
-      mon  |=(d=mold ((on time d) lte))
   ++  abet  [(jammer (flop lam)) pag]
   ++  abed
     |=([b=bowl:rand t=archive:actions:osp] ark(bol b, typ t))
@@ -290,11 +290,9 @@
           caz
         :_  caz
         =-  [%pass /club %agent [our.bol %hood] %poke -]
-        :-  %dill-blit
-        !>  ^-  dill-blit:dill
-        :+  %sag
-          %+  welp  pat
-          /club/[fol]/[fil]/jam
+        :-  %drum-put
+        !>  ^-  [path $@(@ [@tas @])]
+        :-  (welp pat /club/[fol]/[fil]/jam)
         %-  jam
         %-  turn  :_  writ-to-log
         ;;((list [time writ:cha]) (tap:moc i.liw))
@@ -315,11 +313,9 @@
           caz
         :_  caz
         =-  [%pass /club %agent [our.bol %hood] %poke -]
-        :-  %dill-blit
-        !>  ^-  dill-blit:dill
-        :+  %sag
-          %+  welp  pat
-          /dm/[fol]/[fil]/jam
+        :-  %drum-put
+        !>  ^-  [path $@(@ [@tas @])]
+        :-  (welp pat /dm/[fol]/[fil]/jam)
         %-  jam
         %-  turn  :_  writ-to-log
         ;;((list [time writ:cha]) (tap:moc i.liw))
@@ -330,7 +326,7 @@
       =|  caz=(list card)
       =|  cou=_1
       =+  moc=(mon diff:cha)
-      =+  lis=;;((list [@da diff:cha]) (tail (tap:moc log)))
+      =+  lis=(tail ;;((list [@da diff:cha]) (tap:moc log)))
       |-  ?~  lis  caz
       =+  fil=(rap 3 'chat_' fol '_' (scot %ud cou) ~)
       %=  $
@@ -339,12 +335,12 @@
       ::
           caz
         :_  caz
+        ^-  card
         =-  [%pass /chat %agent [our.bol %hood] %poke -]
-        :-  %dill-blit
-        !>  ^-  dill-blit:dill
-        :+  %sag
-          (welp pat /chats/[fol]/[fil]/jam)
-        (scag 500 `(list [@da diff:cha])`lis)
+        :-  %drum-put
+        !>  ^-  [path $@(@ [@tas @])]
+        :-  (welp pat /chats/[fol]/[fil]/jam)
+        (jam (scag 500 `(list [@da diff:cha])`lis))
       ==
     ++  diar-jam
       |=  [log=log:dia who=flag:osp]
@@ -362,11 +358,10 @@
           caz
         :_  caz
         =-  [%pass /diary %agent [our.bol %hood] %poke -]
-        :-  %dill-blit
-        !>  ^-  dill-blit:dill
-        :+  %sag
-          (welp pat /diaries/[fol]/[fil]/jam)
-        (scag 500 `(list [@da diff:dia])`lis)
+        :-  %drum-put
+        !>  ^-  [path $@(@ [@tas @])]
+        :-  (welp pat /diaries/[fol]/[fil]/jam)
+        (jam (scag 500 `(list [@da diff:dia])`lis))
       ==
     ++  heap-jam
       |=  [log=log:hyp who=flag:osp]
@@ -384,21 +379,19 @@
           caz
         :_  caz
         =-  [%pass /heap %agent [our.bol %hood] %poke -]
-        :-  %dill-blit
-        !>  ^-  dill-blit:dill
-        :+  %sag
-          (welp pat /heaps/[fol]/[fil]/jam)
-        (scag 500 `(list [@da diff:hyp])`lis)
+        :-  %drum-put
+        !>  ^-  [path $@(@ [@tas @])]
+        :-  (welp pat /heaps/[fol]/[fil]/jam)
+        (jam (scag 500 `(list [@da diff:hyp])`lis))
       ==
     ++  ross-jam
       |=  s=(set ship)
       ^-  (list card)
       =-  [%pass /ross %agent [our.bol %hood] %poke -]~
       ^-  cage
-      :-  %dill-blit
-      !>  ^-  dill-blit:dill
-      :+  %sav
-        (welp pat /roster/txt)
+      :-  %drum-put
+      !>  ^-  [path $@(@ [@tas @])]
+      :-  (welp pat /roster/txt)
       %-  of-wain:format
       %+  turn  ~(tap in s)
       |=(p=@p `@`(cat 3 (scot %p p) '\0a'))

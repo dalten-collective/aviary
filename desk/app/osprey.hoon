@@ -8,6 +8,7 @@
 +$  state-0
   $:  %0
       sched=schedule
+      mails=mailslot
   ==
 ::
 ::  boilerplate
@@ -48,22 +49,7 @@
   ++  on-poke
     |=  [mar=mark vaz=vase]
     ~>  %bout.[0 '%osprey +on-poke']
-    =^  cards  state
-      ?+    mar
-        abet:(poke:eng mar vaz)
-      ::
-          %handle-http-request
-        =+  !<([id=@ta req=inbound-request:eyre] vaz)
-        =/  hav=(set flag)
-          (~(uni in (~(uni in chats:scry:eng) diaries:scry:eng)) heaps:scry:eng)
-        =/  don=[caz=(list card) id=@ta]
-          =~  %.  [bowl id req groups:scry:eng hav]
-              hp-abed:handle-http-request:ohp
-              hp-abet:hp-hndl
-          ==
-        ?>  =(id id.don)
-        [caz.don state]
-      ==
+    =^  cards  state  abet:(poke:eng mar vaz)
     [cards this]
   ::
   ++  on-peek
@@ -102,6 +88,7 @@
   --
 |_  [bol=bowl:gall dek=(list card)]
 +*  dat  .
+    hod  [our.bol %hood]
 ++  emit  |=(=card dat(dek [card dek]))
 ++  emil  |=(lac=(list card) dat(dek (welp lac dek)))
 ++  abet
@@ -111,28 +98,37 @@
 ::
 ++  show
   |=  cag=cage
-  ?>  =(our.bol src.bol)
   ^+  dat
   (emit %give %fact [/web-ui]~ cag)
 ::
 ++  init
   ^+  dat
-  %-  emit
-  [%pass /init %arvo %b %wait now.bol]
+  (emit %pass /init %arvo %b %wait now.bol)
 ::
 ++  load
   |=  vaz=vase
   ^+  dat
   ?>  ?=([%0 *] q.vaz)
   dat(state !<(state-0 vaz))
+::  +dude: handle on-agent
+::
+++  dude
+  |=  [wir=wire sig=sign:agent:gall]
+  ?+    wir  ~|(aviary-panic-osprey-dude/[wir sig] !!)
+      [%roster @ ~]
+    ?+    -.sig  !!
+        %poke-ack
+      %.  dat
+      ?~(p.sig same (slog 'aviary-panic-fail-hood' u.p.sig))
+    ==
+  ::
+    
+  ==
 ::  +poke: handle on-poke
 ::
 ++  poke
   |=  [mar=mark vaz=vase]
-  ?>  =(our.bol src.bol)
   ?+    mar  ~|(aviary-panic-osprey-poke/mar !!)
-    %osprey-updates  (show mar vaz)
-  ::
       %handle-http-request
     =+  !<([id=@ta req=inbound-request:eyre] vaz)
     =/  hav=(set flag)
@@ -142,31 +138,123 @@
           hp-abed:handle-http-request:ohp
           hp-abet:hp-hndl
       ==
-    ?>  =(id id.don)
-    (emil caz.don)
-    
+    ?>(=(id id.don) (emil (flop caz.don)))
+  ::
+      %osprey-updates  
+    ?>  =(our.bol src.bol)
+    (show mar vaz)
+  ::
+      %handle-http-request
+    ?>  =(our.bol src.bol)
+    =+  !<([id=@ta req=inbound-request:eyre] vaz)
+    =/  hav=(set flag)
+      (~(uni in (~(uni in chats:scry) diaries:scry)) heaps:scry)
+    =/  don=[caz=(list card) id=@ta]
+      =~  %.  [bol id req groups:scry hav]
+          hp-abed:handle-http-request:ohp
+          hp-abet:hp-hndl
+      ==
+    ?>(=(id id.don) (emil caz.don))
   ::
       %osprey-actions
     =+  act=!<(actions vaz)
     ?-    -.act
+        %read
+      ?>  =(our.bol src.bol)
+      ?<  ?&  (~(has in all:scry) [our.bol wer.act])
+            ::
+              %-  %~  any  in
+                %-  sy
+                (turn wic.act |=([@ o=flag n=@tas] [our.bol n]))
+              |=  f=flag
+              |(!=(our.bol p.f) (~(has in all:scry) f))
+          ==
+      ?~  open=(~(got bi mails) who.act wat.act)
+        ~|(aviary-panic-bad-read/[who wat]:act !!)
+      =/  pat=path
+        /refresh/(scot %p our.bol)/[wer.act]
+      =+  read=u.open
+      %-  emit:(show mar vaz)
+      =-  [%pass pat %arvo %k %fard %aviary -]
+      :+  %osprey-virtual-in
+        %noun
+      !>  ^-  (unit [_+.act (list @p) (list @p) (list email)])
+      `[+.act member.read admins.read config.read]
+    ::
+        %kill
+      ?>  =(our.bol src.bol)
+      %.  [mar vaz]
+      show(mails (~(del bi mails) who.act wat.act))
+    ::
+        %open
+      ?>  =(our.bol src.bol)
+      ?<  (~(has bi mails) who.act wat.act)
+      %.  [mar vaz]
+      show(mails (~(put bi mails) who.act wat.act ~))
+    ::
+        %mail
+      ?>  =(our.bol src.bol)
+      =/  pat=path
+        /mail/(scot %p who.act)/flag/(scot %p p.wat.act)/[q.wat.act]
+      %-  emit:(show mar vaz)
+      =-  [%pass pat %arvo %k %fard %aviary -]
+      [%osprey-virtual-out noun+!>(`(unit [@p flag])``+.act)]
+    ::
+        %take
+      ?>  (~(has bi mails) src.bol wat.act)
+      =.  mails
+        (~(put bi mails) src.bol wat.act `+>.act)
+      =;  [mem=cage adm=cage]
+        %-  emil:(show [mar vaz])
+        :~  [%pass /roster/mem %agent hod %poke mem]
+            [%pass /roster/adm %agent hod %poke adm]
+        ==
+      :-
+        :-  %dill-blit
+        !>  ^-  dill-blit:dill
+        :-  %sav
+        :_  %-  of-wain:format
+            %+  turn  mem.act
+            |=(p=@p `@`(cat 3 (scot %p p) '\0a'))
+        ;:  welp
+          /(scot %p src.bol)
+          /[(rap 3 (scot %p p.wat.act) '-' q.wat.act ~)]
+          /members-list/txt
+        ==
+      :-  %dill-blit
+      !>  ^-  dill-blit:dill
+      :-  %sav
+      :_  %-  of-wain:format
+          %+  turn  adm.act
+          |=(p=@p `@`(cat 3 (scot %p p) '\0a'))
+      ;:  welp
+        /(scot %p src.bol)
+        /[(rap 3 (scot %p p.wat.act) '-' q.wat.act ~)]
+        /administrator-list/txt
+      ==
+    ::
         %boot
+      ?>  =(our.bol src.bol)
       %-  emit:(show mar vaz)
       =-  [%pass /bootbot/(scot %ud (jam act)) %arvo %k %fard -]
       :+  %aviary  %osprey-bootbot
       noun+!>(`(unit [rank:title flag])``+.act)
     ::
         %doom
+      ?>  =(our.bol src.bol)
       %-  emit:(show mar vaz)
       =-  [%pass /doombot/(scot %ud (jam act)) %arvo %k %fard -]
       :+  %aviary  %osprey-doombot
       noun+!>(`(unit [@ud @dr flag])``+.act)
     ::
         ?(%mine %heap %diary %chat %group)
+      ?>  =(our.bol src.bol)
       %-  emit:(show mar vaz)
       =-  [%pass /archive/(scot %ud (jam act)) %arvo %k %fard -]
       [%aviary %osprey-archive noun+!>(`(unit _act)``act)]
     ::
         %repeat
+      ?>  =(our.bol src.bol)
       ~_  'AVIARY: osprey error, identical backup set.'
       ?~  oft.act
         %.  [mar vaz]
@@ -189,7 +277,7 @@
 ++  arvo
   |=  [pol=(pole knot) sig=sign-arvo]
   ^+  dat
-  ?+    pol  ~|(aviary-panic-osprey-dude/[pol sig] !!)
+  ?+    pol  ~|(aviary-panic-osprey-arvo/[pol sig] !!)
       [%init ~]
     ~_  'AVIARY: osprey error, failure to bind upload.'
     ?>  ?=([%behn %wake *] sig)
@@ -236,6 +324,22 @@
     %.  dat
     (slog 'aviary-panic-restore-thread-fail' tang.p.p.+.sig)
   ::
+      [%mail who=@ %flag hos=@ nam=@ ~]
+    ~_  'AVIARY: osprey error, discarding evil emails.'
+    ?>  ?=([%khan %arow *] sig)
+    ?:  ?=(%& -.p.+.sig)
+      (show osprey-updates++.p.p.+.sig)
+    %.  dat
+    (slog 'aviary-panic-email-fail' tang.p.p.+.sig)
+  ::
+      [%refresh who=@ wat=@ ~]
+    ~_  'AVIARY: osprey error, failed refresh attempt.'
+    ?>  ?=([%khan %arow *] sig)
+    ?:  ?=(%& -.p.+.sig)
+      (show osprey-updates++.p.p.+.sig)
+    %.  dat
+    (slog 'aviary-panic-refresh-fail' tang.p.p.+.sig)
+  ::
       [%behn jam=@ last=@ freq=@ ~]
     ~_  'AVIARY: osprey error, discarding evil timers.'
     =+  act=;;(archive:actions (cue (slav %ud jam.pol)))
@@ -258,9 +362,12 @@
   |=  pol=(pole knot)
   ^+  dat
   ?+    pol  ~|(aviary-panic-osprey-watch/pol !!)
+      [%http-response @ ~]
+    dat
       [%web-ui ~]
     ?>  =(our.bol src.bol)
     =~  (show osprey-state-ship+!>(`(set ship)`dms:scry))
+        (show osprey-state-aval+!>(`[@t (set flag)]`['EVERY' all:scry]))
         (show osprey-state-aval+!>(`[@t (set flag)]`['CHATS' chats:scry]))
         (show osprey-state-aval+!>(`[@t (set flag)]`['HEAPS' heaps:scry]))
         (show osprey-state-aval+!>(`[@t (set flag)]`['GROUPS' groups:scry]))
@@ -273,35 +380,62 @@
 ++  peek
   |=  pol=(pole knot)
   ?+    pol  !!
-    [%x %dms ~]       ``osprey-state-ship+!>(`(set ship)`dms:scry)
-    [%x %chats ~]     ``osprey-state-aval+!>(`[@t (set flag)]`['CHATS' chats:scry])
-    [%x %heaps ~]     ``osprey-state-aval+!>(`[@t (set flag)]`['HEAPS' heaps:scry])
-    [%x %groups ~]    ``osprey-state-aval+!>(`[@t (set flag)]`['GROUPS' groups:scry])
-    [%x %diaries ~]   ``osprey-state-aval+!>(`[@t (set flag)]`['DIARIES' diaries:scry])
-    [%x %schedule ~]  ``osprey-state-schedule+!>(`schedule`sched)
+      [%x %dms ~]       
+    ``osprey-state-ship+!>(`(set ship)`dms:scry)
+      [%x %every ~]     
+    ``osprey-state-aval+!>(`[@t (set flag)]`['EVERY' all:scry])
+      [%x %chats ~]     
+    ``osprey-state-aval+!>(`[@t (set flag)]`['CHATS' chats:scry])
+      [%x %heaps ~]     
+    ``osprey-state-aval+!>(`[@t (set flag)]`['HEAPS' heaps:scry])
+      [%x %groups ~]    
+    ``osprey-state-aval+!>(`[@t (set flag)]`['GROUPS' groups:scry])
+      [%x %diaries ~]   
+    ``osprey-state-aval+!>(`[@t (set flag)]`['DIARIES' diaries:scry])
+      [%x %schedule ~]  
+    ``osprey-state-schedule+!>(`schedule`sched)
+      [%x %dbug %state ~]
+    =-  ``[%state !>([%0 schedule=sched mailboxes=-])]
+    %+  roll  ~(tap bi mails)
+    |=  $:  $:  p=@p
+                f=flag
+                u=(unit [m=(list @p) a=(list @p) c=(list email)])
+            ==
+            m=(mip @p flag @t)
+        ==
+    %-  ~(put bi m)
+    [p f ?~(u 'awaiting-delivery' 'pending-refresh')]
   ==
 ::  +scry: scries we may want
+::
 ++  scry
   |%
   ++  dok
     |=(d=dude:gall /(scot %p our.bol)/[d]/(scot %da now.bol))
   ++  dms  .^((set ship) %gx (welp (dok %chat) /dm/noun))
   ++  flg  |=(f=flag ?.(=(our.bol p.f) ~ `f))
+  ++  all
+    ^-  (set flag)
+    (~(uni in chats) (~(uni in diaries) (~(uni in heaps) groups)))
+  ::
   ++  chats
     %-  silt
     ^-  (list flag)
     %-  murn  :_  flg
     ~(tap in .^((set flag) %gx (welp (dok %chat) /chat/noun)))
+  ::
   ++  diaries
     %-  silt
     ^-  (list flag)
     %-  murn  :_  flg
     ~(tap in ~(key by .^((map flag *) %gx (welp (dok %diary) /shelf/noun))))
+  ::
   ++  heaps
     %-  silt
     ^-  (list flag)
     %-  murn  :_  flg
     ~(tap in ~(key by .^((map flag *) %gx (welp (dok %heap) /stash/noun))))
+  ::
   ++  groups
     %-  silt
     ^-  (list flag)

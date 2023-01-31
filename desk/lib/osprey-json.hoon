@@ -59,6 +59,46 @@
         ?(%mine %heap %diary %chat %group)
       (pack 'FACT' 'ARCHIVE-START' (frond archiving+(archive act)))
     ::
+        %kill
+      %^  pack  'FACT'
+        'VIRTUAL-CLOSE-MAILSLOT'
+      (pairs host+(ship who.act) group+(flag wat.act) ~)
+    ::
+        %read
+      %^  pack  'FACT'
+        'VIRTUAL-READ-MAIL-TO-GROUPS'
+      %-  pairs
+      :~  old-host+(ship who.act)
+          old-group+(flag wat.act)
+          new-group+s/wer.act
+          include-members+b/mem.wit.act
+          include-admins+b/adm.wit.act
+        ::
+          :+  %include-resources  %a
+          %+  turn  wic.act
+          |=  [h=?(%chat %heap %note) o=flag:o n=@tas]
+          %-  pairs
+          :~  type+s/h
+              old-resource+(flag o)
+              new-resource+s/n
+          ==
+      ==
+    ::
+        %open
+      %^  pack  'FACT'
+        'VIRTUAL-OPEN-MAILSLOT'
+      (pairs host+(ship who.act) group+(flag wat.act) ~)
+    ::
+        %mail
+      %^  pack  'FACT'
+        'VIRTUAL-SEND-MAILS'
+      (pairs recipient+(ship who.act) group+(flag wat.act) ~)
+    ::
+        %take
+      %^  pack  'FACT'
+        'VIRTUAL-MAIL-RECEIVED'
+      (pairs group+(flag wat.act) ~)
+    ::
         %boot
       %^  pack  'FACT'
         'BOOTING'
@@ -110,6 +150,24 @@
           total+(numb tot.upd)
           complete+(numb don.upd)
           done+b/=(don.upd tot.upd)
+      ==
+    ::
+        %sending
+      %^  pack  'FACT'
+        'VIRTUAL-SENT-MAIL'
+      %-  pairs
+      :~  old-group+(flag gro.upd)
+          old-graphs+a/(turn con.upd |=([@ p=flag:o *] (flag p)))
+      ==
+    ::
+        %refresh
+      %^  pack  'FACT'
+        'VIRTUAL-COMPLETE-RESTORE'
+      %-  pairs
+      :~  new-group+(flag new.upd)
+          new-graphs+a/(turn and.upd |=(flag:o (flag +<)))
+          include-members+b/mem.wit.upd
+          include-admins+b/adm.wit.upd
       ==
     ::
         %restore
