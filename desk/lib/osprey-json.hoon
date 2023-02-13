@@ -230,6 +230,15 @@
         ship+(su ship)
         club+(se %uv)
     ==
+  ++  archive
+    ^-  $-(json archive:actions:o)
+    %-  of
+    :~  mine+(cu |=(* ~) same)
+        heap+flag
+        diary+flag
+        group+flag
+        chat+chat
+    ==
   ++  actions
     ^-  $-(json actions:o)
     %-  of
@@ -257,9 +266,7 @@
     ::
       :-  %repeat
       %-  ot
-      :~
-        :-  %archive
-        (cu |=(a=actions:o ;;(archive:actions:o a)) actions)
+      :~  archive+archive
       ::
         :-  %frequency
         %-  cu  :_  ni:dejs-soft:format
@@ -276,7 +283,7 @@
           :-  %include
           %-  ar
           %+  cu
-            |=  [h=@t w=flag n=@tas]
+            |=  [h=@t w=flag:o n=@tas]
             [;;(?(%chat %heap %note) h) w n]
           (ot ~[type+so old-resource+flag new-resource-name+so])
       ==
