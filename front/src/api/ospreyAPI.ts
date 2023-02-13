@@ -18,6 +18,7 @@ export const Scries = {
 }
 
 export const Pokes = {
+  ArchiveMine() { return pokeArchiveMine() },
   ArchiveHeap(flag) { return pokeArchiveHeap(flag) },
   ArchiveDiary(flag) { return pokeArchiveDiary(flag) },
   ArchiveGroup(flag) { return pokeArchiveGroup(flag) },
@@ -62,6 +63,12 @@ export function scryDiaries(): Promise<OR.OspreyResponseHostedDiaries> {
 }
 
 ////
+
+export function pokeArchiveMine(): Promise<any>
+  {
+  const poker = new OA.ArchiveMine()
+  return poker.poke()
+}
 
 export function pokeArchiveHeap(flag: OP.ArchiveHeapPayload['heap']): Promise<any>
   {

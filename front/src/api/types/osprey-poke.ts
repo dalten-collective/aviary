@@ -4,6 +4,10 @@ import * as O from '@/types/osprey-types'
 //export enum OspreyPokes {
 //}
 
+export interface ArchiveMinePayload {
+  mine: null
+}
+
 export interface ArchiveHeapPayload {
   heap: T.Flag
 }
@@ -36,6 +40,7 @@ export interface ArchiveClubPayload {
 }
 
 export type OspreyArchivePoke =
+  ArchiveMinePayload |
   ArchiveHeapPayload |
   ArchiveDiaryPayload |
   ArchiveGroupPayload |

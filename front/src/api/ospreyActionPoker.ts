@@ -23,6 +23,17 @@ class OspreyAction {
   }
 }
 
+export class ArchiveMine extends OspreyAction {
+  declare payload: null;
+
+  constructor() {
+    const json: OP.ArchiveMinePayload = {
+      mine: null
+    }
+    super(json)
+  }
+}
+
 export class ArchiveHeap extends OspreyAction {
   declare payload: OP.ArchiveHeapPayload['heap'];
 

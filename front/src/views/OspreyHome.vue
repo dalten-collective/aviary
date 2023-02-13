@@ -31,7 +31,8 @@ onMounted(() => {
 })
 
 const poke = () => {
-  return Pokes.ArchiveChat('~zod/new')
+  return Pokes.ArchiveMine()
+  // return Pokes.ArchiveChat('~zod/new')
 }
 
 const scry = () => {
