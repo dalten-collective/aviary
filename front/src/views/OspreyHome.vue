@@ -2,6 +2,7 @@
   <div>
     osprey
     <button @click="poke">poke</button>
+    <button @click="scry">scry</button>
     <pre>
       schedule: {{ schedule }}
     </pre>
@@ -19,16 +20,22 @@ import * as T from '@/types'
 import * as O from '@/types/osprey-types'
 
 import { Pokes } from "@/api/ospreyAPI"
+import { Scries } from "@/api/ospreyAPI"
+import { scrySchedule } from "@/api/ospreyAPI"
 
 const ospreyStore = useStore()
 
 onMounted(() => {
   startAirlock('osprey')
-  ospreyStore.dispatch(ActionTypes.SCRY_SCHEDULE)
+  // ospreyStore.dispatch(ActionTypes.SCRY_SCHEDULE)
 })
 
 const poke = () => {
   return Pokes.ArchiveChat('~zod/new')
+}
+
+const scry = () => {
+  return Scries.Diaries()
 }
 
 const schedule = computed<Array<O.Schedule>>(() => {

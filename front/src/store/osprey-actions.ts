@@ -46,10 +46,10 @@ export const actions: ActionTree<State, State> & Actions = {
         console.log('subscription response')
         console.table(data)
 
-        if (OR.IsScheduleResponse(data)) {
-          console.log('BlockedHosts ', data)
-          // dispatch(ActionTypes.EXAMPLE, data.test.thing as string);
-        }
+        // if (OR.IsScheduleResponse(data)) {
+        //   console.log('BlockedHosts ', data)
+        //   // dispatch(ActionTypes.EXAMPLE, data.test.thing as string);
+        // }
       },
 
       (subscriptionNumber: number) => {

@@ -5,55 +5,63 @@ import * as OR from '@/api/types/osprey-response'
 import * as OP from '@/api/types/osprey-poke'
 
 import * as OA from "./ospreyActionPoker"; 
+import * as OS from "./ospreyScrier"; 
+
+export const Scries = {
+  Schedule() { return scrySchedule() },
+  Every() { return scryEvery() },
+  Dms() { return scryDms() },
+  Chats() { return scryChats() },
+  Heaps() { return scryHeaps() },
+  Groups() { return scryGroups() },
+  Diaries() { return scryDiaries() },
+}
+
+export const Pokes = {
+  ArchiveHeap(flag) { return pokeArchiveHeap(flag) },
+  ArchiveDiary(flag) { return pokeArchiveDiary(flag) },
+  ArchiveGroup(flag) { return pokeArchiveGroup(flag) },
+  ArchiveChat(flag) { return pokeArchiveChat(flag) }
+}
+
+////
 
 export function scrySchedule(): Promise<OR.OspreyResponseSchedule> {
-  return urbitAPI.scry({
-    app: 'osprey',
-    path: '/schedule'
-  })
+  const scrier = new OS.ScrySchedule()
+  return scrier.scry()
 }
 
 export function scryEvery(): Promise<OR.OspreyResponseHostedEvery> {
-  return urbitAPI.scry({
-    app: 'osprey',
-    path: '/every'
-  })
+  const scrier = new OS.ScryEvery()
+  return scrier.scry()
 }
 
 export function scryDms(): Promise<OR.OspreyResponseHostedDms> {
-  return urbitAPI.scry({
-    app: 'osprey',
-    path: '/dms'
-  })
+  const scrier = new OS.ScryDms()
+  return scrier.scry()
 }
 
 export function scryChats(): Promise<OR.OspreyResponseHostedChats> {
-  return urbitAPI.scry({
-    app: 'osprey',
-    path: '/chats'
-  })
+  const scrier = new OS.ScryChats()
+  return scrier.scry()
 }
 
 export function scryHeaps(): Promise<OR.OspreyResponseHostedHeaps> {
-  return urbitAPI.scry({
-    app: 'osprey',
-    path: '/heaps'
-  })
+  const scrier = new OS.ScryHeaps()
+  return scrier.scry()
 }
 
 export function scryGroups(): Promise<OR.OspreyResponseHostedGroups> {
-  return urbitAPI.scry({
-    app: 'osprey',
-    path: '/groups'
-  })
+  const scrier = new OS.ScryGroups()
+  return scrier.scry()
 }
 
 export function scryDiaries(): Promise<OR.OspreyResponseHostedDiaries> {
-  return urbitAPI.scry({
-    app: 'osprey',
-    path: '/diaries'
-  })
+  const scrier = new OS.ScryDiaries()
+  return scrier.scry()
 }
+
+////
 
 export function pokeArchiveHeap(flag: OP.ArchiveHeapPayload['heap']): Promise<any>
   {
@@ -77,12 +85,5 @@ export function pokeArchiveChat(flag: OP.ArchiveChatPayload['chat']['flag']): Pr
   {
   const poker = new OA.ArchiveChat(flag)
   return poker.poke()
-}
-
-export const Pokes = {
-  ArchiveHeap(flag) { return pokeArchiveHeap(flag) },
-  ArchiveDiary(flag) { return pokeArchiveDiary(flag) },
-  ArchiveGroup(flag) { return pokeArchiveGroup(flag) },
-  ArchiveChat(flag) { return pokeArchiveChat(flag) }
 }
 
