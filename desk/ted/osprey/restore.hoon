@@ -108,40 +108,76 @@
     ::
         %chat
       =;  lac=(list card)
-        ~&  >  lac
         (mc-emil(dun %&) lac)
       %-  zing  %+  turn  jams
       |=  j=jam
       %+  turn  ;;((list [@da diff:cha]) (cue j))
       |=  [t=@da d=diff:cha]
       ^-  card
-      :+  %pass  /osprey/upload
+      =;  make=$-(diff:cha card)
+        ?.  ?=([%writs *] d)                (make d)
+        ?.  ?=([%add *] q.p.d)              (make d)
+        ?.  ?=([%story *] content.p.q.p.d)  (make d)
+        =.  p.p.content.p.q.p.d
+          ^-  (list block:cha)
+          %+  turn  p.p.content.p.q.p.d
+          |=  b=block:cha
+          ?.  ?=([%cite %chan *] b)  b
+          ?.  =(nest.cite.b [%chat o])  b
+          b(nest.cite [%chat our.bol n])
+        (make d)
+      |=  dif=diff:cha
+      :+  %pass   /osprey/upload
       :^  %agent  [our.bol %chat]  %poke
-      chat-action-0+!>(`action:cha`[[our.bol nam] [t d]])
+      chat-action-0+!>(`action:cha`[[our.bol nam] [t dif]])
     ::
         %heap
       =;  lac=(list card)
-        ~&  >>  lac
         (mc-emil(dun %&) lac)
       %-  zing  %+  turn  jams
       |=  j=jam
       %+  turn  ;;((list [@da diff:hyp]) (cue j))
       |=  [t=@da d=diff:hyp]
       ^-  card
-      :+  %pass  /osprey/upload
+      =;  make=$-(diff:hyp card)
+        ?:  ?=(%create -.d)  ~
+        ?.  ?=([%curios *] d)   (make d)
+        ?.  ?=([%add *] q.p.d)  (make d)
+        =.  p.content.p.q.p.d
+          ^-  (list block:hyp)
+          %+  turn  p.content.p.q.p.d
+          |=  b=block:hyp
+          ?.  ?=([%cite %chan *] b)  b
+          ?.  =(nest.cite.b [%heap o])  b
+          b(nest.cite [%heap our.bol n])
+        (make d)
+      |=  dif=diff:hyp
+      |=  dif=diff:hyp
+      :+  %pass   /osprey/upload
       :^  %agent  [our.bol %heap]  %poke
       heap-action-0+!>(`action:hyp`[[our.bol nam] [t d]])
     ::
         %diary
       =;  lac=(list card)
-        ~&  >>>  lac
         (mc-emil(dun %&) lac)
       %-  zing  %+  turn  jams
       |=  j=jam
       %+  turn  ;;((list [@da diff:dia]) (cue j))
       |=  [t=@da d=diff:dia]
       ^-  card
-      :+  %pass  /osprey/upload
+      =;  make=$-(diff:dia card)
+        ?.  ?=([%notes *] d)  (make d)
+        ?.  ?=([%add *] q.p.d)
+          (make d)
+        =.  content.p.q.p.d
+          %+  turn  content.p.q.p.d
+          |=  v=verse:dia
+          ?.  ?=([%block %cite %chan *] v)  v
+          ?.  =(nest.cite.p.v [%diary o])   v
+          v(nest.cite.p [%diary our.bol n])
+        (make d)
+      |=  dif=diff:dia
+      :+  %pass   /osprey/upload
       :^  %agent  [our.bol %diary]  %poke
       diary-action-0+!>(`action:dia`[[our.bol nam] [t d]])
     ==
