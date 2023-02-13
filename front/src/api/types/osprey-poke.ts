@@ -1,0 +1,47 @@
+import * as T from '@/types'
+import * as O from '@/types/osprey-types'
+
+//export enum OspreyPokes {
+//}
+
+export interface ArchiveHeapPayload {
+  heap: T.Flag
+}
+
+export interface ArchiveDiaryPayload {
+  diary: T.Flag
+}
+
+export interface ArchiveGroupPayload {
+  group: T.Flag
+}
+
+export interface ArchiveChatPayload {
+  chat: {
+    flag: T.Flag;
+  }
+}
+
+// TODO: don't use
+export interface ArchiveDmPayload {
+  chat: {
+    ship: T.Ship;
+  }
+}
+// TODO: don't use
+export interface ArchiveClubPayload {
+  chat: {
+    club: string; // 0v12345
+  }
+}
+
+export type OspreyArchivePoke =
+  ArchiveHeapPayload |
+  ArchiveDiaryPayload |
+  ArchiveGroupPayload |
+  ArchiveChatPayload |
+  ArchiveDmPayload |
+  ArchiveClubPayload
+
+export type OspreyPoke =
+  OspreyArchivePoke
