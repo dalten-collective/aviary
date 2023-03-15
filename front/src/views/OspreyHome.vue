@@ -2,9 +2,18 @@
   <div>
     osprey
     <button @click="poke">poke</button>
-    <button @click="scry">scry</button>
+    <button @click="scrySchedule">scry Schedule</button>
+    <button @click="scryGroups">scry groups</button>
+    <button @click="scryEvery">scry every</button>
+    <button @click="scryChats">scry chats</button>
+    <button @click="scryHeaps">scry heaps</button>
+    <button @click="scryDiaries">scry Diaries</button>
     <pre>
       schedule: {{ schedule }}
+      groups: {{ groups }}
+      chats: {{ chats }}
+      heaps: {{ heaps }}
+      diaries: {{ diaries }}
     </pre>
   </div>
 </template>
@@ -31,16 +40,46 @@ onMounted(() => {
 })
 
 const poke = () => {
-  return Pokes.ArchiveMine()
+  // return Pokes.ArchiveMine()
   // return Pokes.ArchiveChat('~zod/new')
 }
 
-const scry = () => {
-  return Scries.Diaries()
+const scryGroups = () => {
+  ospreyStore.dispatch(ActionTypes.ScryGroups)
+}
+const scrySchedule = () => {
+  ospreyStore.dispatch(ActionTypes.ScrySchedule)
+}
+const scryEvery = () => {
+  ospreyStore.dispatch(ActionTypes.ScryEvery)
+}
+
+const scryChats = () => {
+  ospreyStore.dispatch(ActionTypes.ScryChats)
+}
+
+const scryHeaps = () => {
+  ospreyStore.dispatch(ActionTypes.ScryHeaps)
+}
+
+const scryDiaries = () => {
+  ospreyStore.dispatch(ActionTypes.ScryDiaries)
 }
 
 const schedule = computed<Array<O.Schedule>>(() => {
   return ospreyStore.state.schedule
+})
+const groups = computed<Array<T.Flag>>(() => {
+  return ospreyStore.state.groups
+})
+const chats = computed<Array<T.Flag>>(() => {
+  return ospreyStore.state.chats
+})
+const heaps = computed<Array<T.Flag>>(() => {
+  return ospreyStore.state.heaps
+})
+const diaries = computed<Array<T.Flag>>(() => {
+  return ospreyStore.state.diaries
 })
 
 const startAirlock = (deskname: string) => {

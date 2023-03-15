@@ -8,10 +8,14 @@ import { OspreyMutationTypes as MutationTypes } from "./osprey-mutation-types";
 import * as T from '@/types'
 import * as O from '@/types/osprey-types'
 import * as OR from '@/types/osprey-response-types'
+import * as OApiR from '@/api/types/osprey-response'
 
 import airlock from "@/api";
 // import * as parrotAPI from "@/api/parrotAPI";
 import * as ospreyAPI from "@/api/ospreyAPI";
+
+import { Pokes } from "@/api/ospreyAPI"
+import { Scries } from "@/api/ospreyAPI"
 
 type AugmentedActionContext = {
   commit<K extends keyof Mutations>(
@@ -69,12 +73,59 @@ export const actions: ActionTree<State, State> & Actions = {
    //   return parrotAPI.form(args)
    // },
 
-   [ActionTypes.SCRY_SCHEDULE](
+   [ActionTypes.ScrySchedule](
      ctx,
    ) {
      console.log('dispatching SCRY_SCHEDULE action...')
-     return ospreyAPI.scrySchedule().then((r: OR.StateSchedule) => {
+     return Scries.Schedule().then((r: OApiR.OspreyResponseSchedule) => {
        ctx.commit(MutationTypes.STATE_SCHEDULE_SET, r.fact)
      })
    },
+
+   [ActionTypes.ScryEvery](
+     ctx,
+   ) {
+     console.log('dispatching ScryEvery action...')
+     return Scries.Groups().then((r) => {
+       console.log('every ', r.fact)
+       // ctx.commit(MutationTypes.STATE_GROUPS_SET, r.fact)
+     })
+   },
+
+   [ActionTypes.ScryGroups](
+     ctx,
+   ) {
+     console.log('dispatching SCRY_GROUPS action...')
+     return Scries.Groups().then((r: OApiR.OspreyResponseHostedGroups) => {
+       ctx.commit(MutationTypes.STATE_GROUPS_SET, r.fact)
+     })
+   },
+
+   [ActionTypes.ScryChats](
+     ctx,
+   ) {
+     console.log('dispatching ScryChats action...')
+     return Scries.Chats().then((r: OApiR.OspreyResponseHostedChats) => {
+       ctx.commit(MutationTypes.ChatsSet, r.fact)
+     })
+   },
+
+   [ActionTypes.ScryHeaps](
+     ctx,
+   ) {
+     console.log('dispatching ScryHeaps action...')
+     return Scries.Heaps().then((r: OApiR.OspreyResponseHostedHeaps) => {
+       ctx.commit(MutationTypes.HeapsSet, r.fact)
+     })
+   },
+
+   [ActionTypes.ScryDiaries](
+     ctx,
+   ) {
+     console.log('dispatching ScryDiaries action...')
+     return Scries.Diaries().then((r: OApiR.OspreyResponseHostedDiaries) => {
+       ctx.commit(MutationTypes.DiariesSet, r.fact)
+     })
+   },
+
 };
