@@ -6,6 +6,8 @@ import * as T from '@/types'
 export type OspreyGetters = {
   [GetterTypes.EXAMPLE_WITH_ARG](state: OspreyState): (arg: string) => string | null
   // Add more here.
+  [GetterTypes.ArchiveLoaderProgress](state: OspreyState): (flag: T.Flag) => any
+  [GetterTypes.ScheduleFor](state: OspreyState): (flag: T.Flag) => any
 }
 
 export const getters: GetterTree<OspreyState, OspreyState> & OspreyGetters = {
@@ -20,6 +22,18 @@ export const getters: GetterTree<OspreyState, OspreyState> & OspreyGetters = {
       return null
     }
     return prog
+  },
+
+  [GetterTypes.ScheduleFor]: (state) => (flag: T.Flag) => {
+    const sched = state.schedule.find(s => s.area.flag === flag)
+    if (!sched) {
+      return null
+    }
+    return {
+      flag: sched.area.flag,
+      next: new Date(sched.next * 1000),
+      last: new Date(sched.last * 1000),
+    }
   },
 
   // Add more here

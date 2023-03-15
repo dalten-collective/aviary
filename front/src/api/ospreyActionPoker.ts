@@ -91,7 +91,13 @@ export class RepeatArchive extends OspreyAction {
       }
     } as OP.RepeatArchivePayload
 
-    json.repeat.archive[typeString] = flag
+    if (typeString === 'chat') {
+      json.repeat.archive[typeString] = {
+        flag: flag
+      }
+    } else {
+      json.repeat.archive[typeString] = flag
+    }
 
     console.log('rep payload ', json)
 

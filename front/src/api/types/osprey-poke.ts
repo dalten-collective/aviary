@@ -55,7 +55,7 @@ export type OspreyArchivePoke =
   ArchiveGroupPayload |
   ArchiveChatPayload |
   ArchiveDmPayload |
-  ArchiveClubPayload |
+  ArchiveClubPayload
 
 export type OspreyPoke =
   OspreyArchivePoke |

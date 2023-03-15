@@ -10,7 +10,7 @@
     <button @click="scryDiaries">scry Diaries</button>
 
     <hr class="my-4" />
-    <div v-for="s in schedule">
+    <div v-if="false" v-for="s in schedule">
       <ul>
         <li>flag: {{ s.area.flag }} ({{ s.area.type }})</li>
         <li>next: {{ new Date(s.next * 1000) }}</li>
@@ -18,41 +18,20 @@
       </ul>
     </div>
 
-    <div v-for="g in groups">
-      <span>group: {{ g }}</span>
-      <button @click="archiveThing('group', g)">archive</button>
-      <button @click="archiveOnSchedule('group', g, 60)">archive 60</button>
-      {{ loadStat(g) }}
-      <div class="w-full bg-stone-300 shadow-inner rounded-full h-2.5 mb-4">
-        <div class="bg-amber-500 h-2.5 rounded-full transition-all ease-out duration-1000" :style="{ width: `${ completePercent(g) }%` }"></div>
-      </div>
+    <div  class="p-2 my-4 border rounded-md">
+      <Group v-for="g in groups" :flag="g" :key="g" class="p-4 mb-2 border rounded shadow-md" />
     </div>
 
-    <div v-for="c in chats">
-      <span>chat: {{ c }}</span>
-      <button @click="archiveThing('chat', c)">archive</button>
-      {{ loadStat(c) }}
-      <div class="w-full bg-stone-300 shadow-inner rounded-full h-2.5 mb-4">
-        <div class="bg-amber-500 h-2.5 rounded-full transition-all ease-out duration-1000" :style="{ width: `${ completePercent(c) }%` }"></div>
-      </div>
+    <div class="p-2 my-4 border rounded-md">
+      <Chat v-for="c in chats" :flag="c" :key="c" class="p-4 mb-2 border rounded shadow-md" />
     </div>
 
-    <div v-for="h in heaps">
-      <span>heap: {{ h }}</span>
-      <button @click="archiveThing('heap', h)">archive</button>
-      {{ loadStat(h) }}
-      <div class="w-full bg-stone-300 shadow-inner rounded-full h-2.5 mb-4">
-        <div class="bg-amber-500 h-2.5 rounded-full transition-all ease-out duration-1000" :style="{ width: `${ completePercent(h) }%` }"></div>
-      </div>
+    <div class="p-2 my-4 border rounded-md">
+      <Heap v-for="h in heaps" :flag="h" :key="h" class="p-4 mb-2 border rounded shadow-md" />
     </div>
 
-    <div v-for="d in diaries">
-      <span>diary: {{ d }}</span>
-      <button @click="archiveThing('diary', d)">archive</button>
-      {{ loadStat(d) }}
-      <div class="w-full bg-stone-300 shadow-inner rounded-full h-2.5 mb-4">
-        <div class="bg-amber-500 h-2.5 rounded-full transition-all ease-out duration-1000" :style="{ width: `${ completePercent(d) }%` }"></div>
-      </div>
+    <div class="p-2 my-4 border rounded-md">
+      <Diary v-for="d in diaries" :flag="d" :key="d" class="p-4 mb-2 border rounded shadow-md" />
     </div>
 
   </div>
@@ -71,6 +50,11 @@ import * as O from '@/types/osprey-types'
 import { Pokes } from "@/api/ospreyAPI"
 import { Scries } from "@/api/ospreyAPI"
 import { scrySchedule } from "@/api/ospreyAPI"
+
+import Group from '@/components/osprey/Group.vue'
+import Chat from '@/components/osprey/Chat.vue'
+import Heap from '@/components/osprey/Heap.vue'
+import Diary from '@/components/osprey/Diary.vue'
 
 const ospreyStore = useStore()
 
@@ -110,18 +94,6 @@ const scryDiaries = () => {
   ospreyStore.dispatch(ActionTypes.ScryDiaries)
 }
 
-const loadStat = (flag) => {
-  return ospreyStore.getters[GetterTypes.ArchiveLoaderProgress](flag)
-}
-
-const completePercent = (flag) => {
-  const stat = loadStat(flag)
-  if (stat && stat.total && stat.total !== 0) {
-    return Math.round((stat.complete / stat.total) * 100)
-  }
-  return 100
-}
-
 const schedule = computed<Array<O.Schedule>>(() => {
   return ospreyStore.state.schedule
 })
@@ -140,6 +112,23 @@ const diaries = computed<Array<T.Flag>>(() => {
 const archiveLoadingState = computed(() => {
   return ospreyStore.state.archiveLoadingState
 })
+
+
+const loadStat = (flag) => {
+  return ospreyStore.getters[GetterTypes.ArchiveLoaderProgress](flag)
+}
+
+const scheduleFor = (flag) => {
+  return ospreyStore.getters[GetterTypes.ScheduleFor](flag)
+}
+
+const completePercent = (flag) => {
+  const stat = loadStat(flag)
+  if (stat && stat.total && stat.total !== 0) {
+    return Math.round((stat.complete / stat.total) * 100)
+  }
+  return 100
+}
 
 const startAirlock = (deskname: string) => {
   ospreyStore.dispatch(ActionTypes.AIRLOCK_OPEN, deskname)
