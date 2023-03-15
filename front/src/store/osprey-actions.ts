@@ -6,9 +6,9 @@ import { OspreyActionTypes as ActionTypes } from "./osprey-action-types";
 import { OspreyMutationTypes as MutationTypes } from "./osprey-mutation-types";
 
 import * as T from '@/types'
+import * as L from '@/types/loading-types'
 import * as O from '@/types/osprey-types'
-import * as OR from '@/types/osprey-response-types'
-import * as OApiR from '@/api/types/osprey-response'
+import * as OR from '@/api/types/osprey-response'
 
 import airlock from "@/api";
 // import * as parrotAPI from "@/api/parrotAPI";
@@ -48,12 +48,86 @@ export const actions: ActionTree<State, State> & Actions = {
       // Main all-responses-handler
       (data: OR.OspreyResponse) => {
         console.log('subscription response')
-        console.table(data)
+        // console.table(data)
+        console.log(data.face, ' ', data.fact)
 
         // if (OR.IsScheduleResponse(data)) {
         //   console.log('BlockedHosts ', data)
         //   // dispatch(ActionTypes.EXAMPLE, data.test.thing as string);
         // }
+        if (OR.IsOspreyResponseSchedule(data)) {
+          console.log('schedule response')
+          commit(MutationTypes.ScheduleSet, data.fact)
+        }
+
+        if (OR.IsOspreyHostedEvery(data)) {
+          console.log('every response')
+          commit(MutationTypes.EverySet, data.fact)
+        }
+
+        if (OR.IsOspreyHostedChats(data)) {
+          console.log('Chats response')
+          commit(MutationTypes.ChatsSet, data.fact)
+        }
+
+        if (OR.IsOspreyHostedHeaps(data)) {
+          console.log('Heaps response')
+          commit(MutationTypes.HeapsSet, data.fact)
+        }
+
+        if (OR.IsOspreyHostedGroups(data)) {
+          console.log('Groups response')
+          commit(MutationTypes.GroupsSet, data.fact)
+        }
+
+        if (OR.IsOspreyHostedDiaries(data)) {
+          console.log('Diaries response')
+          commit(MutationTypes.DiariesSet, data.fact)
+        }
+
+        if (OR.IsOspreyResponseArchiveStart(data)) {
+          console.log('archive started')
+          console.log(data)
+          commit(MutationTypes.ArchiveLoaderSet, { flag: data.fact.archiving.path, state: L.loaderStates.loading })
+        }
+
+        if (OR.IsOspreyResponseArchiveStatusUpdate(data)) {
+          console.log('dispatching sry archive')
+          dispatch(ActionTypes.ScrySchedule)
+          console.log('archive update:')
+          console.log(data)
+          // TODO:
+          if (data.fact.done) {
+            console.log('done')
+            commit(MutationTypes.ArchiveLoaderSet, {
+              flag: data.fact.archiving.path,
+              state: L.loaderStates.success,
+              total: data.fact.total,
+              complete: data.fact.complete,
+            })
+          } else {
+            console.log('progress: ', data.fact.complete, '/', data.fact.total)
+
+            // for(let i = 0; i <= 10; i++) {
+            //   setTimeout(() => {
+            //     commit(MutationTypes.ArchiveLoaderSet, {
+            //       flag: data.fact.archiving.path,
+            //       state: L.loaderStates.loading,
+            //       total: 10, // data.fact.total,
+            //       complete: i, // data.fact.complete,
+            //     })
+            //   }, i * 500, i)
+            // }
+
+            commit(MutationTypes.ArchiveLoaderSet, {
+              flag: data.fact.archiving.path,
+              state: L.loaderStates.loading,
+              total: data.fact.total,
+              complete: data.fact.complete,
+            })
+          }
+        }
+
       },
 
       (subscriptionNumber: number) => {
@@ -77,8 +151,8 @@ export const actions: ActionTree<State, State> & Actions = {
      ctx,
    ) {
      console.log('dispatching SCRY_SCHEDULE action...')
-     return Scries.Schedule().then((r: OApiR.OspreyResponseSchedule) => {
-       ctx.commit(MutationTypes.STATE_SCHEDULE_SET, r.fact)
+     return Scries.Schedule().then((r: OR.OspreyResponseSchedule) => {
+       ctx.commit(MutationTypes.ScheduleSet, r.fact)
      })
    },
 
@@ -86,7 +160,7 @@ export const actions: ActionTree<State, State> & Actions = {
      ctx,
    ) {
      console.log('dispatching ScryEvery action...')
-     return Scries.Groups().then((r) => {
+     return Scries.Every().then((r) => {
        console.log('every ', r.fact)
        // ctx.commit(MutationTypes.STATE_GROUPS_SET, r.fact)
      })
@@ -96,8 +170,8 @@ export const actions: ActionTree<State, State> & Actions = {
      ctx,
    ) {
      console.log('dispatching SCRY_GROUPS action...')
-     return Scries.Groups().then((r: OApiR.OspreyResponseHostedGroups) => {
-       ctx.commit(MutationTypes.STATE_GROUPS_SET, r.fact)
+     return Scries.Groups().then((r: OR.OspreyResponseHostedGroups) => {
+       ctx.commit(MutationTypes.GroupsSet, r.fact)
      })
    },
 
@@ -105,7 +179,7 @@ export const actions: ActionTree<State, State> & Actions = {
      ctx,
    ) {
      console.log('dispatching ScryChats action...')
-     return Scries.Chats().then((r: OApiR.OspreyResponseHostedChats) => {
+     return Scries.Chats().then((r: OR.OspreyResponseHostedChats) => {
        ctx.commit(MutationTypes.ChatsSet, r.fact)
      })
    },
@@ -114,7 +188,7 @@ export const actions: ActionTree<State, State> & Actions = {
      ctx,
    ) {
      console.log('dispatching ScryHeaps action...')
-     return Scries.Heaps().then((r: OApiR.OspreyResponseHostedHeaps) => {
+     return Scries.Heaps().then((r: OR.OspreyResponseHostedHeaps) => {
        ctx.commit(MutationTypes.HeapsSet, r.fact)
      })
    },
@@ -123,7 +197,7 @@ export const actions: ActionTree<State, State> & Actions = {
      ctx,
    ) {
      console.log('dispatching ScryDiaries action...')
-     return Scries.Diaries().then((r: OApiR.OspreyResponseHostedDiaries) => {
+     return Scries.Diaries().then((r: OR.OspreyResponseHostedDiaries) => {
        ctx.commit(MutationTypes.DiariesSet, r.fact)
      })
    },

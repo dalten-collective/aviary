@@ -22,7 +22,8 @@ export const Pokes = {
   ArchiveHeap(flag) { return pokeArchiveHeap(flag) },
   ArchiveDiary(flag) { return pokeArchiveDiary(flag) },
   ArchiveGroup(flag) { return pokeArchiveGroup(flag) },
-  ArchiveChat(flag) { return pokeArchiveChat(flag) }
+  ArchiveChat(flag) { return pokeArchiveChat(flag) },
+  RepeatArchive(flag, typeString, schedule) { return pokeRepeatArchive(flag, typeString, schedule) },
 }
 
 ////
@@ -94,3 +95,12 @@ export function pokeArchiveChat(flag: OP.ArchiveChatPayload['chat']['flag']): Pr
   return poker.poke()
 }
 
+export function pokeRepeatArchive(
+    flag: T.Flag,
+    typeString: string,
+    schedule: number
+  ): Promise<any>
+  {
+  const poker = new OA.RepeatArchive(flag, typeString, schedule)
+  return poker.poke()
+}

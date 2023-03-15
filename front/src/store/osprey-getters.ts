@@ -14,5 +14,13 @@ export const getters: GetterTree<OspreyState, OspreyState> & OspreyGetters = {
     return 'found it'
   },
 
+  [GetterTypes.ArchiveLoaderProgress]: (state) => (flag: T.Flag) => {
+    const prog = state.archiveLoadingState[flag]
+    if (!prog) {
+      return null
+    }
+    return prog
+  },
+
   // Add more here
 }

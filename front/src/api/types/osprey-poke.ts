@@ -26,6 +26,15 @@ export interface ArchiveChatPayload {
   }
 }
 
+export interface RepeatArchivePayload {
+  repeat: {
+    archive: {
+      string: T.Flag;
+    },
+    frequency: number;
+  }
+}
+
 // TODO: don't use
 export interface ArchiveDmPayload {
   chat: {
@@ -46,7 +55,8 @@ export type OspreyArchivePoke =
   ArchiveGroupPayload |
   ArchiveChatPayload |
   ArchiveDmPayload |
-  ArchiveClubPayload
+  ArchiveClubPayload |
 
 export type OspreyPoke =
-  OspreyArchivePoke
+  OspreyArchivePoke |
+  RepeatArchivePayload

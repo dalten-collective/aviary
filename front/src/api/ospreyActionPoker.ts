@@ -79,3 +79,22 @@ export class ArchiveChat extends OspreyAction {
     super(json)
   }
 }
+
+export class RepeatArchive extends OspreyAction {
+  declare payload: OP.RepeatArchivePayload;
+
+  constructor(flag, typeString, schedule) {
+    var json = {
+      repeat: {
+        archive: {},
+        frequency: schedule
+      }
+    } as OP.RepeatArchivePayload
+
+    json.repeat.archive[typeString] = flag
+
+    console.log('rep payload ', json)
+
+    super(json)
+  }
+}
