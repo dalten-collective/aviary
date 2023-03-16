@@ -104,3 +104,25 @@ export class RepeatArchive extends OspreyAction {
     super(json)
   }
 }
+
+export class Doom extends OspreyAction {
+  declare payload: OP.DoomPayload['doom']
+
+  constructor(args: OP.DoomPayload['doom']) {
+    const json: OP.DoomPayload = {
+      doom: args
+    }
+    super(json)
+  }
+}
+
+export class Boot extends OspreyAction {
+  declare payload: OP.BootPayload['boot']
+
+  constructor(args: OP.BootPayload['boot']) {
+    const json: OP.BootPayload = {
+      boot: args
+    }
+    super(json)
+  }
+}

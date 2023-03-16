@@ -35,6 +35,21 @@ export interface RepeatArchivePayload {
   }
 }
 
+export interface DoomPayload {
+  doom: {
+    limit: number;
+    age: number;
+    group: T.Flag;
+  }
+}
+
+export interface BootPayload {
+  boot: {
+    rank: string;
+    group: T.Flag;
+  }
+}
+
 // TODO: don't use
 export interface ArchiveDmPayload {
   chat: {
@@ -59,4 +74,6 @@ export type OspreyArchivePoke =
 
 export type OspreyPoke =
   OspreyArchivePoke |
-  RepeatArchivePayload
+  RepeatArchivePayload |
+  DoomPayload |
+  BootPayload

@@ -24,6 +24,8 @@ export const Pokes = {
   ArchiveGroup(flag) { return pokeArchiveGroup(flag) },
   ArchiveChat(flag) { return pokeArchiveChat(flag) },
   RepeatArchive(flag, typeString, schedule) { return pokeRepeatArchive(flag, typeString, schedule) },
+  Doom(args) { return pokeDoom(args) },
+  Boot(args) { return pokeBoot(args) },
 }
 
 ////
@@ -102,5 +104,17 @@ export function pokeRepeatArchive(
   ): Promise<any>
   {
   const poker = new OA.RepeatArchive(flag, typeString, schedule)
+  return poker.poke()
+}
+
+export function pokeDoom(args: OP.DoomPayload['doom']): Promise<any>
+  {
+  const poker = new OA.Doom(args)
+  return poker.poke()
+}
+
+export function pokeBoot(args: OP.BootPayload['boot']): Promise<any>
+  {
+  const poker = new OA.Boot(args)
   return poker.poke()
 }

@@ -8,6 +8,7 @@ const OspreyHome = () => import("../views/osprey/OspreyHome.vue");
 const OspreyNav = () => import("../views/osprey/Nav.vue");
 
 const OspreyArchive = () => import("../views/osprey/Archive.vue");
+const BootNDoom = () => import("../views/osprey/BootNDoom.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -37,6 +38,14 @@ const routes: Array<RouteRecordRaw> = [
     name: "archive",
     components: {
       osprey: OspreyArchive,
+      ospreyNav: OspreyNav,
+    }
+  },
+  {
+    path: "/osprey/bootndoom",
+    name: "bootNDoom",
+    components: {
+      osprey: BootNDoom,
       ospreyNav: OspreyNav,
     }
   },

@@ -13,6 +13,10 @@ export enum OspreyResponseFaces {
   OspreySchedule = "OSPREY-STATE-SCHEDULE",
   ArchiveStart = "ARCHIVE-START",
   ArchiveStatusUpdate = "ARCHIVE-STATUS-UPDATE",
+  Dooming = "DOOMING",
+  DoomDone = "DOOMBOT-RESULTS",
+  Booting = "BOOTING",
+  BootDone = "BOOTBOT-RESULTS",
 }
 
 export interface OspreyResponseSchedule {
@@ -82,6 +86,42 @@ export interface OspreyResponseArchiveStatusUpdate {
   }
 }
 
+export interface OspreyResponseDoomStart {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.Dooming;
+  fact: {
+    seconds: number;
+    group: T.Flag;
+  };
+}
+
+export interface OspreyResponseDoomDone {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.DoomDone;
+  fact: {
+    kililed: Array<T.Ship>;
+    group: T.Flag;
+  };
+}
+
+export interface OspreyResponseBootStart {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.Booting;
+  fact: {
+    rank: string;
+    group: T.Flag;
+  };
+}
+
+export interface OspreyResponseBootDone {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.BootDone;
+  fact: {
+    kililed: Array<T.Ship>;
+    group: T.Flag;
+  };
+}
+
 export type OspreyResponse =
   OspreyResponseSchedule |
   OspreyResponseHostedEvery |
@@ -91,7 +131,11 @@ export type OspreyResponse =
   OspreyResponseHostedGroups |
   OspreyResponseHostedDiaries |
   OspreyResponseArchiveStart |
-  OspreyResponseArchiveStatusUpdate
+  OspreyResponseArchiveStatusUpdate |
+  OspreyResponseDoomStart |
+  OspreyResponseDoomDone |
+  OspreyResponseBootStart |
+  OspreyResponseBootDone
 
 export const IsOspreyHostedEvery = (r: OspreyResponse):
   r is OspreyResponseHostedEvery => {
@@ -131,4 +175,24 @@ export const IsOspreyResponseArchiveStart = (r: OspreyResponse):
 export const IsOspreyResponseArchiveStatusUpdate = (r: OspreyResponse):
   r is OspreyResponseArchiveStatusUpdate => {
   return (r.face === OspreyResponseFaces.ArchiveStatusUpdate)
+}
+
+export const IsOspreyResponseDoomStart = (r: OspreyResponse):
+  r is OspreyResponseDoomStart => {
+  return (r.face === OspreyResponseFaces.Dooming)
+}
+
+export const IsOspreyResponseDoomDone = (r: OspreyResponse):
+  r is OspreyResponseDoomDone => {
+  return (r.face === OspreyResponseFaces.DoomDone)
+}
+
+export const IsOspreyResponseBootStart = (r: OspreyResponse):
+  r is OspreyResponseBootStart => {
+  return (r.face === OspreyResponseFaces.Booting)
+}
+
+export const IsOspreyResponseBootDone = (r: OspreyResponse):
+  r is OspreyResponseBootDone => {
+  return (r.face === OspreyResponseFaces.BootDone)
 }

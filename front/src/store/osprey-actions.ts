@@ -92,8 +92,6 @@ export const actions: ActionTree<State, State> & Actions = {
         }
 
         if (OR.IsOspreyResponseArchiveStatusUpdate(data)) {
-          console.log('dispatching sry archive')
-          dispatch(ActionTypes.ScrySchedule)
           console.log('archive update:')
           console.log(data)
           // TODO:
@@ -105,6 +103,8 @@ export const actions: ActionTree<State, State> & Actions = {
               total: data.fact.total,
               complete: data.fact.complete,
             })
+            console.log('dispatching scry schedule')
+            dispatch(ActionTypes.ScrySchedule)
           } else {
             console.log('progress: ', data.fact.complete, '/', data.fact.total)
 
@@ -126,6 +126,24 @@ export const actions: ActionTree<State, State> & Actions = {
               complete: data.fact.complete,
             })
           }
+        }
+
+        if (OR.IsOspreyResponseDoomStart(data)) {
+          console.log('doom started...')
+          console.log(data)
+        }
+        if (OR.IsOspreyResponseDoomDone(data)) {
+          console.log('doom done')
+          console.log(data)
+        }
+
+        if (OR.IsOspreyResponseBootStart(data)) {
+          console.log('boot started...')
+          console.log(data)
+        }
+        if (OR.IsOspreyResponseBootDone(data)) {
+          console.log('boot done')
+          console.log(data)
         }
 
       },
