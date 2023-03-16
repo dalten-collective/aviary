@@ -1,16 +1,9 @@
 <template>
     <div>
       <span>diary: {{ g }}</span>
-      <div v-if="scheduleFor(g)">
-        schedule:
-        <ul>
-          <li>flag: {{ scheduleFor(g).flag }}</li>
-          <li>next: {{ scheduleFor(g).next }}</li>
-          <li>last: {{ scheduleFor(g).last }}</li>
-        </ul>
-      </div>
-      <button @click="archiveThing('diary', g)">archive</button>
-      <button @click="archiveOnSchedule('diary', g, 60)">archive 60</button>
+      <Schedule :flag="g" />
+      <ArchiveNow :flag="g" typeString="diary" />
+      <ArchiveSchedule :flag="g" typeString="diary" />
       <LoadingBar :flag="g" />
 
     </div>
@@ -24,7 +17,10 @@ import { computed } from 'vue'
 
 import { GetterTypes } from '@/store/osprey-getter-types';
 
+import Schedule from '@/components/osprey/Schedule.vue'
 import LoadingBar from '@/components/osprey/LoadingBar.vue'
+import ArchiveNow from '@/components/osprey/ArchiveNow.vue'
+import ArchiveSchedule from '@/components/osprey/ArchiveSchedule.vue'
 
 interface Props {
   flag: T.Flag;
@@ -36,30 +32,5 @@ const ospreyStore = useStore()
 const g = computed(() => {
   return props.flag
 })
-
-const archiveThing = (thing: string, flag: T.Flag) => {
-  const typ = thing[0].charAt(0).toUpperCase() + thing.slice(1) // title-case it
-  return Pokes[`Archive${typ}`](flag)
-}
-
-const scheduleFor = (flag) => {
-  return ospreyStore.getters[GetterTypes.ScheduleFor](flag)
-}
-
-const archiveOnSchedule = (thing: string, flag: T.Flag, schedule: number) => {
-  return Pokes.RepeatArchive(flag, thing, schedule)
-}
-
-const loadStat = (flag) => {
-  return ospreyStore.getters[GetterTypes.ArchiveLoaderProgress](flag)
-}
-
-const completePercent = (flag) => {
-  const stat = loadStat(flag)
-  if (stat && stat.total && stat.total !== 0) {
-    return Math.round((stat.complete / stat.total) * 100)
-  }
-  return 100
-}
 
 </script>

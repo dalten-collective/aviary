@@ -6,6 +6,7 @@ const ospreyRouter = () => import("./router/osprey-router");
 const ospreyStore = () => import({ ospreyStore },  "./store/osprey-store");
 
 const app = createApp(OspreyApp);
+console.log('osprey app ', app)
 
 app.use(ospreyStore);
 app.use(ospreyRouter);

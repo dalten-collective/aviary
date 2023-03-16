@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-const Home = () => import("../views/OspreyHome.vue");
+const Home = () => import("../views/osprey/OspreyHome.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {

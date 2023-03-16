@@ -1,8 +1,13 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 
-const ParrotHome = () => import("../views/ParrotHome.vue");
-const OspreyHome = () => import("../views/OspreyHome.vue");
 const Aviary = () => import("../HandlerApp.vue");
+
+const ParrotHome = () => import("../views/ParrotHome.vue");
+
+const OspreyHome = () => import("../views/osprey/OspreyHome.vue");
+const OspreyNav = () => import("../views/osprey/Nav.vue");
+
+const OspreyArchive = () => import("../views/osprey/Archive.vue");
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,15 +15,30 @@ const routes: Array<RouteRecordRaw> = [
     name: "aviary",
     component: Aviary,
   },
+
   {
     path: "/parrot",
     name: "parrotHome",
-    component: ParrotHome,
+    components: {
+      parrot: ParrotHome,
+    }
   },
+
   {
     path: "/osprey",
     name: "ospreyHome",
-    component: OspreyHome,
+    components: {
+      osprey: OspreyHome,
+      ospreyNav: OspreyNav,
+    }
+  },
+  {
+    path: "/osprey/archive",
+    name: "archive",
+    components: {
+      osprey: OspreyArchive,
+      ospreyNav: OspreyNav,
+    }
   },
 ];
 
