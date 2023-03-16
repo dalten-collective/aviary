@@ -296,6 +296,15 @@
     %.  dat
     (slog 'aviary-panic-doombot-thread-fail' tang.p.p.+.sig)
   ::
+      [%bootbot act=@ ~]
+    ~_  'AVIARY: osprey error, bootbot thread failure.'
+    =+  act=;;(actions (cue (slav %ud act.pol)))
+    ?>  ?=([%khan %arow *] sig)
+    ?:  ?=(%& -.p.+.sig)
+      (show osprey-updates++.p.p.+.sig)
+    %.  dat
+    (slog 'aviary-panic-bootbot-thread-fail' tang.p.p.+.sig)
+  ::
       [%restore jam=@ ~]
     ~_  'AVIARY: osprey error, restore thread failure.'
     =/  data
