@@ -174,6 +174,15 @@ export const actions: ActionTree<State, State> & Actions = {
      })
    },
 
+   [ActionTypes.ScryMailslots](
+     ctx,
+   ) {
+     console.log('dispatching ScryMailslots action...')
+     return Scries.Mail().then((r: OR.OspreyResponseMailslot) => {
+       ctx.commit(MutationTypes.MailslotSet, r.fact)
+     })
+   },
+
    [ActionTypes.ScryEvery](
      ctx,
    ) {

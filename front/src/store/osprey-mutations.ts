@@ -13,6 +13,11 @@ export type OspreyMutations<S = OspreyState> = {
     payload: Array<O.Schedule>
   ): void;
 
+  [MutationTypes.MailslotSet](
+    state: S,
+    payload: Array<O.MailSlot>
+  ): void;
+
   [MutationTypes.EverySet](
     state: S,
     payload: Array<T.Flag>
@@ -48,6 +53,13 @@ export const mutations: MutationTree<OspreyState> & OspreyMutations = {
     payload: Array<O.Schedule>
   ) {
     state.schedule = payload
+  },
+
+  [MutationTypes.MailslotSet](
+    state: OspreyState,
+    payload: Parameters<OspreyMutations[MutationTypes.MailslotSet]>[1]
+  ) {
+    state.mailslot = payload
   },
 
   [MutationTypes.EverySet](

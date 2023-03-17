@@ -1,6 +1,8 @@
 export enum OspreyMutationTypes {
   ScheduleSet = 'SCHEDULE_SET',
 
+  MailslotSet = 'MAILSLOT_SET',
+
   GroupsSet = 'GROUPS_SET',
 
   EverySet = 'EVERY_SET',
