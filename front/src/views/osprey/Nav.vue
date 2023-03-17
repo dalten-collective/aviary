@@ -9,18 +9,13 @@
     <router-link :to="{ name: 'bootNDoom' }" class="mr-2 text-blue-400 underline">
       Boot'n'Doom
     </router-link>
-    <button @click="scry">mail</button>
+    <router-link :to="{ name: 'mail' }" class="mr-2 text-blue-400 underline">
+      Mail
+    </router-link>
   </div>
 </template>
 
 <script setup lang="ts">
-
-import { Scries } from '@/api/ospreyAPI'
-
-const scry = () => {
-  Scries.Mail().then((r) => console.table(r) )
-}
-
 </script>
 
 
