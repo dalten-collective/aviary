@@ -222,7 +222,14 @@ export type OspreyResponse =
   | OspreyResponseDoomStart
   | OspreyResponseDoomDone
   | OspreyResponseBootStart
-  | OspreyResponseBootDone;
+  | OspreyResponseBootDone
+  | OspreyResponseMailOpen
+  | OspreyResponseMailSending
+  | OspreyResponseMailSent
+  | OspreyResponseMailReceived
+  | OspreyResponseMailReading
+  | OspreyResponseMailReadDone
+  | OspreyResponseMailKilled
 
 export const IsOspreyHostedEvery = (
   r: OspreyResponse
@@ -294,4 +301,40 @@ export const IsOspreyResponseBootDone = (
   r: OspreyResponse
 ): r is OspreyResponseBootDone => {
   return r.face === OspreyResponseFaces.BootDone;
+};
+
+export const IsOspreyResponseMailSending = (
+  r: OspreyResponse
+): r is OspreyResponseMailSending => {
+  return r.face === OspreyResponseFaces.OspreyMailSending
+};
+
+export const IsOspreyResponseMailSent = (
+  r: OspreyResponse
+): r is OspreyResponseMailSent => {
+  return r.face === OspreyResponseFaces.OspreyMailSent
+};
+
+export const IsOspreyResponseMailReceived = (
+  r: OspreyResponse
+): r is OspreyResponseMailReceived => {
+  return r.face === OspreyResponseFaces.OspreyMailReceived
+};
+
+export const IsOspreyResponseMailReading = (
+  r: OspreyResponse
+): r is OspreyResponseMailReading => {
+  return r.face === OspreyResponseFaces.OspreyMailReading
+};
+
+export const IsOspreyResponseMailReadDone = (
+  r: OspreyResponse
+): r is OspreyResponseMailReadDone => {
+  return r.face === OspreyResponseFaces.OspreyMailReadDone
+};
+
+export const IsOspreyResponseMailKilled = (
+  r: OspreyResponse
+): r is OspreyResponseMailKilled => {
+  return r.face === OspreyResponseFaces.OspreyMailKilled
 };

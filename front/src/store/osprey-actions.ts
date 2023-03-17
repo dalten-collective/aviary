@@ -55,6 +55,29 @@ export const actions: ActionTree<State, State> & Actions = {
         //   console.log('BlockedHosts ', data)
         //   // dispatch(ActionTypes.EXAMPLE, data.test.thing as string);
         // }
+
+        // TODO
+        if (OR.IsOspreyResponseMailSending(data)) {
+          console.log('sending mail...')
+        }
+        // TODO
+        if (OR.IsOspreyResponseMailSent(data)) {
+          console.log('mail sent!')
+        }
+        // TODO
+        if (OR.IsOspreyResponseMailReceived(data)) {
+          console.log('mail received!')
+        }
+        if (OR.IsOspreyResponseMailReading(data)) {
+          console.log('mail reading...')
+        }
+        if (OR.IsOspreyResponseMailReadDone(data)) {
+          console.log('mail read done!')
+        }
+        if (OR.IsOspreyResponseMailKilled(data)) {
+          console.log('mail killed!')
+        }
+
         if (OR.IsOspreyResponseSchedule(data)) {
           console.log('schedule response')
           commit(MutationTypes.ScheduleSet, data.fact)

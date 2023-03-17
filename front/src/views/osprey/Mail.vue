@@ -4,14 +4,14 @@
     <button @click="getMail">Check mail</button>
 
     <div class="p-4 m-4 border">
-      <input v-model="slotHost" placeholder="host" />
-      <input v-model="slotGroup" placeholder="group" />
+      <input v-model="slotHost" placeholder="host ship of remote group" />
+      <input v-model="slotGroup" placeholder="group name" />
       <button @click="openSlot">Open</button>
     </div>
 
-    <div class="p-4 m-4 border">
-      <div v-for="m in mailSlots">
-        <pre>{{ m }}</pre>
+    <div class="p-4 m-4 border rounded-lg">
+      <div v-for="(mails, ship) in mailSlots">
+        <Envelopes class="mb-8" :from="ship" :mails="mails" />
       </div>
     </div>
 
@@ -35,6 +35,8 @@ import { sigShip, secondsToDate } from '@/helpers'
 import * as T from '@/types'
 import * as O from '@/types/osprey-types'
 
+import Envelopes from '@/components/osprey/Envelopes.vue';
+
 import { Pokes, Scries } from "@/api/ospreyAPI"
 
 const ospreyStore = useStore()
@@ -48,7 +50,13 @@ const getMail = () => {
 }
 
 const openSlot = () => {
-  Pokes.MailOpen({ host: slotHost.value, group: slotGroup.value })
+  // TODO: validate
+  // TODO: also strip whitespace
+  const host = sigShip(slotHost.value)
+  const groupName = slotGroup.value
+
+  const group: T.Flag = `${ host }/${ groupName }`
+  Pokes.MailOpen({ host, group })
 }
 
 const sendMail = (group) => {
