@@ -8,3 +8,8 @@ export interface Schedule {
     type: string; // like "GROUP"
   };
 }
+
+export interface MailSlot {
+  data: string; // 'NONE'
+  group: T.Flag;
+}

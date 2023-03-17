@@ -25,7 +25,7 @@ export enum OspreyResponseFaces {
 export interface OspreyResponseMailslot {
   type: Api.ResponseTypes.Scry;
   face: OspreyResponseFaces.OspreyMailslot;
-  fact: any; // TODO:
+  fact: Array<O.MailSlot>;
 }
 
 export interface OspreyResponseMailOpen {

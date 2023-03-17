@@ -25,6 +25,7 @@ export const ospreyState = {
   heaps: [] as Array<T.Flag>,
   diaries: [] as Array<T.Flag>,
   every: [] as Array<T.Flag>,
+  mailslot: [] as Array<O.MailSlot>,
 
   archiveLoadingState: {} as { ArchiveLoader },
 
