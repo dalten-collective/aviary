@@ -56,6 +56,11 @@ export const actions: ActionTree<State, State> & Actions = {
         //   // dispatch(ActionTypes.EXAMPLE, data.test.thing as string);
         // }
 
+        if (OR.IsOspreyResponseMailslot(data)) {
+          // TODO:
+          console.log('got slots')
+        }
+
         // TODO
         if (OR.IsOspreyResponseMailSending(data)) {
           console.log('sending mail...')
@@ -79,7 +84,6 @@ export const actions: ActionTree<State, State> & Actions = {
         }
 
         if (OR.IsOspreyResponseSchedule(data)) {
-          console.log('schedule response')
           commit(MutationTypes.ScheduleSet, data.fact)
         }
 

@@ -4,8 +4,9 @@
     <button @click="getMail">Check mail</button>
 
     <div class="p-4 m-4 border">
-      <input v-model="slotHost" placeholder="host ship of remote group" />
-      <input v-model="slotGroup" placeholder="group name" />
+      <input v-model="slotHost" placeholder="who will send the mail" />
+      <input v-model="groupHost" placeholder="original group host" />
+      <input v-model="slotGroup" placeholder="original group name" />
       <button @click="openSlot">Open</button>
     </div>
 
@@ -42,6 +43,7 @@ import { Pokes, Scries } from "@/api/ospreyAPI"
 const ospreyStore = useStore()
 
 const slotHost = ref<T.Ship>('')
+const groupHost = ref<T.Ship>('')
 const slotGroup = ref('')
 const mailRecipient = ref<T.Ship>('')
 
@@ -53,9 +55,12 @@ const openSlot = () => {
   // TODO: validate
   // TODO: also strip whitespace
   const host = sigShip(slotHost.value)
+  const groopHost = sigShip(groupHost.value)
   const groupName = slotGroup.value
 
-  const group: T.Flag = `${ host }/${ groupName }`
+  const group: T.Flag = `${ groopHost }/${ groupName }`
+  console.log({ host, group })
+  // return
   Pokes.MailOpen({ host, group })
 }
 

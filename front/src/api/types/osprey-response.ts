@@ -19,7 +19,7 @@ export enum OspreyResponseFaces {
   OspreyHostedGroups = "OSPREY-HOSTED-GROUPS",
   OspreyHostedDiaries = "OSPREY-HOSTED-DIARIES",
   OspreySchedule = "OSPREY-STATE-SCHEDULE",
-  OspreyScheduleCancel = "OSPREY-SCHEDULE-CANCEL",
+  OspreyScheduleCancel = "ARCHIVE-SCHEDULE-CANCEL",
   ArchiveStart = "ARCHIVE-START",
   ArchiveStatusUpdate = "ARCHIVE-STATUS-UPDATE",
   Dooming = "DOOMING",
@@ -259,6 +259,7 @@ export type OspreyResponse =
   | OspreyResponseDoomDone
   | OspreyResponseBootStart
   | OspreyResponseBootDone
+  | OspreyResponseMailslot
   | OspreyResponseMailOpen
   | OspreyResponseMailSending
   | OspreyResponseMailSent
@@ -342,6 +343,12 @@ export const IsOspreyResponseBootDone = (
   r: OspreyResponse
 ): r is OspreyResponseBootDone => {
   return r.face === OspreyResponseFaces.BootDone;
+};
+
+export const IsOspreyResponseMailslot = (
+  r: OspreyResponse
+): r is OspreyResponseMailslot => {
+  return r.face === OspreyResponseFaces.OspreyMailslot;
 };
 
 export const IsOspreyResponseMailSending = (

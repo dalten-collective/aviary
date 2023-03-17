@@ -70,8 +70,20 @@ const readMail = () => {
 
   const resources = props.mail.data['included-files'].map((f) => {
     const name = f.flag.split('/')[1]
+    let type;
+    switch (f.type) {
+      case 'diary':
+        type = 'note';
+        break;
+      case 'chat':
+        type = 'chat';
+        break;
+      case 'heap':
+        type = 'heap';
+        break;
+    }
     return {
-      type: f.type,
+      type,
       'old-resource': f.flag,
       'new-resource-name': name
     }
@@ -79,14 +91,16 @@ const readMail = () => {
 
   const args: OP.MailReadPayload['read'] = {
     group: props.mail.group,
-    host: sigShip(window.ship),
+    host: props.from,
     "new-group-name": newGroupName,
     roster: {
-      members: true, // make options
+      members: true, // TODO: make options
       administrators: true,
     },
     include: resources
   }
+
+  console.log(args)
 
   Pokes.MailRead(args)
 }
