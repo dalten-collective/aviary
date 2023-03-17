@@ -4,6 +4,44 @@ import * as O from '@/types/osprey-types'
 //export enum OspreyPokes {
 //}
 
+export interface MailOpenPayload {
+  open: {
+    host: T.Ship;
+    group: T.Flag;
+  }
+}
+
+export interface MailSendPayload {
+  mail: {
+    recipient: T.Ship;
+    group: T.Flag;
+  }
+}
+
+export interface MailReadPayload {
+  read: {
+    host: T.Ship;
+    group: T.Flag;
+    "new-group-name": string; // valid group string
+    roster: {
+      members: boolean;
+      administrators: boolean;
+    },
+    include: Array<{
+      type: string; // chat || heap || note
+      "old-resource": T.Flag;
+      "new-resource-name": string; // valid group name
+    }>
+  }
+}
+
+export interface MailKillPayload {
+  kill: {
+    host: T.Ship;
+    group: T.Flag;
+  }
+}
+
 export interface ArchiveMinePayload {
   mine: null
 }
@@ -76,4 +114,8 @@ export type OspreyPoke =
   OspreyArchivePoke |
   RepeatArchivePayload |
   DoomPayload |
-  BootPayload
+  BootPayload |
+  MailOpenPayload |
+  MailSendPayload |
+  MailReadPayload |
+  MailKillPayload

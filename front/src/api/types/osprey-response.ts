@@ -4,6 +4,9 @@ import * as O from '@/types/osprey-types'
 import * as OP from '@/api/types/osprey-poke'
 
 export enum OspreyResponseFaces {
+  OspreyMailslot = 'OSPREY-MAILSLOT',
+  OspreyMailOpen = 'VIRTUAL-OPEN-MAILSLOT',
+
   OspreyHostedEvery = "OSPREY-HOSTED-EVERY",
   OspreyHostedDms = "OSPREY-HOSTED-DMS",
   OspreyHostedChats = "OSPREY-HOSTED-CHATS",
@@ -17,6 +20,21 @@ export enum OspreyResponseFaces {
   DoomDone = "DOOMBOT-RESULTS",
   Booting = "BOOTING",
   BootDone = "BOOTBOT-RESULTS",
+}
+
+export interface OspreyResponseMailslot {
+  type: Api.ResponseTypes.Scry;
+  face: OspreyResponseFaces.OspreyMailslot;
+  fact: any; // TODO:
+}
+
+export interface OspreyResponseMailOpen {
+  type: Api.ResponseTypes.Scry;
+  face: OspreyResponseFaces.OspreyMailOpen;
+  fact: {
+    host: T.Ship;
+    group: T.Flag;
+  }
 }
 
 export interface OspreyResponseSchedule {
