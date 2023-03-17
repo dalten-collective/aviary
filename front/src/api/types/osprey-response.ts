@@ -2,6 +2,7 @@ import * as Api from '@/api/types/common'
 import * as T from '@/types'
 import * as O from '@/types/osprey-types'
 import * as OP from '@/api/types/osprey-poke'
+import {ResourceAssociations} from '@urbit/api';
 
 export enum OspreyResponseFaces {
   OspreyHostedEvery = "OSPREY-HOSTED-EVERY",
@@ -17,6 +18,29 @@ export enum OspreyResponseFaces {
   DoomDone = "DOOMBOT-RESULTS",
   Booting = "BOOTING",
   BootDone = "BOOTBOT-RESULTS",
+
+  RestoreStatusUpdate = "RESTORE-STATUS-UPDATE",
+}
+
+export interface RestoredNewGroup {
+  name: string;
+  type: "NEW";
+}
+export interface RestoredOldGroup {
+  flag: T.Flag;
+  type: "OLD";
+}
+
+export interface OspreyResponseRestoreStatusUpdate {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.RestoreStatusUpdate;
+  fact: {
+    "new-channel": T.Flag;
+    "old-channel": T.Flag;
+    group: RestoredNewGroup | RestoredOldGroup;
+    succeeded: true;
+    "channel-type": string; // "heap" | "chat" | "diary"
+  }
 }
 
 export interface OspreyResponseSchedule {

@@ -1,8 +1,35 @@
 <template>
   <div>
-    restore
+    <h1 class='text-xl'>restore from file</h1>
 
-    <div class="flex flex-row items-center justify-between">
+    <div class='flex mx-2 my-4'>
+      <div class="px-2 py-1 mr-4 cursor-pointer" :class="!createNewGroup ? 'border rounded-full bg-stone-100 font-bold py-1 px-2' : 'underline'" @click="createNewGroup = false">
+        Import to Existing Group
+      </div>
+      <div class="px-2 py-1 mr-2 cursor-pointer" :class="createNewGroup ? 'border rounded-full bg-stone-100 font-bold py-1 px-2' : 'underline'" @click="createNewGroup = true">
+        Create New Group
+      </div>
+    </div>
+
+    <div class="mx-2 my-4">
+      <div v-if="!createNewGroup" >
+        <select v-model="selectedGroup">
+          <option v-for="g in groups">
+            {{ g }}
+          </option>
+        </select>
+      </div>
+
+      <div v-else>
+        <input v-model="newGroupName" placeholder="new-group-name" />
+      </div>
+    </div>
+
+    <div class="mx-2 my-4">
+      <input v-model="newChannelName" placeholder="new-channel-name" />
+    </div>
+
+    <div class="flex flex-row items-center">
       <div>
         <label for="osprey-upload" class="upload-label">
           <input
@@ -50,15 +77,28 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useOspreyStore as useStore } from '@/store/osprey-store'
+import {sigShip} from '@/helpers';
+const ospreyStore = useStore()
 
 import { serverAddress } from "@/helpers";
 
 import axios from "axios";
 
+const createNewGroup = ref(false);
+
+const selectedGroup = ref('');
+const newGroupName = ref('');
+const newChannelName = ref('');
+
 const files = ref([]);
 const uploadInProgress = ref(false);
-const uploadButtonStyle = computed(() => {
 
+const groups = computed<Array<T.Flag>>(() => {
+  return ospreyStore.state.groups
+})
+
+const uploadButtonStyle = computed(() => {
   let styles = [];
   if (files.value.length === 0) {
     styles.push("disabled");
@@ -84,51 +124,29 @@ const submitFiles = async () => {
 
   let formData = new FormData();
   // var calls: Array<{ filePath: string; fileMime: string; fileBlob: string; }>  = [];
-  // formData.append('type', 'new-group')
-  formData.append('type', 'old-group')
-  formData.append('group', '~zod-test')
-  formData.append('channel', 'new-uploaded-channel')
+
+  // TODO: validate
+  // disallow channel names that appear in /every
+
+  if (!createNewGroup.value) {
+    formData.append('type', 'old-group')
+    const host = selectedGroup.value.split('/')[0]
+    const name = selectedGroup.value.split('/')[1]
+    const groupName = `${ sigShip(host) }-${ name }`
+    formData.append('group', groupName)
+  } else {
+    formData.append('type', 'new-group')
+    formData.append('group', newGroupName.value)
+  }
+
+  formData.append('channel', newChannelName.value)
 
   console.log('form ', formData)
 
   for (var i = 0; i < files.value.length; i++) {
     let file = files.value[i];
-// input name = group
-// input value = group-name-here
-//
-// input name = channel
-// input value = 'new-chanel-name' (disallow /every)
-
-
     formData.append('files', file)
     console.log('file ', file)
-
-    // let filePath = file.webkitRelativePath;
-    // let fileMime = file.type;
-
-    // console.log("path ", filePath);
-    // console.log("mime ", fileMime);
-
-    // console.log('reading file...')
-    // var fileContent = new FileReader()
-    // fileContent.readAsBinaryString(file)
-    // fileContent.onloadend = function() {
-    //   console.log(fileContent.result)
-    // }
-
-    // console.log("reading blob...");
-    // let fileBlob = await readFileBlob(file);
-    // console.log("blob read!");
-
-    // console.log("enqueing post to: ", `${fileUploadEndpoint(address, vapor)}/upload/${filePath}`);
-
-    // calls.push(
-    //   {
-    //     filePath,
-    //     fileMime,
-    //     fileBlob
-    //   }
-    // )
   }
 
   console.log('posting all...')
@@ -149,55 +167,9 @@ const submitFiles = async () => {
   }).finally(() => {
     files.value = []
     uploadInProgress.value = false;
-    // uploadInProgress.value = false;
-    // do vaporize poke
-    // pokeVaporize({
-    //   address: props.address,
-    //   item: props.vapor.item,
-    // })
   })
 
-  // axios
-  //   .post(
-  //     fileUploadEndpoint(address, vapor),
-  //     formData, // probably change this to the file.
-  //     {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //         // change to appropriate content type for file.
-  //       },
-  //     }
-  //   )
-  //   .then((r) => {
-  //     console.log(r);
-  //     console.log("success");
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //     console.log("fail");
-  //   })
-  //   .finally(() => {
-  //     uploadInProgress.value = false;
-  //   });
 };
-
-// file upload:
-// name = files
-// directory mozdirectory webkitdirectory
-
-// existing group:
-// input name = group
-// input value = ~zod-another-one
-//
-// input name = channel
-// input value = 'new-channel-name' (disallow any from /Every)
-
-// new group:
-// input name = group
-// input value = group-name-here
-//
-// input name = channel
-// input value = 'new-chanel-name' (disallow /every)
 </script>
 
 <style scoped>
