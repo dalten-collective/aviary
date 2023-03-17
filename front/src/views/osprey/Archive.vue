@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="container mx-auto my-8">
+    <h2>Backup</h2>
     <div  class="p-2 my-4 border rounded-md">
       <Group v-for="g in groups" :flag="g" :key="g" class="p-4 mb-2 border rounded shadow-md" />
     </div>

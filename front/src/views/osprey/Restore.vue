@@ -1,19 +1,22 @@
 <template>
-  <div>
-    <h1 class='text-xl'>restore from file</h1>
+  <div class="container mx-auto my-8">
+    <h2>Restore from File</h2>
 
     <div class='flex mx-2 my-4'>
-      <div class="px-2 py-1 mr-4 cursor-pointer" :class="!createNewGroup ? 'border rounded-full bg-stone-100 font-bold py-1 px-2' : 'underline'" @click="createNewGroup = false">
+      <div class="px-2 py-1 mr-4 cursor-pointer" :class="!createNewGroup ? 'border rounded-full bg-stone-100 font-bold py-1 px-2' : 'underline text-stone-500'" @click="createNewGroup = false">
         Import to Existing Group
       </div>
-      <div class="px-2 py-1 mr-2 cursor-pointer" :class="createNewGroup ? 'border rounded-full bg-stone-100 font-bold py-1 px-2' : 'underline'" @click="createNewGroup = true">
+      <div class="px-2 py-1 mr-2 cursor-pointer" :class="createNewGroup ? 'border rounded-full bg-stone-100 font-bold py-1 px-2' : 'underline text-stone-500'" @click="createNewGroup = true">
         Create New Group
       </div>
     </div>
 
     <div class="mx-2 my-4">
       <div v-if="!createNewGroup" >
-        <select v-model="selectedGroup">
+        <select v-model="selectedGroup" class="p-2 cursor-pointer rounded-md">
+          <option disabled selected value="selectedGroup">
+            Select a Group
+          </option>
           <option v-for="g in groups">
             {{ g }}
           </option>
@@ -21,12 +24,18 @@
       </div>
 
       <div v-else>
-        <input v-model="newGroupName" placeholder="new-group-name" />
+        <div class="max-w-md field-float group">
+        <input class='peer float' type='text' id='newgroo' v-model="newGroupName" />
+        <label for='newgroo' class='peer float'>New Group Name</label>
+        </div>
       </div>
     </div>
 
     <div class="mx-2 my-4">
-      <input v-model="newChannelName" placeholder="new-channel-name" />
+        <div class="max-w-md field-float group">
+        <input class='peer float' type='text' id='newchan' v-model="newChannelName" />
+        <label for='newchan' class='peer float'>New Channel Name</label>
+      </div>
     </div>
 
     <div class="flex flex-row items-center">
@@ -87,7 +96,7 @@ import axios from "axios";
 
 const createNewGroup = ref(false);
 
-const selectedGroup = ref('');
+const selectedGroup = ref('selectedGroup');
 const newGroupName = ref('');
 const newChannelName = ref('');
 

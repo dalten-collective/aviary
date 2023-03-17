@@ -2,10 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+h1 {
+  @apply text-8xl;
+}
+h2 {
+  @apply text-4xl;
+}
+h3 {
+  @apply text-2xl;
+}
+h4 {
+  @apply text-xl;
+}
+h5 {
+  @apply text-lg;
+}
+
 button {
   @apply border;
   @apply rounded-md;
-  @apply px-2;
+  @apply px-3;
+  @apply py-1;
   @apply shadow-md;
 }
 
@@ -13,6 +30,58 @@ button:hover {
   @apply bg-stone-100;
   @apply border;
   @apply rounded-md;
-  @apply px-2;
   @apply shadow-lg;
+}
+
+.field-float {
+  /*apply 'group' class to this*/
+  @apply relative;
+  @apply z-0;
+  @apply w-full;
+  @apply mb-6;
+}
+
+input[type="text"] {
+  @apply bg-stone-100;
+  @apply px-4;
+  @apply rounded-t-md;
+}
+
+input[type="text"].float {
+  /*apply 'peer' class to this*/
+  @apply block;
+  @apply py-2.5;
+  @apply px-2;
+  @apply w-full;
+  @apply text-sm;
+  @apply text-gray-900;
+  @apply border-0;
+  @apply border-b-2;
+  @apply border-gray-300;
+  @apply appearance-none;
+  @apply focus:outline-none;
+  @apply focus:ring-0;
+  @apply focus:border-purple-500;
+}
+
+label.float {
+  /*apply 'peer' class to this*/
+  @apply peer-focus:font-medium;
+  @apply absolute;
+  @apply text-sm;
+  @apply text-gray-500;
+  @apply dark:text-gray-400;
+  @apply duration-300;
+  @apply transform;
+  @apply -translate-y-6;
+  @apply scale-75;
+  @apply top-2;
+  @apply -z-10;
+  @apply origin-[0];
+  @apply peer-focus:left-0;
+  @apply peer-focus:text-purple-500;
+  @apply peer-placeholder-shown:scale-100;
+  @apply peer-placeholder-shown:translate-y-0;
+  @apply peer-focus:scale-75;
+  @apply peer-focus:-translate-y-6;
 }

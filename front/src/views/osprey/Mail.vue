@@ -1,27 +1,51 @@
 <template>
-  <div>
-    Mail
+  <div class="container mx-auto my-8">
+    <h2>Restore Remotely</h2>
+
+    <div class="my-4">
+
     <button @click="getMail">Check mail</button>
 
     <div class="p-4 m-4 border">
-      <input v-model="slotHost" placeholder="who will send the mail" />
-      <input v-model="groupHost" placeholder="original group host" />
-      <input v-model="slotGroup" placeholder="original group name" />
+      <div class="flex flex-col">
+        <h4 class="mt-2 mb-8" >Open slot for restore</h4>
+        <div class="max-w-md field-float group">
+          <input type="text" v-model="slotHost" class="float peer" id="slothost" />
+          <label class="float peer" for="slothost">Who will send you the group?</label>
+        </div>
+
+        <div class="max-w-md field-float group">
+          <input type="text" v-model="groupHost" class="float peer" id="grouphost" />
+          <label class="float peer" for="grouphost">Original group host</label>
+        </div>
+
+        <div class="max-w-md field-float group">
+          <input type="text" v-model="slotGroup" class="float peer" id="slotGroup" />
+          <label class="float peer" for="slotGroup">Group name</label>
+        </div>
+      </div>
+
       <button @click="openSlot">Open</button>
     </div>
 
     <div class="p-4 m-4 border rounded-lg">
-      <div v-for="(mails, ship) in mailSlots">
-        <Envelopes class="mb-8" :from="ship" :mails="mails" />
+      <div v-if="!mailSlots || Object.keys(mailSlots).length === 0">
+        <h4>No incoming mail!</h4>
+      </div>
+      <div v-else>
+        <h4>You've got mail:</h4>
+        <div v-for="(mails, ship) in mailSlots">
+          <Envelopes class="mb-8" :from="ship" :mails="mails" />
+        </div>
       </div>
     </div>
 
-    <div class="p-4 m-4 border">
-      <div v-for="g in groups" class="p-2 my-4 border shadow-md rounded-md">
-        {{ g }}
-        <input v-model="mailRecipient" placeholder="send to ship" />
-        <button @click="sendMail(g)">send</button>
+    <div class="p-4 m-4 border rounded-lg">
+      <h4 class="mb-4">Mail Groups</h4>
+      <div v-for="g in groups" class="flex flex-col">
+        <GroupMailer :group="g" class="max-w-md p-2 my-2 border rounded-md" />
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -37,6 +61,7 @@ import * as T from '@/types'
 import * as O from '@/types/osprey-types'
 
 import Envelopes from '@/components/osprey/Envelopes.vue';
+import GroupMailer from '@/components/osprey/GroupMailer.vue';
 
 import { Pokes, Scries } from "@/api/ospreyAPI"
 
@@ -45,7 +70,6 @@ const ospreyStore = useStore()
 const slotHost = ref<T.Ship>('')
 const groupHost = ref<T.Ship>('')
 const slotGroup = ref('')
-const mailRecipient = ref<T.Ship>('')
 
 const getMail = () => {
   ospreyStore.dispatch(ActionTypes.ScryMailslots)
@@ -62,11 +86,6 @@ const openSlot = () => {
   console.log({ host, group })
   // return
   Pokes.MailOpen({ host, group })
-}
-
-const sendMail = (group) => {
-  const recipient = sigShip(mailRecipient.value)
-  Pokes.MailSend({ recipient, group })
 }
 
 const mailSlots = computed<Array<O.MailSlot>>(() => {

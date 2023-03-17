@@ -38,12 +38,21 @@
           </li>
         </ul>
 
-        <input v-model="importToNewGroupName" placeholder="new group name" />
-        <button @click="readMail">Import!</button>
+        <div class="flex flex-row items-center">
+          <div class="max-w-md mt-8 field-float group">
+            <input type="text" id="newGroup" v-model="importToNewGroupName" class="float peer" />
+            <label for="newGroup" class="float peer">
+              New Group Name
+            </label>
+          </div>
+          <div class="ml-2">
+          <button @click="readMail">Import!</button>
+          </div>
+        </div>
 
       </div>
     </div>
-    <button class="mt-4" @click="killMail">Delete!</button>
+    <button class="mt-4" @click="killMail">Delete Mail</button>
   </div>
 </template>
 

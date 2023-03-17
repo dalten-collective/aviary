@@ -1,21 +1,41 @@
 <template>
-  <div>
-    {{ flag }}
-    <div>
-      <button @click="doDoom">doom</button>
-      <pre>
-        limit: {{ limit }}
-        last: {{ lastSeenSeconds }}
-      </pre>
+  <div class="p-4 mx-2 my-8 border rounded-md">
+
+    <h3>{{ flag }}</h3>
+
+    <div class="pb-4 my-4 border-b">
+      <h5>Doom inactive ships</h5>
+      <div class="flex flex-col mt-4">
+        <div class="max-w-md field-float group">
+          <input type="text" class="float peer" id="limit" v-model="limit" />
+          <label class="float peer" for="limit">
+            Max members to kick
+          </label>
+        </div>
+
+        <div class="max-w-md field-float group">
+          <input type="text" id="lastseen" v-model="lastSeenDays" class="float peer" />
+          <label for="lastseen" class="float peer">
+            Last seen online (days)
+          </label>
+        </div>
+
+        <div>
+          <button class="text-xl" @click="doDoom">DOOM</button>
+        </div>
+      </div>
     </div>
 
     <div>
-      <select v-model="selectedRank">
-        <option v-for="r in ranks">
-          {{ r }}
-        </option>
-      </select>
-      <button @click="doBoot">boot</button>
+      <h5>Boot ships by rank</h5>
+      <div class="flex flex-row mt-4">
+        <select v-model="selectedRank" class="p-2 mr-2 cursor-pointer rounded-md">
+          <option v-for="r in ranks">
+            {{ r }}
+          </option>
+        </select>
+        <button @click="doBoot" class="text-xl">BOOT</button>
+      </div>
     </div>
   </div>
 </template>
@@ -42,12 +62,14 @@ const ranks = ref([
 const selectedRank = ref('comet')
 
 const limit = ref(10)
+const lastSeenDays = ref(7)
 const lastSeenSeconds = ref(1)
 
 const doDoom = () => {
+  const seconds = parseInt(lastSeenDays.value) * 60 * 60 * 24
   const args: OP.DoomPayload = {
-    limit: limit.value,
-    age: lastSeenSeconds.value,
+    limit: parseInt(limit.value),
+    age: seconds,
     group: props.flag,
   }
   Pokes.Doom(args)
