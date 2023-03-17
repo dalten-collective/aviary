@@ -1,3 +1,8 @@
+::  aviary - osprey
+::  a peat by other
+::  name would smel
+::  of four letters
+::  - by quartus
 /-  *osprey, cha=chat, dia=diary, hyp=heap
 /+  verb, dbug, default-agent, ohp=osprey-http
 ::
@@ -370,6 +375,7 @@
         (show osprey-state-aval+!>(`[@t (set flag)]`['GROUPS' groups:scry]))
         (show osprey-state-aval+!>(`[@t (set flag)]`['DIARIES' diaries:scry]))
         (show osprey-state-schedule+!>(`schedule`sched))
+        (show osprey-state-schedule+!>(`mailslot`mails))
     ==
   ==
 ::  +peek: handle on-peek
@@ -391,6 +397,8 @@
     ``osprey-state-aval+!>(`[@t (set flag)]`['DIARIES' diaries:scry])
       [%x %schedule ~]  
     ``osprey-state-schedule+!>(`schedule`sched)
+      [%x %mailslot ~]
+    ``osprey-state-mailslot+!>(`mailslot`mails)
       [%x %dbug %state ~]
     =-  ``[%state !>([%0 schedule=sched mailboxes=-])]
     %+  roll  ~(tap bi mails)

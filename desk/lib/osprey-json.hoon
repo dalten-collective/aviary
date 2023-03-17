@@ -1,5 +1,5 @@
 /-  cha=chat, o=osprey
-/+  multi=multipart
+/+  multi=multipart, *mip
 |%
 ++  enjs
   =,  enjs:format
@@ -52,6 +52,43 @@
           %club  area+(pairs type+s/'CLUB' club+s/(scot %uv p.wat.a) ~)
         ==
       ==
+    ==
+  ++  mailslot
+    |=  mail=mailslot:o
+    %^  pack  'SCRY'
+      'OSPREY-MAILSLOT'
+    %-  pairs
+    %-  ~(rep by mail)
+    |=  $:  $:  k=@p
+                v=(map flag:o (unit [(list @p) (list @p) (list email:o)]))
+            ==
+            o=(list [@t json])
+        ==
+    :_  o
+    :+  (scot %p k)  %a
+    ^-  (list json)
+    %-  ~(rep by v)
+    |=  [[f=flag:^o d=(unit [m=(list @p) a=(list @p) e=(list email:^o)])] l=(list json)]
+    :_  l
+    %-  pairs
+    :~  group+(flag f)
+      ::
+        :-  %data
+        ?~  d  s/'NONE'
+        %-  pairs
+        :~  members+a/(turn m.u.d ship)
+            admins+a/(turn a.u.d ship)
+            :+  %included-files
+              %a
+            %+  turn  e.u.d
+            |=  e=email:^o
+            %-  pairs
+            ?-    -.e
+              %chat-log  ~[type+s/'chat' flag+(flag p.e)]
+              %heap-log  ~[type+s/'heap' flag+(flag p.e)]
+              %note-log  ~[type+s/'diary' flag+(flag p.e)]
+            ==
+        ==
     ==
   ++  actions
     |=  act=actions:o
