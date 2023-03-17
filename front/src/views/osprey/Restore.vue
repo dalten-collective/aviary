@@ -1,7 +1,44 @@
 <template>
   <div class="container mx-auto my-8">
-    <h2>Restore from File</h2>
+    <header class="mb-8">
+      <div class="flex flex-row items-center justify-between">
+        <div>
+        <h2>Restore From File</h2>
+        </div>
+      </div>
+      <div v-if="false" class="flex flex-row items-center justify-between px-4 py-2 my-4 bg-stone-300">
+        <div>
+          <button class="text-xl bg-white" disabled>Backup All</button>
+        </div>
+        <div class="flex flex-row items-center justify-end">
+        <div class="relative z-0 items-center my-2 mr-2 group">
+          <input type="text" class='py-1 rounded-md float peer' placeholder="Search" id='search' />
+          <label class="float peer" for="search">Search</label>
+        </div>
+        <div>
+          <select class="p-2 bg-white cursor-pointer rounded-md">
+            <option selected>
+              All Resoures
+            </option>
+            <option>
+              Groups
+            </option>
+            <option>
+              Chats
+            </option>
+            <option>
+              Galleries
+            </option>
+            <option>
+              Notebooks
+            </option>
+          </select>
+        </div>
+        </div>
+      </div>
+    </header>
 
+    <div class="p-2 border rounded-lg">
     <div class='flex mx-2 my-4'>
       <div class="px-2 py-1 mr-4 cursor-pointer" :class="!createNewGroup ? 'border rounded-full bg-stone-100 font-bold py-1 px-2' : 'underline text-stone-500'" @click="createNewGroup = false">
         Import to Existing Group
@@ -80,6 +117,7 @@
         </span>
         <span v-else> Upload </span>
       </button>
+    </div>
     </div>
   </div>
 </template>

@@ -1,18 +1,26 @@
 <template>
   <div>
     <div v-if="!scheduleFor">
-      <span class="underline cursor-pointer" @click="expanded = !expanded">{{ !expanded ? 'Recurring Archives' : 'Cancel' }}</span>
-      <div v-if="expanded">
+      <span class="underline cursor-pointer" @click="expanded = !expanded">{{ !expanded ? 'Set Recurring Backup' : 'Cancel' }}</span>
+      <div v-if="expanded" class="pb-4 mb-4 border-b">
+        <div class="flex flex-col mt-4">
         Back up every...
-        <label for="hrs">
-          Hours:
-          <input id="hrs" v-model="hrs" />
-        </label>
-        <label for="min">
-          Minutes:
-          <input id="min" v-model="min" />
-        </label>
-        <button @click="archiveOnSchedule">Set Backups</button>
+        <div class="max-w-md mt-4 field-float group">
+          <input type="text" class="float peer" id="hrs" v-model="hrs" />
+          <label class="float peer" for="hrs">
+            Hours
+          </label>
+        </div>
+        <div class="max-w-md mt-4 field-float group">
+          <input type="text" class="float peer" id="min" v-model="min" />
+          <label class="float peer" for="min">
+            Minutes
+          </label>
+        </div>
+        <div>
+          <button @click="archiveOnSchedule">Set Backups</button>
+        </div>
+        </div>
       </div>
     </div>
     <div v-else>

@@ -1,6 +1,6 @@
 <template>
     <div>
-      <span>chat: {{ g }}</span>
+      <span>{{ g }}</span>
       <Schedule :flag="g" />
       <ArchiveNow :flag="g" typeString="chat" />
       <ArchiveSchedule :flag="g" typeString="chat" />

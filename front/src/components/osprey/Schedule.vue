@@ -1,10 +1,26 @@
 <template>
   <div v-if="scheduleFor">
-    schedule:
     <ul>
-      <li>flag: {{ scheduleFor.flag }}</li>
-      <li>next: {{ scheduleFor.next.toLocaleString() }}</li>
-      <li>last: {{ scheduleFor.last.toLocaleString() }}</li>
+      <li>
+          <div class="max-w-sm grid grid-cols-10">
+            <div class="col-span-3">
+              <span class="text-stone-500">next backup</span> 
+            </div>
+            <div class="col-span-7">
+              {{ scheduleFor.next.toLocaleString() }}
+            </div>
+          </div>
+      </li>
+      <li>
+          <div class="max-w-sm grid grid-cols-10">
+            <div class="col-span-3">
+              <span class="text-stone-500">last backup</span> 
+            </div>
+            <div class="col-span-7">
+              {{ scheduleFor.last.toLocaleString() }}
+            </div>
+          </div>
+      </li>
     </ul>
   </div>
 </template>

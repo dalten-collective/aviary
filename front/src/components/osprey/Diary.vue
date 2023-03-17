@@ -1,6 +1,6 @@
 <template>
     <div>
-      <span>diary: {{ g }}</span>
+      <span> {{ g }}</span>
       <Schedule :flag="g" />
       <ArchiveNow :flag="g" typeString="diary" />
       <ArchiveSchedule :flag="g" typeString="diary" />

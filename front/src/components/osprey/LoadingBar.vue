@@ -1,10 +1,12 @@
 <template>
+  <div class="my-4">
     <div v-if="loadStat(g)?.state === 'success'" class="px-2 py-1 font-bold text-white bg-green-400 rounded-full">
       Archived!
     </div>
     <div v-if="loadStat(g)?.state === 'loading'" class="w-full bg-stone-300 shadow-inner rounded-full h-2.5 mb-4">
       <div class="bg-amber-500 h-2.5 rounded-full transition-all ease-out duration-1000" :style="{ width: `${ completePercent(g) }%` }"></div>
     </div>
+  </div>
 </template>
 
 <script setup lang="ts">

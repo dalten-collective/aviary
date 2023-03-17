@@ -1,10 +1,12 @@
 <template>
-    <div>
-      <span>group: {{ g }}</span>
-      <Schedule :flag="g" />
+  <div>
+    <h5>
+      <span> {{ g }}</span>
+    </h5>
+      <Schedule class="my-2" :flag="g" />
+      <ArchiveSchedule class="mt-4 mb-2" :flag="g" typeString="group" />
       <ArchiveNow :flag="g" typeString="group" />
-      <ArchiveSchedule :flag="g" typeString="group" />
-      <LoadingBar :flag="g" />
+      <LoadingBar class="max-w-sm mt-4" :flag="g" />
     </div>
 </template>
 

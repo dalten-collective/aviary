@@ -31,7 +31,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/osprey",
     name: "ospreyHome",
     components: {
-      osprey: OspreyHome,
+      osprey: OspreyArchive,
       ospreyNav: OspreyNav,
     }
   },
