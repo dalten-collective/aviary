@@ -11,9 +11,10 @@
   !<((unit [@ud @dr flag:osp]) vaz)
 ;<  bol=bowl:rand  bind:m  get-bowl
 ?~  gro  (pure:m !>(~))
-=?    age.u.gro
-    (lth age.u.gro ~d90)
-  ~d90
+:: TODO:
+:: =?    age.u.gro
+::     (lth age.u.gro ~d90)
+::   ~d90
 ?>  =(our.bol p.flg.u.gro)
 ;<  =groups:gop  bind:m  (scry groups:gop %gx %groups /groups/noun)
 =+  group=(~(got by groups) flg.u.gro)
