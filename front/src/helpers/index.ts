@@ -22,3 +22,11 @@ export const secondsToUd = (sects: number): string => {
 export const secondsToDate = (sects: number): Date => {
   return (new Date(sects * 1000))
 }
+
+export const serverAddress = () => {
+  if (import.meta.env.DEV) {
+    return import.meta.env.VITE_URBIT_TARGET
+  } else {
+    return `${ location.protocol }//${ location.host }`
+  }
+}
