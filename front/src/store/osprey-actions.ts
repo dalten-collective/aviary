@@ -83,6 +83,11 @@ export const actions: ActionTree<State, State> & Actions = {
           commit(MutationTypes.ScheduleSet, data.fact)
         }
 
+        if (OR.IsOspreyResponseScheduleCancel(data)) {
+          console.log('schedule cancel')
+          dispatch(ActionTypes.ScrySchedule)
+        }
+
         if (OR.IsOspreyHostedEvery(data)) {
           console.log('every response')
           commit(MutationTypes.EverySet, data.fact)

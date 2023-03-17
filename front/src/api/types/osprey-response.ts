@@ -19,6 +19,7 @@ export enum OspreyResponseFaces {
   OspreyHostedGroups = "OSPREY-HOSTED-GROUPS",
   OspreyHostedDiaries = "OSPREY-HOSTED-DIARIES",
   OspreySchedule = "OSPREY-STATE-SCHEDULE",
+  OspreyScheduleCancel = "OSPREY-SCHEDULE-CANCEL",
   ArchiveStart = "ARCHIVE-START",
   ArchiveStatusUpdate = "ARCHIVE-STATUS-UPDATE",
   Dooming = "DOOMING",
@@ -134,6 +135,18 @@ export interface OspreyResponseSchedule {
   fact: Array<O.Schedule>;
 }
 
+export interface OspreyResponseScheduleCancel {
+  type: Api.ResponseTypes.Scry;
+  face: OspreyResponseFaces.OspreyScheduleCancel;
+  fact: {
+    archiving: {
+      path: T.Flag;
+      type: string;
+    }
+    frequency: number | null
+  }
+}
+
 export interface OspreyResponseHostedEvery {
   type: Api.ResponseTypes.Scry;
   face: OspreyResponseFaces.OspreyHostedEvery;
@@ -233,6 +246,7 @@ export interface OspreyResponseBootDone {
 
 export type OspreyResponse =
   | OspreyResponseSchedule
+  | OspreyResponseScheduleCancel
   | OspreyResponseHostedEvery
   | OspreyResponseHostedDms
   | OspreyResponseHostedChats
@@ -294,6 +308,11 @@ export const IsOspreyResponseArchiveStart = (
 ): r is OspreyResponseArchiveStart => {
   return r.face === OspreyResponseFaces.ArchiveStart;
 };
+
+export const IsOspreyResponseScheduleCancel = (r: OspreyResponse):
+  r is OspreyResponseScheduleCancel => {
+  return (r.face === OspreyResponseFaces.OspreyScheduleCancel)
+}
 
 export const IsOspreyResponseArchiveStatusUpdate = (
   r: OspreyResponse
