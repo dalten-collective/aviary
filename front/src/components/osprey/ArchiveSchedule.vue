@@ -1,5 +1,24 @@
 <template>
-  <button @click="archiveOnSchedule">Archive {{ seconds }}</button>
+  <div>
+    <div v-if="!scheduleFor">
+      <span class="underline cursor-pointer" @click="expanded = !expanded">{{ !expanded ? 'Recurring Archives' : 'Cancel' }}</span>
+      <div v-if="expanded">
+        Back up every...
+        <label for="hrs">
+          Hours:
+          <input id="hrs" v-model="hrs" />
+        </label>
+        <label for="min">
+          Minutes:
+          <input id="min" v-model="min" />
+        </label>
+        <button @click="archiveOnSchedule">Set Backups</button>
+      </div>
+    </div>
+    <div v-else>
+      <button @click="cancelArchive">Cancel Scheduled Backups</button>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -16,16 +35,30 @@ interface Props {
   typeString: string;
 }
 const props = defineProps<Props>();
+const ospreyStore = useStore()
+
+const hrs = ref(1);
+const min = ref(0);
+const sec = ref(0);
 
 const seconds = ref(60); // TODO:
+const expanded = ref(false);
 
-// TODO: remove parameters from button. they're props now
 const archiveOnSchedule = () => {
   const thing = props.typeString
+  const secs = ((parseInt(hrs.value) * 60 * 60) + (parseInt(min.value) * 60))
 
-  console.log(props.flag, thing, seconds.value)
-  return Pokes.RepeatArchive(props.flag, thing, seconds.value)
+  return Pokes.RepeatArchive(props.flag, thing, secs)
 }
+
+const cancelArchive = () => {
+  const thing = props.typeString
+  return Pokes.RepeatArchive(props.flag, thing, null)
+}
+
+const scheduleFor = computed(() => {
+  return ospreyStore.getters[GetterTypes.ScheduleFor](props.flag)
+})
 
 </script>
 
