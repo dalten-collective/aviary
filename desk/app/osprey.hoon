@@ -14,6 +14,7 @@
   $:  %0
       sched=schedule
       mails=mailslot
+      kicks=on-trial
   ==
 ::
 ::  boilerplate
@@ -67,7 +68,8 @@
     |=  [wir=wire sig=sign:agent:gall]
     ~>  %bout.[0 '%osprey +on-agent']
     ^-  (quip card _this)
-    `this
+    =^  cards  state  abet:(dude:eng wir sig)
+    [cards this]
   ::
   ++  on-arvo
     |=  [wir=wire sig=sign-arvo]
@@ -126,8 +128,6 @@
       %.  dat
       ?~(p.sig same (slog 'aviary-panic-fail-hood' u.p.sig))
     ==
-  ::
-    
   ==
 ::  +poke: handle on-poke
 ::
@@ -229,16 +229,50 @@
         %boot
       ?>  =(our.bol src.bol)
       %-  emit:(show mar vaz)
+      =.  kicks
+        %-  ~(put by kicks)
+        [(sham act) [group.act | [%boot rank.act] ~]]
       =-  [%pass /bootbot/(scot %ud (jam act)) %arvo %k %fard -]
       :+  %aviary  %osprey-bootbot
-      noun+!>(`(unit [rank:title flag])``+.act)
+      noun+!>(`(unit [@uv rank:title flag])``[(sham act) +.act])
     ::
         %doom
       ?>  =(our.bol src.bol)
+      =.  kicks
+        %-  ~(put by kicks)
+        [(sham act) [group.act | [%doom limit.act age.act] ~]]
       %-  emit:(show mar vaz)
       =-  [%pass /doombot/(scot %ud (jam act)) %arvo %k %fard -]
       :+  %aviary  %osprey-doombot
-      noun+!>(`(unit [@ud @dr flag])``+.act)
+      noun+!>(`(unit [@uv @ud @dr flag])``[(sham act) +.act])
+    ::
+        ?(%exec %stop)
+      =+  hav=(~(got by kicks) id.act)
+      =/  wir=path
+        ?-    -.data.hav
+            %doom
+          =+  bot=(scot %tas -.data.hav)
+          =+  id=(scot %uv id.act)
+          =+  who=(scot %p p.flag.hav)
+          =+  wat=(scot %tas q.flag.hav)
+          =+  lim=(scot %ud lim.data.hav)
+          =+  age=(scot %dr age.data.hav)
+          =/  pat=path
+            /confirm/[bot]/[id]/[who]/[wat]/[lim]/[age]
+          %-  emit
+          [%give %fact [pat]~ osprey-actions+!>(`actions`act)]
+        ::
+            %boot
+          =+  bot=(scot %tas -.data.hav)
+          =+  id=(scot %uv id.act)
+          =+  who=(scot %p p.flag.hav)
+          =+  wat=(scot %tas q.flag.hav)
+          =+  rnk=(scot %tas ran.data.hav)
+          =/  pat=path
+            /confirm/[bot]/[id]/[who]/[wat]/[ran]
+          %-  emit
+          [%give %fact [pat]~ osprey-actions+!>(`actions`act)]
+        ==
     ::
         ?(%mine %heap %diary %chat %group)
       ?>  =(our.bol src.bol)
@@ -253,8 +287,7 @@
         %.  [mar vaz]
         show(sched (~(del by sched) arc.act))
       ::
-      :: =+  freq=?:((lth u.oft.act ~h12) ~h12 u.oft.act)  ::  XX: replace dbug component below
-      =+  freq=?:((lth u.oft.act ~m1) ~m1 u.oft.act)
+      =+  freq=?:((lth u.oft.act ~m5) ~m5 u.oft.act)
       ?:  ?~(hav=(~(get by sched) arc.act) %| =(freq every.u.hav))  !!
       =/  pat=path
         /behn/(scot %ud (jam arc.act))/(scot %da now.bol)/(scot %dr freq)
@@ -296,6 +329,9 @@
     ~_  'AVIARY: osprey error, doombot thread failure.'
     =+  act=;;(actions (cue (slav %ud act.pol)))
     ?>  ?=([%khan %arow *] sig)
+    =+  upd=!<(updates:actions +.p.p.+.sig)
+    ?>  ?=(?(%destroy %ignored) -.upd)
+    =.  kicks  (~(del by kicks) id.upd)
     ?:  ?=(%& -.p.+.sig)
       (show osprey-updates++.p.p.+.sig)
     %.  dat
@@ -305,6 +341,9 @@
     ~_  'AVIARY: osprey error, bootbot thread failure.'
     =+  act=;;(actions (cue (slav %ud act.pol)))
     ?>  ?=([%khan %arow *] sig)
+    =+  upd=!<(updates:actions +.p.p.+.sig)
+    ?>  ?=(?(%destroy %ignored) -.upd)
+    =.  kicks  (~(del by kicks) id.upd)
     ?:  ?=(%& -.p.+.sig)
       (show osprey-updates++.p.p.+.sig)
     %.  dat
@@ -364,8 +403,8 @@
   |=  pol=(pole knot)
   ^+  dat
   ?+    pol  ~|(aviary-panic-osprey-watch/pol !!)
-      [%http-response @ ~]
-    dat
+    [%http-response @ ~]  dat
+  ::
       [%web-ui ~]
     ?>  =(our.bol src.bol)
     =~  (show osprey-state-ship+!>(`(set ship)`dms:scry))
@@ -376,6 +415,42 @@
         (show osprey-state-aval+!>(`[@t (set flag)]`['DIARIES' diaries:scry]))
         (show osprey-state-schedule+!>(`schedule`sched))
         (show osprey-state-schedule+!>(`mailslot`mails))
+        (show osprey-state-on-trial+!>(`on-trial`kicks))
+    ==
+  ::
+      [%confirm bot=@ id=@ rest=*]
+    =+  bot=;;(?(%doom %boot) (slav %tas bot.pol))
+    =+  id=`@uv`(slav %uv id.pol)
+    ?+    rest.pol  ~|(osprey-panic-bad-ted/rest.pol !!)
+        [who=@ wat=@ rnk=@ ~]
+      =+  rank=;;(rank:title (slav %tas rnk.rest.pol))
+      =/  =flag
+        [(slav %p who.rest.pol) (slav %tas wat.rest.pol)]
+      ?~  hav=(~(get by kicks) id)
+        ~|(osprey-panic-bad-ted/id !!)
+      ?.  ?=([%boot *] data.u.hav)
+        ~|(osprey-panic-ted-mixup/[id -.data.u.hav] !!)
+      ?.  =(rank ran.data.u.hav)
+        ~|(osprey-panic-ted-mixup/[id rank])
+      =.  kicks
+        (~(put by kicks) id flag %& data.u.hav ships.u.hav)
+      %.  osprey-updates+!>(`updates:actions`[%bootbot id])
+      show:(show osprey-state-on-trial+!>(`on-trial`kicks))
+    ::
+        [who=@ wat=@ lim=@ age=@ ~]
+      =+  rank=;;(rank:title (slav %tas rnk.rest.pol))
+      =/  =flag
+        [(slav %p who.rest.pol) (slav %tas wat.rest.pol)]
+      ?~  hav=(~(get by kicks) id)
+        ~|(osprey-panic-bad-ted/id !!)
+      ?.  ?=([%doom *] data.u.hav)
+        ~|(osprey-panic-ted-mixup/[id -.data.u.hav] !!)
+      ?.  =(rank ran.data.u.hav)
+        ~|(osprey-panic-ted-mixup/[id rank])
+      =.  kicks
+        (~(put by kicks) id flag %& data.u.hav ships.u.hav)
+      %.  osprey-updates+!>(`updates:actions`[%doombot id])
+      show:(show osprey-state-on-trial+!>(`on-trial`kicks))
     ==
   ==
 ::  +peek: handle on-peek
@@ -399,8 +474,12 @@
     ``osprey-state-schedule+!>(`schedule`sched)
       [%x %mailslot ~]
     ``osprey-state-mailslot+!>(`mailslot`mails)
+      [%x %on-trial ~]
+    ``osprey-state-on-trial+!>(`on-trial`kicks)
       [%x %dbug %state ~]
-    =-  ``[%state !>([%0 schedule=sched mailboxes=-])]
+    =-  :+  ~  ~
+        :-  %state
+        !>([%0 schedule=sched on-trial=kicks mailboxes=-])
     %+  roll  ~(tap bi mails)
     |=  $:  $:  p=@p
                 f=flag

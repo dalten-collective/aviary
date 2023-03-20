@@ -90,6 +90,29 @@
             ==
         ==
     ==
+  ++  on-trial
+    |=  kick=on-trial:o
+    %^  pack  'SCRY'
+      'OSPREY-ON-TRIAL'
+    %-  pairs
+    %-  ~(rep by kick)
+    |=  $:  [k=@uv v=(set [flag ? ?(%doom %boot) @ud @dr nade:o])]
+            o=(list [@t json])
+        ==
+    :_  o
+    :-  (scot %uv k)
+    ^-  (list json)
+    %-  ~(rep in v)
+    |=  [[f=flag p=? t=?(%doom %boot) u=@ud d=@dr e=nade:o] l=(list json)]
+    :_  l
+    %-  pairs
+    :~  flag+(flag f)
+        pending+b/p
+        type+s/t
+        limit+s/(crip (a-co:co limit))
+        age+s/(scot %dr d)
+        ships+?@(e s/'Pending' a/(turn e ship))
+    ==
   ++  actions
     |=  act=actions:o
     ?-    -.act
@@ -138,14 +161,24 @@
     ::
         %boot
       %^  pack  'FACT'
-        'BOOTING'
+        'KICK-BOOTING'
       (pairs rank+s/rank.act group+(flag group.act) ~)
     ::
         %doom
       %^  pack  'FACT'
-        'DOOMING'
+        'KICK-DOOMING'
       %-  pairs
       ~[seconds+(numb (div age.act ~s1)) group+(flag group.act)]
+    ::
+        %exec
+      %^  pack  'FACT'
+        'KICK-EXECUTING'
+      (frond id+s/(scot %uv id.act))
+    ::
+        %stop
+      %^  pack  'FACT'
+        'KICK-PARDONING'
+      (frond id+s/(scot %uv id.act))
     ::
         %repeat
       ?~  oft.act
@@ -165,19 +198,31 @@
     ?-    -.upd
         %bootbot
       %^  pack  'FACT'
-        'BOOTBOT-RESULTS'
-      %-  pairs
-      :~  killed+s/rank.upd
-          group+(flag gop.upd)
-      ==
+        'KICK-BOOTBOT-INITIALIZED'
+      (frond id+(scot %uv id.upd))
     ::
         %doombot
       %^  pack  'FACT'
-        'DOOMBOT-RESULTS'
+        'KICK-DOOMBOT-INITIALIZED'
+      (frond id+(scot %uv id.upd))
+    ::
+        %kick-em
+      %^  pack  'FACT'
+        'KICK-PREVIEW'
       %-  pairs
-      :~  killed+a/(turn ~(tap in sip.upd) ship)
-          group+(flag gop.upd)
+      :~  id+s/(scot %uv id.upd)
+          ships+a/(turn sip.upd ship)
       ==
+    ::
+        %destroy
+      %^  pack  'FACT'
+        'KICK-COMPLETED'
+      (frond id+(scot %uv id.upd))
+    ::
+        %ignored
+      %^  pack  'FACT'
+        'KICK-IGNORED'
+      (frond id+(scot %uv id.upd))
     ::
         %archive
       %^  pack  'FACT'
@@ -300,6 +345,9 @@
       :~  rank+(cu |=(t=@tas ;;(rank:title t)) so)
           group+flag
       ==
+    ::
+      exec+(ot [id+(se %uv)]~)
+      stop+(ot [id+(se %uv)]~)
     ::
       :-  %repeat
       %-  ot

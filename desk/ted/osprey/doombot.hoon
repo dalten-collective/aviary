@@ -7,8 +7,8 @@
 =/  m  (strand ,vase)
 ^-  form:m
 ::
-=/  gro=(unit [lim=@ud age=@dr flg=flag:osp])
-  !<((unit [@ud @dr flag:osp]) vaz)
+=/  gro=(unit [id=@uv lim=@ud age=@dr flg=flag:osp])
+  !<((unit [@uv @ud @dr flag:osp]) vaz)
 ;<  bol=bowl:rand  bind:m  get-bowl
 ?~  gro  (pure:m !>(~))
 =?    age.u.gro
@@ -16,19 +16,41 @@
   ~d90
 ?>  =(our.bol p.flg.u.gro)
 ;<  =groups:gop  bind:m  (scry groups:gop %gx %groups /groups/noun)
+=/  pat=path
+  =+  bot=(scot %tas %doom)
+  =+  id=(scot %uv id.u.gro)
+  =+  who=(scot %p p.flg.u.gro)
+  =+  wat=(scot %tas q.flg.u.gro)
+  =+  lim=(scot %ud lim.u.gro)
+  =+  age=(scot %dr age.u.gro)
+  confirm+[bot id who wat lim age ~]
 =+  group=(~(got by groups) flg.u.gro)
 =+  team=~(tap in ~(key by fleet.group))
+=+  no-op=!>(`updates:actions:osp`[%ignored id.u.gro])
 =|  olds=(set ship)
 ::
 |-
 ?~  team
-  ?:  =(~ olds)
-    (pure:m !>(`updates:actions:osp`[%doombot ~ flg.u.gro]))
-  =;  cad=card:agent:gall
-    ;<  ~  bind:m  (send-raw-card cad)
-    (pure:m !>(`updates:actions:osp`[%doombot olds flg.u.gro]))
-  =-  [%pass /doom %agent [our.bol %groups] %poke -]
-  group-action-0+!>(`action:gop`[flg.u.gro now.bol %fleet olds [%del ~]])
+  ?:  =(~ olds)  (pure:m no-op)
+  =/  out=cage
+    :-  %osprey-updates
+    !>([%kick-em id.pol (silt `(list ship)`olds)])
+  ;<  ~         bind:m  (watch / [our.bol %osprey] pat)
+  ;<  ~         bind:m  (poke [our.bol %osprey] out)
+  ;<  cag=cage  bind:m  (take-fact /)
+  ?>  ?=(%osprey-actions p.cag)
+  =+  act=!<(actions:osp q.cag)
+  ?+    -.act  (pure:m no-op)
+    %stop  (pure:m no-op)
+  ::
+      %exec
+    =;  do-it=cage
+      ;<  ~  bind:m  (poke [our.bol %groups] do-it)
+      %-  pure:m
+      !>(`updates:actions:osp`[%destroy id.u.gro])
+    :-  %group-action-0
+    !>(`action:gop`[flg.u.gro now.bol %fleet olds [%del ~]])
+  ==
 ::
 ?:  =(our.bol i.team)  $(team t.team)
 =+  them=[%ax %$ /peers/(scot %p i.team)]
