@@ -23,6 +23,50 @@ class OspreyAction {
   }
 }
 
+export class MailOpen extends OspreyAction {
+  declare payload: OP.MailOpenPayload['open'];
+
+  constructor(args: OP.MailOpenPayload['open']) {
+    const json: OP.MailOpenPayload = {
+      open: args
+    }
+    super(json)
+  }
+}
+
+export class MailSend extends OspreyAction {
+  declare payload: OP.MailSendPayload['mail'];
+
+  constructor(args: OP.MailSendPayload['mail']) {
+    const json: OP.MailSendPayload = {
+      mail: args
+    }
+    super(json)
+  }
+}
+
+export class MailRead extends OspreyAction {
+  declare payload: OP.MailReadPayload['read'];
+
+  constructor(args: OP.MailReadPayload['read']) {
+    const json: OP.MailReadPayload = {
+      read: args
+    }
+    super(json)
+  }
+}
+
+export class MailKill extends OspreyAction {
+  declare payload: OP.MailKillPayload['kill'];
+
+  constructor(args: OP.MailKillPayload['kill']) {
+    const json: OP.MailKillPayload = {
+      kill: args
+    }
+    super(json)
+  }
+}
+
 export class ArchiveMine extends OspreyAction {
   declare payload: null;
 

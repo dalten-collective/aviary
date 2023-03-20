@@ -1,5 +1,5 @@
 <template>
-  <button @click="archiveThing">Archive</button>
+  <button @click="archiveThing">Backup now</button>
 </template>
 
 <script setup lang="ts">

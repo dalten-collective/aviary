@@ -1,8 +1,8 @@
 <template>
-  <div>
-    Boot n Doom
-    <div>
-      <div v-for="g in groups">
+  <div class="container mx-auto my-8">
+    <h2>Boot 'n Doom</h2>
+    <div class="flex flex-col">
+      <div v-for="g in groups" class="max-w-md">
         <Doomer :flag="g" />
       </div>
     </div>

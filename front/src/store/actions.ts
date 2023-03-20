@@ -1,9 +1,9 @@
 import { ActionTree, ActionContext, DispatchOptions } from "vuex";
-import { ParrotState as State } from "./parrot-state";
-import { ParrotGetters as Getters } from "./parrot-getters";
-import { ParrotMutations as Mutations } from "./parrot-mutations";
-import { ParrotActionTypes as ActionTypes } from "./parrot-action-types";
-import { ParrotMutationTypes as MutationTypes } from "./parrot-mutation-types";
+import { State } from "./state";
+import { Getters } from "./getters";
+import { Mutations } from "./mutations";
+import { ActionTypes } from "./action-types";
+import { MutationTypes } from "./mutation-types";
 
 import * as T from '@/types'
 import * as P from '@/types/parrot-types'
@@ -20,14 +20,14 @@ type AugmentedActionContext = {
   getters: {
     [K in keyof Getters]: ReturnType<Getters[K]>;
   };
-  dispatch<K extends keyof ParrotActions>(
+  dispatch<K extends keyof Actions>(
     key: K,
-    payload?: Parameters<ParrotActions[K]>[1],
+    payload?: Parameters<Actions[K]>[1],
     options?: DispatchOptions
-  ): ReturnType<ParrotActions[K]>;
+  ): ReturnType<Actions[K]>;
 } & Omit<ActionContext<State, State>, "commit">;
 
-export interface ParrotActions {
+export interface Actions {
   [ActionTypes.AIRLOCK_OPEN](
     { commit }: AugmentedActionContext,
     deskName: string
@@ -90,7 +90,7 @@ export interface ParrotActions {
   ): Promise<any>;
 }
 
-export const actions: ActionTree<State, State> & ParrotActions = {
+export const actions: ActionTree<State, State> & Actions = {
   [ActionTypes.AIRLOCK_OPEN]({ commit, dispatch }, deskName: string) {
 
     airlock.openAirlockTo(
@@ -124,6 +124,8 @@ export const actions: ActionTree<State, State> & ParrotActions = {
         if (PR.IsFlockCeaseFact(data)) {
           console.log('FlockCeaseFact ', data)
           commit(MutationTypes.EXISTING_FLOCKS_REMOVE, data.fact)
+          dispatch(ActionTypes.SCRY_AVAIL_CHATS)
+          dispatch(ActionTypes.SCRY_FLOKS)
         }
         if (PR.IsSendInviteFact(data)) {
           console.log('SendInvites ', data)

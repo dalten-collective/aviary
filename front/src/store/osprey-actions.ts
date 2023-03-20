@@ -55,9 +55,41 @@ export const actions: ActionTree<State, State> & Actions = {
         //   console.log('BlockedHosts ', data)
         //   // dispatch(ActionTypes.EXAMPLE, data.test.thing as string);
         // }
+
+        if (OR.IsOspreyResponseMailslot(data)) {
+          // TODO:
+          console.log('got slots')
+        }
+
+        // TODO
+        if (OR.IsOspreyResponseMailSending(data)) {
+          console.log('sending mail...')
+        }
+        // TODO
+        if (OR.IsOspreyResponseMailSent(data)) {
+          console.log('mail sent!')
+        }
+        // TODO
+        if (OR.IsOspreyResponseMailReceived(data)) {
+          console.log('mail received!')
+        }
+        if (OR.IsOspreyResponseMailReading(data)) {
+          console.log('mail reading...')
+        }
+        if (OR.IsOspreyResponseMailReadDone(data)) {
+          console.log('mail read done!')
+        }
+        if (OR.IsOspreyResponseMailKilled(data)) {
+          console.log('mail killed!')
+        }
+
         if (OR.IsOspreyResponseSchedule(data)) {
-          console.log('schedule response')
           commit(MutationTypes.ScheduleSet, data.fact)
+        }
+
+        if (OR.IsOspreyResponseScheduleCancel(data)) {
+          console.log('schedule cancel')
+          dispatch(ActionTypes.ScrySchedule)
         }
 
         if (OR.IsOspreyHostedEvery(data)) {
@@ -171,6 +203,15 @@ export const actions: ActionTree<State, State> & Actions = {
      console.log('dispatching SCRY_SCHEDULE action...')
      return Scries.Schedule().then((r: OR.OspreyResponseSchedule) => {
        ctx.commit(MutationTypes.ScheduleSet, r.fact)
+     })
+   },
+
+   [ActionTypes.ScryMailslots](
+     ctx,
+   ) {
+     console.log('dispatching ScryMailslots action...')
+     return Scries.Mail().then((r: OR.OspreyResponseMailslot) => {
+       ctx.commit(MutationTypes.MailslotSet, r.fact)
      })
    },
 

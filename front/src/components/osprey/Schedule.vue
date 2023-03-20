@@ -3,8 +3,8 @@
     schedule:
     <ul>
       <li>flag: {{ scheduleFor.flag }}</li>
-      <li>next: {{ scheduleFor.next }}</li>
-      <li>last: {{ scheduleFor.last }}</li>
+      <li>next: {{ scheduleFor.next.toLocaleString() }}</li>
+      <li>last: {{ scheduleFor.last.toLocaleString() }}</li>
     </ul>
   </div>
 </template>

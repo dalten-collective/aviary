@@ -30,6 +30,16 @@ export class ScrySchedule extends OspreyScry {
   }
 }
 
+export class ScryMail extends OspreyScry {
+  constructor() {
+    super('/mailslot')
+  }
+
+  scry(): Promise<OR.OspreyResponseSchedule> {
+    return super.scry()
+  }
+}
+
 export class ScryEvery extends OspreyScry {
   constructor() {
     super('/every')

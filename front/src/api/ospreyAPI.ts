@@ -9,6 +9,7 @@ import * as OS from "./ospreyScrier";
 
 export const Scries = {
   Schedule() { return scrySchedule() },
+  Mail() { return scryMail() },
   Every() { return scryEvery() },
   Dms() { return scryDms() },
   Chats() { return scryChats() },
@@ -26,12 +27,22 @@ export const Pokes = {
   RepeatArchive(flag, typeString, schedule) { return pokeRepeatArchive(flag, typeString, schedule) },
   Doom(args) { return pokeDoom(args) },
   Boot(args) { return pokeBoot(args) },
+
+  MailOpen(args) { return pokeMailOpen(args) },
+  MailSend(args) { return pokeMailSend(args) },
+  MailRead(args) { return pokeMailRead(args) },
+  MailKill(args) { return pokeMailKill(args) },
 }
 
 ////
 
 export function scrySchedule(): Promise<OR.OspreyResponseSchedule> {
   const scrier = new OS.ScrySchedule()
+  return scrier.scry()
+}
+
+export function scryMail(): Promise<OR.OspreyResponseMail> {
+  const scrier = new OS.ScryMail()
   return scrier.scry()
 }
 
@@ -116,5 +127,29 @@ export function pokeDoom(args: OP.DoomPayload['doom']): Promise<any>
 export function pokeBoot(args: OP.BootPayload['boot']): Promise<any>
   {
   const poker = new OA.Boot(args)
+  return poker.poke()
+}
+
+export function pokeMailOpen(args: OP.MailOpenPayload['open']): Promise<any>
+  {
+  const poker = new OA.MailOpen(args)
+  return poker.poke()
+}
+
+export function pokeMailSend(args: OP.MailSendPayload['mail']): Promise<any>
+  {
+  const poker = new OA.MailSend(args)
+  return poker.poke()
+}
+
+export function pokeMailRead(args: OP.MailReadPayload['read']): Promise<any>
+  {
+  const poker = new OA.MailRead(args)
+  return poker.poke()
+}
+
+export function pokeMailKill(args: OP.MailKillPayload['kill']): Promise<any>
+  {
+  const poker = new OA.MailKill(args)
   return poker.poke()
 }
