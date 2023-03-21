@@ -136,7 +136,18 @@
   ?+    mar  ~|(aviary-panic-osprey-poke/mar !!)
       %osprey-updates  
     ?>  =(our.bol src.bol)
-    (show mar vaz)
+    =+  upd=!<(updates:actions vaz)
+    ?+    -.upd  (show mar vaz)
+        %kick-em
+      ~&  >  "here"
+      =+  hav=(~(got by kicks) id.upd)
+      %.  [mar vaz]
+      %=    show
+          kicks
+        %-  ~(put by kicks)
+        [id.upd hav(ships ~(tap in sip.upd))]
+      ==
+    ==
   ::
       %handle-http-request
     =+  !<([id=@ta req=inbound-request:eyre] vaz)
@@ -248,31 +259,30 @@
     ::
         ?(%exec %stop)
       =+  hav=(~(got by kicks) id.act)
-      =/  wir=path
-        ?-    -.data.hav
-            %doom
-          =+  bot=(scot %tas -.data.hav)
-          =+  id=(scot %uv id.act)
-          =+  who=(scot %p p.flag.hav)
-          =+  wat=(scot %tas q.flag.hav)
-          =+  lim=(scot %ud lim.data.hav)
-          =+  age=(scot %dr age.data.hav)
-          =/  pat=path
-            /confirm/[bot]/[id]/[who]/[wat]/[lim]/[age]
-          %-  emit
-          [%give %fact [pat]~ osprey-actions+!>(`actions`act)]
-        ::
-            %boot
-          =+  bot=(scot %tas -.data.hav)
-          =+  id=(scot %uv id.act)
-          =+  who=(scot %p p.flag.hav)
-          =+  wat=(scot %tas q.flag.hav)
-          =+  rnk=(scot %tas ran.data.hav)
-          =/  pat=path
-            /confirm/[bot]/[id]/[who]/[wat]/[ran]
-          %-  emit
-          [%give %fact [pat]~ osprey-actions+!>(`actions`act)]
-        ==
+      ?-    -.data.hav
+          %doom
+        =+  bot=(scot %tas -.data.hav)
+        =+  id=(scot %uv id.act)
+        =+  who=(scot %p p.flag.hav)
+        =+  wat=(scot %tas q.flag.hav)
+        =+  lim=(scot %ud lim.data.hav)
+        =+  age=(scot %dr age.data.hav)
+        =/  pat=path
+          /confirm/[bot]/[id]/[who]/[wat]/[lim]/[age]
+        %-  emit
+        [%give %fact [pat]~ osprey-actions+!>(`actions`act)]
+      ::
+          %boot
+        =+  bot=(scot %tas -.data.hav)
+        =+  id=(scot %uv id.act)
+        =+  who=(scot %p p.flag.hav)
+        =+  wat=(scot %tas q.flag.hav)
+        =+  rnk=(scot %tas ran.data.hav)
+        =/  pat=path
+          /confirm/[bot]/[id]/[who]/[wat]/[rnk]
+        %-  emit
+        [%give %fact [pat]~ osprey-actions+!>(`actions`act)]
+      ==
     ::
         ?(%mine %heap %diary %chat %group)
       ?>  =(our.bol src.bol)
@@ -329,10 +339,10 @@
     ~_  'AVIARY: osprey error, doombot thread failure.'
     =+  act=;;(actions (cue (slav %ud act.pol)))
     ?>  ?=([%khan %arow *] sig)
-    =+  upd=!<(updates:actions +.p.p.+.sig)
-    ?>  ?=(?(%destroy %ignored) -.upd)
-    =.  kicks  (~(del by kicks) id.upd)
     ?:  ?=(%& -.p.+.sig)
+      =+  upd=!<(updates:actions +.p.p.+.sig)
+      ?>  ?=(?(%destroy %ignored) -.upd)
+      =.  kicks  (~(del by kicks) id.upd)
       (show osprey-updates++.p.p.+.sig)
     %.  dat
     (slog 'aviary-panic-doombot-thread-fail' tang.p.p.+.sig)
@@ -341,10 +351,10 @@
     ~_  'AVIARY: osprey error, bootbot thread failure.'
     =+  act=;;(actions (cue (slav %ud act.pol)))
     ?>  ?=([%khan %arow *] sig)
-    =+  upd=!<(updates:actions +.p.p.+.sig)
-    ?>  ?=(?(%destroy %ignored) -.upd)
-    =.  kicks  (~(del by kicks) id.upd)
     ?:  ?=(%& -.p.+.sig)
+      =+  upd=!<(updates:actions +.p.p.+.sig)
+      ?>  ?=(?(%destroy %ignored) -.upd)
+      =.  kicks  (~(del by kicks) id.upd)
       (show osprey-updates++.p.p.+.sig)
     %.  dat
     (slog 'aviary-panic-bootbot-thread-fail' tang.p.p.+.sig)
@@ -431,22 +441,25 @@
       ?.  ?=([%boot *] data.u.hav)
         ~|(osprey-panic-ted-mixup/[id -.data.u.hav] !!)
       ?.  =(rank ran.data.u.hav)
-        ~|(osprey-panic-ted-mixup/[id rank])
+        ~|(osprey-panic-ted-mixup/[id rank] !!)
       =.  kicks
         (~(put by kicks) id flag %& data.u.hav ships.u.hav)
       %.  osprey-updates+!>(`updates:actions`[%bootbot id])
       show:(show osprey-state-on-trial+!>(`on-trial`kicks))
     ::
         [who=@ wat=@ lim=@ age=@ ~]
-      =+  rank=;;(rank:title (slav %tas rnk.rest.pol))
+      =+  lim=(slav %ud lim.rest.pol)
+      =+  age=(slav %dr age.rest.pol)
       =/  =flag
         [(slav %p who.rest.pol) (slav %tas wat.rest.pol)]
       ?~  hav=(~(get by kicks) id)
         ~|(osprey-panic-bad-ted/id !!)
       ?.  ?=([%doom *] data.u.hav)
         ~|(osprey-panic-ted-mixup/[id -.data.u.hav] !!)
-      ?.  =(rank ran.data.u.hav)
-        ~|(osprey-panic-ted-mixup/[id rank])
+      ?.  =(lim lim.data.u.hav)
+        ~|(osprey-panic-ted-mixup/[id lim] !!)
+      ?.  =(age age.data.u.hav)
+        ~|(osprey-panic-ted-mixup/[id age] !!)
       =.  kicks
         (~(put by kicks) id flag %& data.u.hav ships.u.hav)
       %.  osprey-updates+!>(`updates:actions`[%doombot id])

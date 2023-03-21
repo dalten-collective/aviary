@@ -11,9 +11,10 @@
   !<((unit [@uv @ud @dr flag:osp]) vaz)
 ;<  bol=bowl:rand  bind:m  get-bowl
 ?~  gro  (pure:m !>(~))
-=?    age.u.gro
-    (lth age.u.gro ~d90)
-  ~d90
+::  XX: un-comment for production
+:: =?    age.u.gro
+::     (lth age.u.gro ~d90)
+::   ~d90
 ?>  =(our.bol p.flg.u.gro)
 ;<  =groups:gop  bind:m  (scry groups:gop %gx %groups /groups/noun)
 =/  pat=path
@@ -32,9 +33,10 @@
 |-
 ?~  team
   ?:  =(~ olds)  (pure:m no-op)
+  ~&  >>>  olds
   =/  out=cage
     :-  %osprey-updates
-    !>([%kick-em id.pol (silt `(list ship)`olds)])
+    !>([%kick-em id.u.gro olds])
   ;<  ~         bind:m  (watch / [our.bol %osprey] pat)
   ;<  ~         bind:m  (poke [our.bol %osprey] out)
   ;<  cag=cage  bind:m  (take-fact /)

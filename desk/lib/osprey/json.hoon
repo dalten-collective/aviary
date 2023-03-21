@@ -96,22 +96,35 @@
       'OSPREY-ON-TRIAL'
     %-  pairs
     %-  ~(rep by kick)
-    |=  $:  [k=@uv v=(set [flag ? ?(%doom %boot) @ud @dr nade:o])]
+    |=  $:  $:  k=@uv
+                $:  f=flag:o
+                    p=?
+                    d=$%([%doom l=@ud a=@dr] [%boot r=rank:title])
+                    e=nade:o
+                ==
+            ==
+          ::
             o=(list [@t json])
         ==
     :_  o
     :-  (scot %uv k)
-    ^-  (list json)
-    %-  ~(rep in v)
-    |=  [[f=flag p=? t=?(%doom %boot) u=@ud d=@dr e=nade:o] l=(list json)]
-    :_  l
-    %-  pairs
-    :~  flag+(flag f)
-        pending+b/p
-        type+s/t
-        limit+s/(crip (a-co:co limit))
-        age+s/(scot %dr d)
-        ships+?@(e s/'Pending' a/(turn e ship))
+    ?-    -.d
+        %doom
+      %-  pairs
+      :~  flag+(flag f)
+          pending+b/p
+          type+s/-.d
+          limit+s/(crip (a-co:co l.d))
+          age+s/(scot %dr a.d)
+          ships+?@(e s/'Pending' a/(turn e ship))
+      ==
+        %boot
+      %-  pairs
+      :~  flag+(flag f)
+          pending+b/p
+          type+s/-.d
+          rank+s/r.d
+      ==
     ==
   ++  actions
     |=  act=actions:o
@@ -199,30 +212,30 @@
         %bootbot
       %^  pack  'FACT'
         'KICK-BOOTBOT-INITIALIZED'
-      (frond id+(scot %uv id.upd))
+      (frond id+s/(scot %uv id.upd))
     ::
         %doombot
       %^  pack  'FACT'
         'KICK-DOOMBOT-INITIALIZED'
-      (frond id+(scot %uv id.upd))
+      (frond id+s/(scot %uv id.upd))
     ::
         %kick-em
       %^  pack  'FACT'
         'KICK-PREVIEW'
       %-  pairs
       :~  id+s/(scot %uv id.upd)
-          ships+a/(turn sip.upd ship)
+          ships+a/(turn ~(tap in sip.upd) ship)
       ==
     ::
         %destroy
       %^  pack  'FACT'
         'KICK-COMPLETED'
-      (frond id+(scot %uv id.upd))
+      (frond id+s/(scot %uv id.upd))
     ::
         %ignored
       %^  pack  'FACT'
         'KICK-IGNORED'
-      (frond id+(scot %uv id.upd))
+      (frond id+s/(scot %uv id.upd))
     ::
         %archive
       %^  pack  'FACT'
