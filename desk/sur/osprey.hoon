@@ -3,7 +3,10 @@
 |%
 +$  flag      (pair ship term)
 +$  frag      ?(flag @uv ship)
-+$  nade      $@(%calculating (list ship))
++$  nade      (list ship)
++$  data      $%  [%doom lim=@ud age=@dr]
+                  [%boot ran=rank:title]
+              ==
 +$  schedule  (map archive:actions $:(prior=@da every=@dr))
 +$  mailslot
   %^  mip  @p
@@ -17,8 +20,7 @@
   %+  map
     @uv
   $:  =flag
-      pending=_|
-      data=$%([%doom lim=@ud age=@dr] [%boot ran=rank:title])
+      =data
       ships=nade
   ==
 ::
@@ -73,12 +75,7 @@
     ==
   ::
   +$  updates
-    $%  [%bootbot id=@uv]                               ::  thread reports (bootbot) initialize
-        [%doombot id=@uv]                               ::  thread reports (doombot) initialize
-        [%kick-em id=@uv sip=(set ship)]                ::  thread reports (boot/doom) who will be kicked
-        [%destroy id=@uv]                               ::  thread reports (boot/doom) omg u killed them!
-        [%ignored id=@uv]                               ::  thread reports (boot/doom) apathy. yuge cope!
-        [%archive ark=archive don=@ud tot=@ud]          ::  thread reports (archive)
+    $%  [%archive ark=archive don=@ud tot=@ud]          ::  thread reports (archive)
       ::
         $:  %sending                                    ::  thread reports (virtual-out)
             gro=flag

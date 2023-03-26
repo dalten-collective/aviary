@@ -96,14 +96,7 @@
       'OSPREY-ON-TRIAL'
     %-  pairs
     %-  ~(rep by kick)
-    |=  $:  $:  k=@uv
-                $:  f=flag:o
-                    p=?
-                    d=$%([%doom l=@ud a=@dr] [%boot r=rank:title])
-                    e=nade:o
-                ==
-            ==
-          ::
+    |=  $:  [k=@uv [f=flag:o d=data:o e=nade:o]]
             o=(list [@t json])
         ==
     :_  o
@@ -112,18 +105,17 @@
         %doom
       %-  pairs
       :~  flag+(flag f)
-          pending+b/p
           type+s/-.d
-          limit+s/(crip (a-co:co l.d))
-          age+s/(scot %dr a.d)
-          ships+?@(e s/'Pending' a/(turn e ship))
+          limit+s/(crip (a-co:co lim.d))
+          age+s/(scot %dr age.d)
+          ships+a/(turn e ship)
       ==
         %boot
       %-  pairs
       :~  flag+(flag f)
-          pending+b/p
           type+s/-.d
-          rank+s/r.d
+          rank+s/ran.d
+          ships+a/(turn e ship)
       ==
     ==
   ++  actions
@@ -209,34 +201,6 @@
     |=  upd=updates:actions:o
     ^-  json
     ?-    -.upd
-        %bootbot
-      %^  pack  'FACT'
-        'KICK-BOOTBOT-INITIALIZED'
-      (frond id+s/(scot %uv id.upd))
-    ::
-        %doombot
-      %^  pack  'FACT'
-        'KICK-DOOMBOT-INITIALIZED'
-      (frond id+s/(scot %uv id.upd))
-    ::
-        %kick-em
-      %^  pack  'FACT'
-        'KICK-PREVIEW'
-      %-  pairs
-      :~  id+s/(scot %uv id.upd)
-          ships+a/(turn ~(tap in sip.upd) ship)
-      ==
-    ::
-        %destroy
-      %^  pack  'FACT'
-        'KICK-COMPLETED'
-      (frond id+s/(scot %uv id.upd))
-    ::
-        %ignored
-      %^  pack  'FACT'
-        'KICK-IGNORED'
-      (frond id+s/(scot %uv id.upd))
-    ::
         %archive
       %^  pack  'FACT'
         'ARCHIVE-STATUS-UPDATE'
