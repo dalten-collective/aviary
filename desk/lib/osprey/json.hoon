@@ -56,7 +56,7 @@
   ++  mailslot
     |=  mail=mailslot:o
     %^  pack  'SCRY'
-      'OSPREY-MAILSLOT'
+      'OSPREY-STATE-MAILSLOT'
     %-  pairs
     %-  ~(rep by mail)
     |=  $:  $:  k=@p
@@ -105,7 +105,7 @@
   ++  on-trial
     |=  kick=on-trial:o
     %^  pack  'SCRY'
-      'OSPREY-ON-TRIAL'
+      'OSPREY-STATE-ON-TRIAL'
     %-  pairs
     %-  ~(rep by kick)
     |=  $:  [k=@uv [f=flag:o d=data:o e=nade:o]]
