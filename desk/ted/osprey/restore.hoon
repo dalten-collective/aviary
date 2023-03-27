@@ -22,14 +22,25 @@
     ;<  ~  bind:m  (send-raw-card u.make)
     ;<  ~  bind:m  (take-poke-ack /channel/create)
     =+  mc-abet:(mc-kick:mseed c.u.data)
+    =/  prog=[w=@rd i=@rd]
+      :-  (div .~100 (ryld [%d %& -0 (lent caz)]))
+      (div .~100 (ryld [%d %& -0 (lent caz)]))
     |-  
     ?~  caz
       %-  pure:m
       !>  ^-  updates:actions:osp
       [%restore t.u.data g.u.data o.u.data [our.bol c.u.data] dun]
-    ;<  ~  bind:m  (send-raw-card i.caz)
-    ;<  ~  bind:m  (take-poke-ack /osprey/upload)
-    $(caz t.caz)
+    =;  work=cage
+      ;<  ~  bind:m  (send-raw-card i.caz)
+      ;<  ~  bind:m  (take-poke-ack /osprey/upload)
+      ;<  ~  bind:m  (poke [our.bol %osprey] work)
+      ;<  ~  bind:m  (sleep (div ~s1 100))
+      $(caz t.caz, i.prog (add:rd w.prog i.prog))
+    :-  %osprey-updates
+    !>  ^-  updates:actions:osp
+    :*  %working  t.u.data  g.u.data  o.u.data
+        [our.bol c.u.data]  (r-co:co (rlyd i.prog))
+    ==
   ::                 
   ;<  ~  bind:m  (send-raw-card (mog p.g.u.data our.bol))
   ;<  ~  bind:m  (take-poke-ack /group/create)
@@ -42,15 +53,25 @@
   ;<  ~  bind:m  (send-raw-card u.make)
   ;<  ~  bind:m  (take-poke-ack /channel/create)
   =+  mc-abet:(mc-kick:mseed c.u.data)
+  =/  prog=[w=@rd i=@rd]
+    :-  (div .~100 (ryld [%d %& -0 (lent caz)]))
+    (div .~100 (ryld [%d %& -0 (lent caz)]))
   |-  
   ?~  caz
     %-  pure:m
     !>  ^-  updates:actions:osp
     [%restore t.u.data g.u.data o.u.data [our.bol c.u.data] dun]
-  ;<  ~  bind:m  (send-raw-card i.caz)
-  ;<  ~  bind:m  (take-poke-ack /osprey/upload)
-  ;<  ~  bind:m  (sleep (div ~s1 100))
-  $(caz t.caz)
+  =;  work=cage
+    ;<  ~  bind:m  (send-raw-card i.caz)
+    ;<  ~  bind:m  (take-poke-ack /osprey/upload)
+    ;<  ~  bind:m  (poke [our.bol %osprey] work)
+    ;<  ~  bind:m  (sleep (div ~s1 100))
+    $(caz t.caz, i.prog (add:rd w.prog i.prog))
+  :-  %osprey-updates
+  !>  ^-  updates:actions:osp
+  :*  %working  t.u.data  g.u.data  o.u.data
+      [our.bol c.u.data]  `tape`(r-co:co (rlyd i.prog))
+  ==
 ::
 |%
 +$  card  card:agent:gall
@@ -112,22 +133,49 @@
         (mc-emil(dun %&) lac)
       %-  zing  %+  turn  jams
       |=  j=jam
-      %+  turn  ;;((list [@da diff:cha]) (cue j))
+      %+  murn  ;;((list [@da diff:cha]) (cue j))
       |=  [t=@da d=diff:cha]
-      ^-  card
-      :+  %pass  /osprey/upload
+      ^-  (unit card)
+      =;  make=$-(diff:cha card)
+        ?:  ?=([%create *] d)               ~
+        ?.  ?=([%writs *] d)                `(make d)
+        ?.  ?=([%add *] q.p.d)              `(make d)
+        ?.  ?=([%story *] content.p.q.p.d)  `(make d)
+        =.  p.p.content.p.q.p.d
+          ^-  (list block:cha)
+          %+  turn  p.p.content.p.q.p.d
+          |=  b=block:cha
+          ?.  ?=([%cite %chan *] b)       b
+          ?.  =(nest.cite.b [%chat ole])  b
+          b(nest.cite [%chat our.bol nam])
+        `(make d)
+      |=  dif=diff:cha
+      :+  %pass   /osprey/upload
       :^  %agent  [our.bol %chat]  %poke
-      chat-action-0+!>(`action:cha`[[our.bol nam] [t d]])
+      chat-action-0+!>(`action:cha`[[our.bol nam] [t dif]])
     ::
         %heap
       =;  lac=(list card)
         (mc-emil(dun %&) lac)
       %-  zing  %+  turn  jams
       |=  j=jam
-      %+  turn  ;;((list [@da diff:hyp]) (cue j))
+      %+  murn  ;;((list [@da diff:hyp]) (cue j))
       |=  [t=@da d=diff:hyp]
-      ^-  card
-      :+  %pass  /osprey/upload
+      ^-  (unit card)
+      =;  make=$-(diff:hyp card)
+        ?:  ?=(%create -.d)     ~
+        ?.  ?=([%curios *] d)   `(make d)
+        ?.  ?=([%add *] q.p.d)  `(make d)
+        =.  p.content.p.q.p.d
+          ^-  (list block:hyp)
+          %+  turn  p.content.p.q.p.d
+          |=  b=block:hyp
+          ?.  ?=([%cite %chan *] b)       b
+          ?.  =(nest.cite.b [%heap ole])  b
+          b(nest.cite [%heap our.bol nam])
+        `(make d)
+      |=  dif=diff:hyp
+      :+  %pass   /osprey/upload
       :^  %agent  [our.bol %heap]  %poke
       heap-action-0+!>(`action:hyp`[[our.bol nam] [t d]])
     ::
@@ -136,10 +184,22 @@
         (mc-emil(dun %&) lac)
       %-  zing  %+  turn  jams
       |=  j=jam
-      %+  turn  ;;((list [@da diff:dia]) (cue j))
+      %+  murn  ;;((list [@da diff:dia]) (cue j))
       |=  [t=@da d=diff:dia]
-      ^-  card
-      :+  %pass  /osprey/upload
+      ^-  (unit card)
+      =;  make=$-(diff:dia card)
+        ?:  ?=([%create *] d)   ~
+        ?.  ?=([%notes *] d)    `(make d)
+        ?.  ?=([%add *] q.p.d)  `(make d)
+        =.  content.p.q.p.d
+          %+  turn  content.p.q.p.d
+          |=  v=verse:dia
+          ?.  ?=([%block %cite %chan *] v)   v
+          ?.  =(nest.cite.p.v [%diary ole])  v
+          v(nest.cite.p [%diary our.bol nam])
+        `(make d)
+      |=  dif=diff:dia
+      :+  %pass   /osprey/upload
       :^  %agent  [our.bol %diary]  %poke
       diary-action-0+!>(`action:dia`[[our.bol nam] [t d]])
     ==

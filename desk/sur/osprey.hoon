@@ -14,6 +14,7 @@
   %-  unit
   $:  member=(list @p)
       admins=(list @p)
+      domain=[head=@da tail=@da hash=@uv]
       config=(list email)
   ==
 +$  on-trial
@@ -44,6 +45,7 @@
             wat=flag
             mem=(list @p)
             adm=(list @p)
+            dom=[hed=@da but=@da =@uv]
             wic=(list email)
         ==
       ::
@@ -81,6 +83,7 @@
             gro=flag
             mem=(list @p)
             adm=(list @p)
+            dom=[hed=@da but=@da =@uv]
             con=(list email)
         ==
       ::
@@ -88,6 +91,14 @@
             new=flag
             and=(list flag)
             wit=[mem=? adm=?]
+        ==
+      ::
+        $:  %working                                    ::  thread reports (restore)
+            typ=?(%dm %club %chat %heap %diary)
+            gro=(each term flag)
+            ole=frag
+            new=frag
+            per=tape
         ==
       ::
         $:  %restore                                    ::  thread reports (restore)

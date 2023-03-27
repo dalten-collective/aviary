@@ -11,9 +11,11 @@
     !<((unit [@p flag:osp]) vaz)
   ;<  =bowl:rand  bind:m  get-bowl
   ?~  fug  (pure:m !>(~))
-  =;  out=[flag:osp (list @p) (list @p) (list email:osp)]
+  =;  out=[flag:osp (list @p) (list @p) [@da @da @uv] (list email:osp)]
+    ::  send a take to the person you specified
     =+  cag=osprey-actions+!>(`actions:osp`take+out)
     ;<  ~  bind:m  (poke [-.u.fug %osprey] -)
+    ::  inform your osprey that the activity is complete
     (pure:m !>(`updates:actions:osp`sending+out))
   abet:mk-mail:groups:scry:(abed:sen bowl u.fug)
 |%
@@ -25,6 +27,9 @@
           lam=(list email:osp)
           mem=(list @p)
           adm=(list @p)
+          old=@da
+          new=@da
+          has=@uv
       ==
   +*  sen  .
       mon  |=(d=mold ((on time d) lte))
@@ -33,11 +38,71 @@
       dod  /(scot %p our.bol)/diary/(scot %da now.bol)
       dog  /(scot %p our.bol)/groups/(scot %da now.bol)
   ++  abet
-    ^-  [flag:osp (list @p) (list @p) (list email:osp)]
-    [wat mem adm lam]
+    ^-  [flag:osp (list @p) (list @p) [@da @da @uv] (list email:osp)]
+    =~  scan
+        sign
+        [wat mem adm [old new has] lam]
+    ==
   ++  abed
     |=  [b=bowl:rand hu=@p wa=flag:osp]
     ^+(sen sen(bol b, who hu, wat wa))
+  ++  sign
+    sen(has (sham wat lam mem adm))
+  ++  scan
+    =;  [min=@da max=@da]
+      sen(old min, new max)
+    %+  roll  lam
+    |=  [e=email:osp [min=@da max=@da]]
+    ?-    -.e
+        %chat-log
+      =+  log-on=((on time diff:cha) lte)
+      ?~  pri=(pry:log-on q.e)  [min max]
+      =+  hav=(bap:log-on q.e)
+      =?    min
+          ?|  =(min *@da)
+              (lth -:(rear hav) min)
+          ==
+        -:(rear hav)
+      =?    max
+          ?|  =(max *@da)
+              (gth -:u.pri max)
+          ==
+        -:u.pri
+      [min max]
+    ::
+        %heap-log
+      =+  log-on=((on time diff:hyp) lte)
+      ?~  pri=(pry:log-on q.e)  [min max]
+      =+  hav=(bap:log-on q.e)
+      =?    min
+          ?|  =(min *@da)
+              (lth -:(rear hav) min)
+          ==
+        -:(rear hav)
+      =?    max
+          ?|  =(max *@da)
+              (gth -:u.pri max)
+          ==
+        -:u.pri
+      [min max]
+    ::
+        %note-log
+      =+  log-on=((on time diff:dia) lte)
+      ?~  pri=(pry:log-on q.e)  [min max]
+      =+  hav=(bap:log-on q.e)
+      =?    min
+          ?|  =(min *@da)
+              (lth -:(rear hav) min)
+          ==
+        -:(rear hav)
+      =?    max
+          ?|  =(max *@da)
+              (gth -:u.pri max)
+          ==
+        -:u.pri
+      [min max]
+    ==
+    
   ++  scry
     |%
     ++  chat

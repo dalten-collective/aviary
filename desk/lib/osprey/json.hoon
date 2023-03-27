@@ -60,7 +60,7 @@
     %-  pairs
     %-  ~(rep by mail)
     |=  $:  $:  k=@p
-                v=(map flag:o (unit [(list @p) (list @p) (list email:o)]))
+                v=(map flag:o (unit [(list @p) (list @p) [@da @da @uv] (list email:o)]))
             ==
             o=(list [@t json])
         ==
@@ -68,7 +68,11 @@
     :+  (scot %p k)  %a
     ^-  (list json)
     %-  ~(rep by v)
-    |=  [[f=flag:^o d=(unit [m=(list @p) a=(list @p) e=(list email:^o)])] l=(list json)]
+    |=  $:  $:  f=flag:^o
+                d=(unit [m=(list @p) a=(list @p) d=[o=@da n=@da h=@uv] e=(list email:^o)])
+            ==
+            l=(list json)
+        ==
     :_  l
     %-  pairs
     :~  group+(flag f)
@@ -78,6 +82,14 @@
         %-  pairs
         :~  members+a/(turn m.u.d ship)
             admins+a/(turn a.u.d ship)
+          ::
+            :-  %domain
+            %-  pairs
+            :~  first+(sect o.d.u.d)
+                last+(sect n.d.u.d)
+                hash+s/(scot %uv h.d.u.d)
+            ==
+          ::
             :+  %included-files
               %a
             %+  turn  e.u.d
@@ -227,6 +239,18 @@
           new-graphs+a/(turn and.upd |=(flag:o (flag +<)))
           include-members+b/mem.wit.upd
           include-administrators+b/adm.wit.upd
+      ==
+    ::
+        %working
+      %^  pack  'FACT'
+        'RESTORE-PROGRESS'
+      %-  pairs
+      :~  channel-type+s/typ.upd
+          progress+s/(crip per.upd)
+        :-  %group
+        ?:  ?=(%& -.gro.upd)
+          (pairs ~[type+s/'NEW' name+s/p.gro.upd])
+        (pairs ~[type+s/'OLD' flag+(flag p.gro.upd)])
       ==
     ::
         %restore

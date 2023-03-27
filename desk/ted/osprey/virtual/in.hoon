@@ -13,6 +13,7 @@
   =+  maker=^+(mak (ma-abed:mak bowl u.rug))
   ;<  ~  bind:m  (send-raw-card mog:ma-card:maker)
   ;<  ~  bind:m  (take-poke-ack /osprey/group/create)
+  ;<  ~  bind:m  (sleep (div ~s1 100))
   =/  and=(list flag:osp)
     (turn wic.u.rug |=([@ w=flag:osp n=@tas] [our.bowl n]))
   =/  lead  `(unit (list card))`lead:ma-card:maker
@@ -37,14 +38,14 @@
       ;<  ~  bind:m  (take-poke-ack /osprey/group/lead)
       $(u.lead t.u.lead)
     |-
-    ?~  u.lead
-      ?~  u.team  end
-      ;<  ~  bind:m  (send-raw-card i.u.team)
-      ;<  ~  bind:m  (take-poke-ack /osprey/group/memb)
-      $(u.team t.u.team)
-    ;<  ~  bind:m  (send-raw-card i.u.lead)
-    ;<  ~  bind:m  (take-poke-ack /osprey/group/lead)
-    $(u.lead t.u.lead)
+    ?~  u.team
+      ?~  u.lead  end
+      ;<  ~  bind:m  (send-raw-card i.u.lead)
+      ;<  ~  bind:m  (take-poke-ack /osprey/group/lead)
+      $(u.lead t.u.lead)
+    ;<  ~  bind:m  (send-raw-card i.u.team)
+    ;<  ~  bind:m  (take-poke-ack /osprey/group/memb)
+    $(u.team t.u.team)
   ::
   ?-    hed.i.work
       %chat
@@ -52,21 +53,21 @@
     |-  ?~  car  buc(work t.work)
     ;<  ~  bind:m  (send-raw-card i.car)
     ;<  ~  bind:m  (take-poke-ack /osprey/chat)
-    ;<  ~  bind:m  (sleep ~s0..0001)
+    ;<  ~  bind:m  (sleep (div ~s1 100))
     $(car t.car)
       %heap
     =+  hap=(heap:ma-card:maker [wat wer]:i.work)
     |-  ?~  hap  buc(work t.work)
     ;<  ~  bind:m  (send-raw-card i.hap)
     ;<  ~  bind:m  (take-poke-ack /osprey/heap)
-    ;<  ~  bind:m  (sleep ~s0..0001)
+    ;<  ~  bind:m  (sleep (div ~s1 100))
     $(hap t.hap)
       %note
     =+  not=(note:ma-card:maker [wat wer]:i.work)
     |-  ?~  not  buc(work t.work)
     ;<  ~  bind:m  (send-raw-card i.not)
     ;<  ~  bind:m  (take-poke-ack /osprey/note)
-    ;<  ~  bind:m  (sleep ~s0..0001)
+    ;<  ~  bind:m  (sleep (div ~s1 100))
     $(not t.not)
   ==
 |%

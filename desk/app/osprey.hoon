@@ -141,8 +141,11 @@
 ++  poke
   |=  [mar=mark vaz=vase]
   ?+    mar  ~|(aviary-panic-osprey-poke/mar !!)
+      %osprey-updates  ?>(=(our.bol src.bol) (show mar vaz))
       %handle-http-request
     =+  !<([id=@ta req=inbound-request:eyre] vaz)
+    ::  XX: re-enable post testing
+    :: ?>  authenticated.req
     =/  hav=(set flag)
       (~(uni in (~(uni in chats:scry) diaries:scry)) heaps:scry)
     =/  don=[caz=(list card) id=@ta]
@@ -206,9 +209,8 @@
             [%pass /roster/adm %agent hod %poke adm]
         ==
       :-
-        :-  %dill-blit
-        !>  ^-  dill-blit:dill
-        :-  %sav
+        :-  %drum-put
+        !>  ^-  [path $@(@ [@tas @])]
         :_  %-  of-wain:format
             %+  turn  mem.act
             |=(p=@p `@`(cat 3 (scot %p p) '\0a'))
@@ -217,9 +219,8 @@
           /[(rap 3 (scot %p p.wat.act) '-' q.wat.act ~)]
           /members-list/txt
         ==
-      :-  %dill-blit
-      !>  ^-  dill-blit:dill
-      :-  %sav
+      :-  %drum-put
+      !>  ^-  [path $@(@ [@tas @])]
       :_  %-  of-wain:format
           %+  turn  adm.act
           |=(p=@p `@`(cat 3 (scot %p p) '\0a'))
@@ -274,9 +275,11 @@
       ==
     ::
         %stop
+      ?>  =(our.bol src.bol)
       (show(kicks (~(del by kicks) id.act)) mar vaz)
     ::
         %exec
+      ?>  =(our.bol src.bol)
       =+  hav=(~(got by kicks) id.act)
       =;  do-it=cage
         =.  kicks  (~(del by kicks) id.act)
@@ -438,12 +441,12 @@
       %+  roll  ~(tap bi mails)
       |=  $:  $:  p=@p
                   f=flag
-                  u=(unit [m=(list @p) a=(list @p) c=(list email)])
+                  u=(unit [m=(list @p) a=(list @p) d=[@ @ @] c=(list email)])
               ==
               m=(mip @p flag @t)
           ==
       %-  ~(put bi m)
-      [p f ?~(u 'awaiting-delivery' 'pending-refresh')]
+      [p f ?~(u 'awaiting-delivery' 'you\'ve got mail')]
     ``state+!>([%0 schedule=sched on-trial=kex mailboxes=mel])
   ==
 ::  +scry: scries we may want
