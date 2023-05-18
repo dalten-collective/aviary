@@ -37,6 +37,10 @@
         </div>
       </div>
     </header>
+      <pre>
+court:
+{{ courtroom }}
+      </pre>
     <div class="flex flex-col">
       <div v-for="g in groups" class="max-w-md">
         <Doomer :flag="g" />
@@ -65,6 +69,10 @@ const ospreyStore = useStore()
 
 const groups = computed<Array<T.Flag>>(() => {
   return ospreyStore.state.groups
+})
+
+const courtroom = computed<{ [key: string]: O.Defendants }>(() => {
+  return ospreyStore.state.courtroom
 })
 </script>
 

@@ -24,10 +24,48 @@ export enum OspreyResponseFaces {
   ArchiveStatusUpdate = "ARCHIVE-STATUS-UPDATE",
   Dooming = "DOOMING",
   DoomDone = "DOOMBOT-RESULTS",
-  Booting = "BOOTING",
-  BootDone = "BOOTBOT-RESULTS",
+
+  OspreyKickBooting = "KICK-BOOTING",
+  OspreyKickExecuting = "KICK-EXECUTING",
+  OspreyKickPardoning = "KICK-PARDONING",
+  Booting = "BOOTING", // TODO: remove?
+  BootDone = "BOOTBOT-RESULTS", // TODO: remove?
 
   RestoreStatusUpdate = "RESTORE-STATUS-UPDATE",
+
+  OspreyStateOnTrial = "OSPREY-STATE-ON-TRIAL",
+}
+
+export interface OspreyStateOnTrialResponse {
+  type: Api.ResponseTypes.Scry;
+  fact: {
+    [key: string]: O.Defendants // keys will be a hashes. can have many groups on trial
+  }
+}
+
+export interface OspreyKickBootingResponse {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.OspreyKickBooting;
+  fact: {
+    rank: string;
+    group: T.Flag;
+  }
+}
+
+export interface OspreyKickExecutingResponse {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.OspreyKickExecuting;
+  fact: {
+    id: string; // hash of defendants
+  }
+}
+
+export interface OspreyKickPardoningResponse {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.OspreyKickPardoning;
+  fact: {
+    id: string; // hash of defendants
+  }
 }
 
 export interface RestoredNewGroup {

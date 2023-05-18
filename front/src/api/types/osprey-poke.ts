@@ -76,7 +76,7 @@ export interface RepeatArchivePayload {
 export interface DoomPayload {
   doom: {
     limit: number;
-    age: number;
+    age: number;   // as "~h1", "~d30", etc
     group: T.Flag;
   }
 }

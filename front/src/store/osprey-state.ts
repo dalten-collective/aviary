@@ -26,6 +26,7 @@ export const ospreyState = {
   diaries: [] as Array<T.Flag>,
   every: [] as Array<T.Flag>,
   mailslot: [] as Array<O.MailSlot>,
+  courtroom: {} as { [key: string]: O.Defendants },
 
   archiveLoadingState: {} as { ArchiveLoader },
 
