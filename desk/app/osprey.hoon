@@ -402,6 +402,7 @@
         (show osprey-state-aval+!>(`[@t (set flag)]`['HEAPS' heaps:scry]))
         (show osprey-state-aval+!>(`[@t (set flag)]`['GROUPS' groups:scry]))
         (show osprey-state-aval+!>(`[@t (set flag)]`['DIARIES' diaries:scry]))
+        (show osprey-state-schedule+!>(`schedule`sched))
         (show osprey-state-schedule+!>(`mailslot`mails))
         (show osprey-state-on-trial+!>(`on-trial`kicks))
     ==
