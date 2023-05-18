@@ -1,6 +1,6 @@
 <template>
     <div>
-      <span>heap: {{ g }}</span>
+      <span> {{ g }}</span>
       <Schedule :flag="g" />
       <ArchiveNow :flag="g" typeString="heap" />
       <ArchiveSchedule :flag="g" typeString="heap" />

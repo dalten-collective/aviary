@@ -21,6 +21,8 @@ h5 {
 button {
   @apply border;
   @apply rounded-md;
+  @apply bg-white;
+  @appl cursor-pointer;
   @apply px-3;
   @apply py-1;
   @apply shadow-md;
@@ -54,10 +56,10 @@ input[type="text"].float {
   @apply px-2;
   @apply w-full;
   @apply text-sm;
-  @apply text-gray-900;
+  @apply text-stone-900;
   @apply border-0;
   @apply border-b-2;
-  @apply border-gray-300;
+  @apply border-stone-300;
   @apply appearance-none;
   @apply focus:outline-none;
   @apply focus:ring-0;
@@ -69,8 +71,8 @@ label.float {
   @apply peer-focus:font-medium;
   @apply absolute;
   @apply text-sm;
-  @apply text-gray-500;
-  @apply dark:text-gray-400;
+  @apply text-stone-500;
+  @apply dark:text-stone-400;
   @apply duration-300;
   @apply transform;
   @apply -translate-y-6;

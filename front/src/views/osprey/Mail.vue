@@ -1,42 +1,79 @@
 <template>
   <div class="container mx-auto my-8">
-    <h2>Restore Remotely</h2>
+    <header>
+      <div class="flex flex-row items-center justify-between">
+        <div>
+        <h2>Remote Restore</h2>
+        </div>
+      </div>
+      <div class="flex flex-row items-center justify-between px-4 py-2 my-4 bg-stone-300">
+        <div>
+          <button class="bg-white" @click="getMail">Check mail</button>
+        </div>
+        <div class="flex flex-row items-center justify-end">
+        <div class="relative z-0 items-center my-2 mr-2 group">
+          <input type="text" class='py-1 rounded-md float peer' placeholder="Search" id='search' />
+          <label class="float peer" for="search">Search</label>
+        </div>
+        <div>
+          <select class="p-2 bg-white cursor-pointer rounded-md">
+            <option selected>
+              All Resoures
+            </option>
+            <option>
+              Groups
+            </option>
+            <option>
+              Chats
+            </option>
+            <option>
+              Galleries
+            </option>
+            <option>
+              Notebooks
+            </option>
+          </select>
+        </div>
+        </div>
+      </div>
+    </header>
 
     <div class="my-4">
 
-    <button @click="getMail">Check mail</button>
 
-    <div class="p-4 m-4 border">
-      <div class="flex flex-col">
-        <h4 class="mt-2 mb-8" >Open slot for restore</h4>
-        <div class="max-w-md field-float group">
-          <input type="text" v-model="slotHost" class="float peer" id="slothost" />
-          <label class="float peer" for="slothost">Who will send you the group?</label>
+    <div class="flex flex-row">
+      <div class="flex-1 p-4 m-4 border rounded-lg">
+        <div v-if="!mailSlots || Object.keys(mailSlots).length === 0">
+          <h4>No incoming mail!</h4>
         </div>
-
-        <div class="max-w-md field-float group">
-          <input type="text" v-model="groupHost" class="float peer" id="grouphost" />
-          <label class="float peer" for="grouphost">Original group host</label>
-        </div>
-
-        <div class="max-w-md field-float group">
-          <input type="text" v-model="slotGroup" class="float peer" id="slotGroup" />
-          <label class="float peer" for="slotGroup">Group name</label>
+        <div v-else>
+          <h4 class="mb-4">You've got mail:</h4>
+          <div v-for="(mails, ship) in mailSlots">
+            <Envelopes class="mb-8" :from="ship" :mails="mails" />
+          </div>
         </div>
       </div>
 
-      <button @click="openSlot">Open</button>
-    </div>
+      <div class="flex-1 p-4 m-4 border">
+        <div class="flex flex-col">
+          <h4 class="mt-2 mb-8" >Open slot for restore</h4>
+          <div class="max-w-md field-float group">
+            <input type="text" v-model="slotHost" class="float peer" id="slothost" />
+            <label class="float peer" for="slothost">Who will send you the group?</label>
+          </div>
 
-    <div class="p-4 m-4 border rounded-lg">
-      <div v-if="!mailSlots || Object.keys(mailSlots).length === 0">
-        <h4>No incoming mail!</h4>
-      </div>
-      <div v-else>
-        <h4>You've got mail:</h4>
-        <div v-for="(mails, ship) in mailSlots">
-          <Envelopes class="mb-8" :from="ship" :mails="mails" />
+          <div class="max-w-md field-float group">
+            <input type="text" v-model="groupHost" class="float peer" id="grouphost" />
+            <label class="float peer" for="grouphost">Original group host</label>
+          </div>
+
+          <div class="max-w-md field-float group">
+            <input type="text" v-model="slotGroup" class="float peer" id="slotGroup" />
+            <label class="float peer" for="slotGroup">Group name</label>
+          </div>
         </div>
+
+        <button @click="openSlot">Open</button>
       </div>
     </div>
 

@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex flex-row">
+  <nav v-if="false" class="flex flex-row">
     <router-link :to="{ name: 'parrotHome' }" class="mr-2 text-blue-400 underline">
       Parrot
     </router-link>
@@ -7,6 +7,7 @@
       Osprey
     </router-link>
   </nav>
+
   <div>
     <router-view />
 

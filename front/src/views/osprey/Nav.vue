@@ -1,20 +1,19 @@
 <template>
-  <div class="flex flex-row">
-    <router-link :to="{ name: 'ospreyHome' }" class="mr-2 text-blue-400 underline">
-      Home
-    </router-link>
-    <router-link :to="{ name: 'archive' }" class="mr-2 text-blue-400 underline">
-      Archive
-    </router-link>
-    <router-link :to="{ name: 'restore' }" class="mr-2 text-blue-400 underline">
-      Restore
-    </router-link>
-    <router-link :to="{ name: 'bootNDoom' }" class="mr-2 text-blue-400 underline">
-      Boot'n'Doom
-    </router-link>
-    <router-link :to="{ name: 'mail' }" class="mr-2 text-blue-400 underline">
-      Mail
-    </router-link>
+  <div class="py-6 bg-black">
+    <div class="container flex flex-row mx-auto text-white">
+      <router-link :to="{ name: 'archive' }" class="mr-4 underline">
+        Backup
+      </router-link>
+      <router-link :to="{ name: 'restore' }" class="mr-4 underline">
+        Restore
+      </router-link>
+      <router-link :to="{ name: 'bootNDoom' }" class="mr-4 underline">
+        Boot'n'Doom
+      </router-link>
+      <router-link :to="{ name: 'mail' }" class="mr-4 underline">
+        Remote Restore
+      </router-link>
+    </div>
   </div>
 </template>
 
