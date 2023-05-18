@@ -1,5 +1,5 @@
 import { MutationTree } from "vuex";
-import { OspreyMutationTypes as MutationTypes } from "./osprey-mutation-types";
+import { OspreyMutationTypes as MutationTypes, OspreyMutationTypes } from "./osprey-mutation-types";
 import { OspreyState } from "./osprey-state";
 import * as T from "@/types";
 import * as L from "@/types/loading-types";
@@ -8,6 +8,11 @@ import * as O from "@/types/osprey-types";
 import { sigShip } from "@/helpers"
 
 export type OspreyMutations<S = OspreyState> = {
+  [MutationTypes.CourtroomSet](
+    state: S,
+    payload: { [key: string]: O.Defendants }
+  ): void;
+
   [MutationTypes.ScheduleSet](
     state: S,
     payload: Array<O.Schedule>
@@ -48,6 +53,13 @@ export type OspreyMutations<S = OspreyState> = {
 };
 
 export const mutations: MutationTree<OspreyState> & OspreyMutations = {
+  [MutationTypes.CourtroomSet](
+    state: OspreyState,
+    payload: Parameters<OspreyMutations[OspreyMutationTypes.CourtroomSet]>[1]
+  ) {
+    state.courtroom = payload
+  },
+
   [MutationTypes.ScheduleSet](
     state: OspreyState,
     payload: Array<O.Schedule>

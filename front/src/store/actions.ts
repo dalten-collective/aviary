@@ -157,6 +157,7 @@ export const actions: ActionTree<State, State> & Actions = {
         if (PR.IsBirdLeftFact(data)) {
           console.log('BirdLeftFact ', data)
           dispatch(ActionTypes.SCRY_FLOKS)
+          dispatch(ActionTypes.SCRY_AVAIL_CHATS)
         }
       },
 

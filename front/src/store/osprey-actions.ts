@@ -37,6 +37,10 @@ export interface Actions {
     { commit }: AugmentedActionContext,
     deskName: string
   ): void;
+
+  [ActionTypes.ScryTrial](
+    { commit }: AugmentedActionContext
+  ): void;
 }
 
 export const actions: ActionTree<State, State> & Actions = {
@@ -59,6 +63,12 @@ export const actions: ActionTree<State, State> & Actions = {
         if (OR.IsOspreyResponseMailslot(data)) {
           // TODO:
           console.log('got slots')
+        }
+
+        if (OR.IsOspreyOnTrialResponse(data)) {
+          // TODO:
+          console.log('got courtroom')
+         commit(MutationTypes.CourtroomSet, data.fact)
         }
 
         // TODO
@@ -162,8 +172,10 @@ export const actions: ActionTree<State, State> & Actions = {
 
         if (OR.IsOspreyResponseDoomStart(data)) {
           console.log('doom started...')
+          dispatch(ActionTypes.ScryTrial)
           console.log(data)
         }
+
         if (OR.IsOspreyResponseDoomDone(data)) {
           console.log('doom done')
           console.log(data)
@@ -171,10 +183,24 @@ export const actions: ActionTree<State, State> & Actions = {
 
         if (OR.IsOspreyResponseBootStart(data)) {
           console.log('boot started...')
+          dispatch(ActionTypes.ScryTrial)
           console.log(data)
         }
+
         if (OR.IsOspreyResponseBootDone(data)) {
           console.log('boot done')
+          dispatch(ActionTypes.ScryTrial)
+          console.log(data)
+        }
+
+        if (OR.IsOspreyKickExecutingResponse(data)) {
+          console.log('kick executed started...')
+          dispatch(ActionTypes.ScryTrial)
+          console.log(data)
+        }
+        if (OR.IsOspreyKickPardoningResponse(data)) {
+          console.log('kick pardoned...')
+          dispatch(ActionTypes.ScryTrial)
           console.log(data)
         }
 
@@ -203,6 +229,15 @@ export const actions: ActionTree<State, State> & Actions = {
      console.log('dispatching SCRY_SCHEDULE action...')
      return Scries.Schedule().then((r: OR.OspreyResponseSchedule) => {
        ctx.commit(MutationTypes.ScheduleSet, r.fact)
+     })
+   },
+
+   [ActionTypes.ScryTrial](
+     ctx,
+   ) {
+     console.log('dispatching ScryTrial action...')
+     return Scries.Trial().then((r: OR.OspreyStateOnTrialResponse) => {
+       ctx.commit(MutationTypes.CourtroomSet, r.fact)
      })
    },
 

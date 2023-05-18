@@ -88,6 +88,19 @@ export interface BootPayload {
   }
 }
 
+export interface ExecutePayload {
+  exec: {
+    id: string;
+  }
+}
+
+export interface PardonPayload {
+  stop: {
+    id: string;
+  }
+}
+
+
 // TODO: don't use
 export interface ArchiveDmPayload {
   chat: {
@@ -118,4 +131,7 @@ export type OspreyPoke =
   MailOpenPayload |
   MailSendPayload |
   MailReadPayload |
-  MailKillPayload
+  MailKillPayload |
+  ExecutePayload |
+  PardonPayload
+

@@ -12,4 +12,6 @@ export enum OspreyMutationTypes {
   DiariesSet = 'DIARIES_SET',
 
   ArchiveLoaderSet = 'ARCHIVE_LOADER_SET',
+
+  CourtroomSet = 'CourtroomSet',
 }
