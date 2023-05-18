@@ -245,6 +245,7 @@ export interface OspreyResponseBootDone {
 }
 
 export type OspreyResponse =
+<<<<<<< Updated upstream
   | OspreyResponseSchedule
   | OspreyResponseScheduleCancel
   | OspreyResponseHostedEvery
@@ -267,6 +268,22 @@ export type OspreyResponse =
   | OspreyResponseMailReading
   | OspreyResponseMailReadDone
   | OspreyResponseMailKilled
+=======
+  OspreyResponseSchedule |
+  OspreyResponseScheduleCancel |
+  OspreyResponseHostedEvery |
+  OspreyResponseHostedDms |
+  OspreyResponseHostedChats |
+  OspreyResponseHostedHeaps |
+  OspreyResponseHostedGroups |
+  OspreyResponseHostedDiaries |
+  OspreyResponseArchiveStart |
+  OspreyResponseArchiveStatusUpdate |
+  OspreyResponseDoomStart |
+  OspreyResponseDoomDone |
+  OspreyResponseBootStart |
+  OspreyResponseBootDone
+>>>>>>> Stashed changes
 
 export const IsOspreyHostedEvery = (
   r: OspreyResponse
@@ -304,11 +321,23 @@ export const IsOspreyResponseSchedule = (
   return r.face === OspreyResponseFaces.OspreySchedule;
 };
 
+<<<<<<< Updated upstream
 export const IsOspreyResponseArchiveStart = (
   r: OspreyResponse
 ): r is OspreyResponseArchiveStart => {
   return r.face === OspreyResponseFaces.ArchiveStart;
 };
+=======
+export const IsOspreyResponseScheduleCancel = (r: OspreyResponse):
+  r is OspreyResponseScheduleCancel => {
+  return (r.face === OspreyResponseFaces.OspreyScheduleCancel)
+}
+
+export const IsOspreyResponseArchiveStart = (r: OspreyResponse):
+  r is OspreyResponseArchiveStart => {
+  return (r.face === OspreyResponseFaces.ArchiveStart)
+}
+>>>>>>> Stashed changes
 
 export const IsOspreyResponseScheduleCancel = (r: OspreyResponse):
   r is OspreyResponseScheduleCancel => {
