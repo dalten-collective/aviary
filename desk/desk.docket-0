@@ -5,6 +5,6 @@
     version+[0 0 1]
     website+'https://dalten.org/'
     license+'REKT'
-    glob-http+['https://bootstrap.urbit.org/glob-0vm65f9.defur.eqhgj.62ls6.9v9lf.glob' 0vm65f9.defur.eqhgj.62ls6.9v9lf]
+    glob-http+['https://nyc3.digitaloceanspaces.com/sogrum-savluc/sogrum-savluc/2023.6.07..18.14.58-glob-0v7.rrgtt.lb8re.296c8.1br7h.46eiv.glob' 0v7.rrgtt.lb8re.296c8.1br7h.46eiv]
     base+'aviary'
 ==
