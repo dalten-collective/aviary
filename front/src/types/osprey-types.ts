@@ -4,8 +4,8 @@ export interface Schedule {
   next: number; // hoon seconds
   last: number; // hoon seconds
   area: {
-    flag: T.Flag;
-    type: string; // like "GROUP"
+    type: string; // like "GROUP" or "ALL-HOSTED"
+    flag: T.Flag; // when "ALL-HOSTED", there is no flag present
   };
 }
 
@@ -24,4 +24,12 @@ export interface MailDataContent {
   }>;
   members: Array<T.Ship>;
   group: T.Flag;
+}
+
+export interface Defendants {
+  flag: T.Flag,  // the group
+  type: "doom" | "boot",
+  limit: number, // TODO: or is this a string?
+  age: string,   // hoon time ago
+  ships: Array<T.Ship>
 }

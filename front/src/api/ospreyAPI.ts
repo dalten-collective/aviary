@@ -16,6 +16,7 @@ export const Scries = {
   Heaps() { return scryHeaps() },
   Groups() { return scryGroups() },
   Diaries() { return scryDiaries() },
+  Trial() { return scryTrial() },
 }
 
 export const Pokes = {
@@ -27,6 +28,8 @@ export const Pokes = {
   RepeatArchive(flag, typeString, schedule) { return pokeRepeatArchive(flag, typeString, schedule) },
   Doom(args) { return pokeDoom(args) },
   Boot(args) { return pokeBoot(args) },
+  Execute(args) { return pokeExec(args) },
+  Pardon(args) { return pokePardon(args) },
 
   MailOpen(args) { return pokeMailOpen(args) },
   MailSend(args) { return pokeMailSend(args) },
@@ -35,6 +38,11 @@ export const Pokes = {
 }
 
 ////
+
+export function scryTrial(): Promise<OR.OspreyStateOnTrialResponse> {
+  const scrier = new OS.ScryTrial()
+  return scrier.scry()
+}
 
 export function scrySchedule(): Promise<OR.OspreyResponseSchedule> {
   const scrier = new OS.ScrySchedule()
@@ -77,6 +85,18 @@ export function scryDiaries(): Promise<OR.OspreyResponseHostedDiaries> {
 }
 
 ////
+
+export function pokeExec(hash: string): Promise<any>
+  {
+  const poker = new OA.Execute(hash)
+  return poker.poke()
+}
+
+export function pokePardon(hash: string): Promise<any>
+  {
+  const poker = new OA.Pardon(hash)
+  return poker.poke()
+}
 
 export function pokeArchiveMine(): Promise<any>
   {

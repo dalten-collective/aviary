@@ -37,6 +37,15 @@
         </div>
       </div>
     </header>
+court:
+      <div v-for="(trial, hash) in courtroom" :key="hash">
+<pre>
+  hash: {{ hash }}
+  trial: {{ trial }}
+</pre>
+<button @click="execute(hash)">execute</button>
+<button @click="pardon(hash)">pardon</button>
+      </div>
     <div class="flex flex-col">
       <div v-for="g in groups" class="max-w-md">
         <Doomer :flag="g" />
@@ -66,5 +75,19 @@ const ospreyStore = useStore()
 const groups = computed<Array<T.Flag>>(() => {
   return ospreyStore.state.groups
 })
+
+const courtroom = computed<{ [key: string]: O.Defendants }>(() => {
+  return ospreyStore.state.courtroom
+})
+
+const execute = (hash: string) => {
+  console.log('exec ', hash)
+  Pokes.Execute(hash)
+}
+
+const pardon = (hash: string) => {
+  console.log('pardon ', hash)
+  Pokes.Pardon(hash)
+}
 </script>
 

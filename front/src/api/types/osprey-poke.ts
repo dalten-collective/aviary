@@ -76,7 +76,7 @@ export interface RepeatArchivePayload {
 export interface DoomPayload {
   doom: {
     limit: number;
-    age: number;
+    age: number;   // as "~h1", "~d30", etc
     group: T.Flag;
   }
 }
@@ -87,6 +87,19 @@ export interface BootPayload {
     group: T.Flag;
   }
 }
+
+export interface ExecutePayload {
+  exec: {
+    id: string;
+  }
+}
+
+export interface PardonPayload {
+  stop: {
+    id: string;
+  }
+}
+
 
 // TODO: don't use
 export interface ArchiveDmPayload {
@@ -118,4 +131,7 @@ export type OspreyPoke =
   MailOpenPayload |
   MailSendPayload |
   MailReadPayload |
-  MailKillPayload
+  MailKillPayload |
+  ExecutePayload |
+  PardonPayload
+

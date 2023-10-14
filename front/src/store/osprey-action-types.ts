@@ -10,4 +10,5 @@ export enum OspreyActionTypes {
   ScryChats = 'SCRY_CHATS',
   ScryHeaps = 'SCRY_HEAPS',
   ScryDiaries = 'SCRY_DIARIES',
+  ScryTrial = 'SCRY_TRIAL',
 }

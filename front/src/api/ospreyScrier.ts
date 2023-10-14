@@ -20,6 +20,16 @@ class OspreyScry {
   }
 }
 
+export class ScryTrial extends OspreyScry {
+  constructor() {
+    super('/on-trial')
+  }
+
+  scry(): Promise<OR.OspreyStateOnTrialResponse> {
+    return super.scry()
+  }
+}
+
 export class ScrySchedule extends OspreyScry {
   constructor() {
     super('/schedule')

@@ -170,3 +170,29 @@ export class Boot extends OspreyAction {
     super(json)
   }
 }
+
+export class Execute extends OspreyAction {
+  declare payload: OP.ExecutePayload['exec']['id']
+
+  constructor(args: OP.ExecutePayload['exec']['id']) {
+    const json: OP.ExecutePayload = {
+      exec: {
+        id: args
+      }
+    }
+    super(json)
+  }
+}
+
+export class Pardon extends OspreyAction {
+  declare payload: OP.PardonPayload['stop']['id']
+
+  constructor(args: OP.PardonPayload['stop']['id']) {
+    const json: OP.PardonPayload = {
+      stop: {
+        id: args
+      }
+    }
+    super(json)
+  }
+}

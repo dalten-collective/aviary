@@ -22,12 +22,63 @@ export enum OspreyResponseFaces {
   OspreyScheduleCancel = "ARCHIVE-SCHEDULE-CANCEL",
   ArchiveStart = "ARCHIVE-START",
   ArchiveStatusUpdate = "ARCHIVE-STATUS-UPDATE",
-  Dooming = "DOOMING",
-  DoomDone = "DOOMBOT-RESULTS",
-  Booting = "BOOTING",
-  BootDone = "BOOTBOT-RESULTS",
+
+  OspreyKickDooming = "KICK-DOOMING",
+  OspreyKickBooting = "KICK-BOOTING",
+
+  Dooming = "DOOMING", // TODO: remove?
+  DoomDone = "DOOMBOT-RESULTS", // TODO: remove?
+
+  OspreyKickExecuting = "KICK-EXECUTING",
+  OspreyKickPardoning = "KICK-PARDONING",
 
   RestoreStatusUpdate = "RESTORE-STATUS-UPDATE",
+
+  OspreyStateOnTrial = "OSPREY-STATE-ON-TRIAL",
+}
+
+export interface OspreyStateOnTrialResponse {
+  type: Api.ResponseTypes.Scry;
+  face: OspreyResponseFaces.OspreyStateOnTrial
+  fact: {
+    [key: string]: O.Defendants // keys will be a hashes. can have many groups on trial
+  }
+}
+
+// On initial
+export interface OspreyResponseKickDooming {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.OspreyKickDooming;
+  fact: {
+    seconds: number;
+    group: T.Flag;
+  }
+}
+
+// On initial
+export interface OspreyResponseKickBooting {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.OspreyKickBooting;
+  fact: {
+    rank: string;
+    group: T.Flag;
+  }
+}
+
+export interface OspreyKickExecutingResponse {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.OspreyKickExecuting;
+  fact: {
+    id: string; // hash of defendants
+  }
+}
+
+export interface OspreyKickPardoningResponse {
+  type: Api.ResponseTypes.Fact;
+  face: OspreyResponseFaces.OspreyKickPardoning;
+  fact: {
+    id: string; // hash of defendants
+  }
 }
 
 export interface RestoredNewGroup {
@@ -210,7 +261,7 @@ export interface OspreyResponseArchiveStatusUpdate {
 
 export interface OspreyResponseDoomStart {
   type: Api.ResponseTypes.Fact;
-  face: OspreyResponseFaces.Dooming;
+  face: OspreyResponseFaces.OspreyKickDooming;
   fact: {
     seconds: number;
     group: T.Flag;
@@ -228,7 +279,7 @@ export interface OspreyResponseDoomDone {
 
 export interface OspreyResponseBootStart {
   type: Api.ResponseTypes.Fact;
-  face: OspreyResponseFaces.Booting;
+  face: OspreyResponseFaces.OspreyKickBooting;
   fact: {
     rank: string;
     group: T.Flag;
@@ -255,10 +306,12 @@ export type OspreyResponse =
   | OspreyResponseHostedDiaries
   | OspreyResponseArchiveStart
   | OspreyResponseArchiveStatusUpdate
-  | OspreyResponseDoomStart
+  | OspreyResponseKickDooming // start
   | OspreyResponseDoomDone
-  | OspreyResponseBootStart
-  | OspreyResponseBootDone
+  | OspreyResponseKickBooting // start
+  | OspreyResponseBootDone    // done
+  | OspreyKickExecutingResponse
+  | OspreyKickPardoningResponse
   | OspreyResponseMailslot
   | OspreyResponseMailOpen
   | OspreyResponseMailSending
@@ -267,6 +320,51 @@ export type OspreyResponse =
   | OspreyResponseMailReading
   | OspreyResponseMailReadDone
   | OspreyResponseMailKilled
+  | OspreyStateOnTrialResponse
+
+export const IsOspreyOnTrialResponse = (
+  r: OspreyResponse
+): r is OspreyStateOnTrialResponse => {
+  return r.face === OspreyResponseFaces.OspreyStateOnTrial;
+};
+
+export const IsOspreyResponseDoomStart = (
+  r: OspreyResponse
+): r is OspreyResponseKickDooming => {
+  return r.face === OspreyResponseFaces.OspreyKickDooming;
+};
+
+export const IsOspreyResponseDoomDone = (
+  r: OspreyResponse
+): r is OspreyResponseDoomDone => {
+  return r.face === OspreyResponseFaces.DoomDone;
+};
+
+export const IsOspreyResponseBootStart = (
+  r: OspreyResponse
+): r is OspreyResponseKickBooting => {
+  return r.face === OspreyResponseFaces.OspreyKickBooting;
+};
+
+// TODO: wut this?
+export const IsOspreyResponseBootDone = (
+  r: OspreyResponse
+): r is OspreyResponseBootDone => {
+  return r.face === OspreyResponseFaces.BootDone;
+};
+
+export const IsOspreyKickExecutingResponse = (
+  r: OspreyResponse
+): r is OspreyKickExecutingResponse => {
+  return r.face === OspreyResponseFaces.OspreyKickExecuting;
+};
+
+export const IsOspreyKickPardoningResponse = (
+  r: OspreyResponse
+): r is OspreyKickPardoningResponse => {
+  return r.face === OspreyResponseFaces.OspreyKickPardoning;
+};
+///
 
 export const IsOspreyHostedEvery = (
   r: OspreyResponse
@@ -318,30 +416,6 @@ export const IsOspreyResponseArchiveStatusUpdate = (
   r: OspreyResponse
 ): r is OspreyResponseArchiveStatusUpdate => {
   return r.face === OspreyResponseFaces.ArchiveStatusUpdate;
-};
-
-export const IsOspreyResponseDoomStart = (
-  r: OspreyResponse
-): r is OspreyResponseDoomStart => {
-  return r.face === OspreyResponseFaces.Dooming;
-};
-
-export const IsOspreyResponseDoomDone = (
-  r: OspreyResponse
-): r is OspreyResponseDoomDone => {
-  return r.face === OspreyResponseFaces.DoomDone;
-};
-
-export const IsOspreyResponseBootStart = (
-  r: OspreyResponse
-): r is OspreyResponseBootStart => {
-  return r.face === OspreyResponseFaces.Booting;
-};
-
-export const IsOspreyResponseBootDone = (
-  r: OspreyResponse
-): r is OspreyResponseBootDone => {
-  return r.face === OspreyResponseFaces.BootDone;
 };
 
 export const IsOspreyResponseMailslot = (
